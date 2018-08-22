@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
@@ -49,7 +52,21 @@ public class GraphQlController : ControllerBase
         {
             inputs = new Inputs();
         }
-        inputs.Add("attachments", Request.Form.Files);
+        //Request.Form.Files.ToDictionary(x => x.FileName, x => (Func<Stream>)x.OpenReadStream)
+        var file = Request.Form.Files.FirstOrDefault();
+        inputs.Add("attachment",
+               new Dictionary<string, object>
+               {
+                   {"name",file.FileName},
+                   {"stream",(Func<Stream>)file.OpenReadStream},
+               });
+       //inputs.Add("attachments", new List<object>( Request.Form.Files.Select(
+       //    x=>
+       //        new Dictionary<string, object>
+       //        {
+       //            {"name",x.FileName},
+       //            {"stream",(Func<Stream>)x.OpenReadStream},
+       //        })));
 
         string operation = null;
         if (Request.Form.TryGetValue("operation", out var operationValues))

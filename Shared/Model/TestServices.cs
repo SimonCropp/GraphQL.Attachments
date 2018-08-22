@@ -10,5 +10,7 @@ public static class TestServices
         services.AddSingleton(new Query(items));
         services.AddSingleton(new Mutation(items));
         services.AddSingleton(new ResultGraph());
+        services.AddSingleton(new AttachmentInput());
+        services.AddSingleton(new StreamGraphType());
     }
 }

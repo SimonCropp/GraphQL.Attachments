@@ -12,11 +12,15 @@ public class Mutation : ObjectGraphType
                 new QueryArgument<NonNullGraphType<ItemInput>>
                 {
                     Name = "item"
+                },
+                new QueryArgument<NonNullGraphType<AttachmentInput>>
+                {
+                    Name = "attachment",
                 }
             ),
             resolve: context =>
             {
-                var valueFor = context.Variables.ValueFor("attachments");
+                var attachments = context.GetArgument<Attachment>("attachment");
                 var item = context.GetArgument<Item>("item");
                 items.Add(item);
                 return new Result {Count = items.Count};
