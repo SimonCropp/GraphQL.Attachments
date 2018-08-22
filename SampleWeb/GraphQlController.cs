@@ -1,11 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using GraphQL;
 using GraphQL.Types;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.Extensions.Primitives;
 using Newtonsoft.Json.Linq;
 
 [Route("[controller]")]
@@ -22,11 +25,42 @@ public class GraphQlController : ControllerBase
     }
 
     [HttpPost]
-    public Task<ExecutionResult> Post(
-        [BindRequired, FromBody] PostBody body,
-        CancellationToken cancellation)
+    public Task<ExecutionResult> Post(CancellationToken cancellation)
     {
-        return Execute(body.Query, body.OperationName, body.Variables, cancellation);
+        if (!Request.Form.TryGetValue("query", out var queryValues))
+        {
+            throw new Exception("Expected to find a form value named 'query'.");
+        }
+
+        if (queryValues.Count != 1)
+        {
+            throw new Exception("Expected 'query' to have a single value.");
+        }
+
+        var query = queryValues.ToString();
+
+        JObject variables = null;
+
+        if (Request.Form.TryGetValue("variables", out var variablesValues))
+        {
+            if (variablesValues.Count != 1)
+            {
+                throw new Exception("Expected 'variables' to have a single value.");
+            }
+            variables = JObject.Parse(variablesValues.ToString());
+        }
+
+        string operation = null;
+        if (Request.Form.TryGetValue("operation", out var operationValues))
+        {
+            if (variablesValues.Count != 1)
+            {
+                throw new Exception("Expected 'operation' to have a single value.");
+            }
+            operation = operationValues.ToString();
+        }
+
+        return Execute(query, operation, variables, cancellation);
     }
 
     public class PostBody

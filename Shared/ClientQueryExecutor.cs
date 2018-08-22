@@ -17,9 +17,10 @@ public static class ClientQueryExecutor
             query,
             variables
         };
+        var content = ToJson(body);
         var request = new HttpRequestMessage(HttpMethod.Post, uri)
         {
-            Content = new StringContent(ToJson(body), Encoding.UTF8, "application/json")
+            Content = new StringContent(content, Encoding.UTF8, "application/json")
         };
         headerAction?.Invoke(request.Headers);
         return client.SendAsync(request);
