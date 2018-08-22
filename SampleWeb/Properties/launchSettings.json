@@ -11,7 +11,7 @@
     "SampleWeb": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "graphiql",
+      "launchUrl": "test",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },

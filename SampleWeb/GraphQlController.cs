@@ -10,7 +10,7 @@ using Newtonsoft.Json.Linq;
 
 [Route("[controller]")]
 [ApiController]
-public class GraphQlController : Controller
+public class GraphQlController : ControllerBase
 {
     IDocumentExecuter executer;
     ISchema schema;
