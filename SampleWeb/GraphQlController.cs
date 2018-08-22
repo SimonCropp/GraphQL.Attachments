@@ -1,14 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using GraphQL;
 using GraphQL.Types;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
-using Microsoft.Extensions.Primitives;
 using Newtonsoft.Json.Linq;
 
 [Route("[controller]")]
@@ -39,16 +35,21 @@ public class GraphQlController : ControllerBase
 
         var query = queryValues.ToString();
 
-        JObject variables = null;
-
+        Inputs inputs;
         if (Request.Form.TryGetValue("variables", out var variablesValues))
         {
             if (variablesValues.Count != 1)
             {
                 throw new Exception("Expected 'variables' to have a single value.");
             }
-            variables = JObject.Parse(variablesValues.ToString());
+            var variables = JObject.Parse(variablesValues.ToString());
+            inputs = variables.ToInputs();
         }
+        else
+        {
+            inputs = new Inputs();
+        }
+        inputs.Add("attachments", Request.Form.Files);
 
         string operation = null;
         if (Request.Form.TryGetValue("operation", out var operationValues))
@@ -59,16 +60,9 @@ public class GraphQlController : ControllerBase
             }
             operation = operationValues.ToString();
         }
-
-        return Execute(query, operation, variables, cancellation);
+        return Execute(query, operation, cancellation, inputs);
     }
 
-    public class PostBody
-    {
-        public string OperationName;
-        public string Query;
-        public JObject Variables;
-    }
 
     [HttpGet]
     public Task<ExecutionResult> Get(
@@ -78,17 +72,18 @@ public class GraphQlController : ControllerBase
         CancellationToken cancellation)
     {
         var jObject = ParseVariables(variables);
-        return Execute(query, operationName, jObject, cancellation);
+        var inputs = jObject?.ToInputs();
+        return Execute(query, operationName, cancellation, inputs);
     }
 
-    async Task<ExecutionResult> Execute(string query, string operationName, JObject variables, CancellationToken cancellation)
+    private async Task<ExecutionResult> Execute(string query, string operationName, CancellationToken cancellation, Inputs inputs)
     {
         var executionOptions = new ExecutionOptions
         {
             Schema = schema,
             Query = query,
             OperationName = operationName,
-            Inputs = variables?.ToInputs(),
+            Inputs = inputs,
             CancellationToken = cancellation,
 #if (DEBUG)
             ExposeExceptions = true,
@@ -100,7 +95,7 @@ public class GraphQlController : ControllerBase
 
         if (result.Errors?.Count > 0)
         {
-            Response.StatusCode = (int)HttpStatusCode.BadRequest;
+            Response.StatusCode = (int) HttpStatusCode.BadRequest;
         }
 
         return result;

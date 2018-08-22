@@ -16,6 +16,7 @@ public class Mutation : ObjectGraphType
             ),
             resolve: context =>
             {
+                var valueFor = context.Variables.ValueFor("attachments");
                 var item = context.GetArgument<Item>("item");
                 items.Add(item);
                 return new Result {Count = items.Count};

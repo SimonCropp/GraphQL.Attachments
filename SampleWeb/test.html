@@ -3,7 +3,7 @@
 <head>
     <script>
     function PostMutation() {
-        var data = new FormData("sdfsdf");
+        var data = new FormData();
         var files = document.getElementById("files").files;
         for (var i = 0; i < files.length; i++) {
             data.append('files[]', files[i], files[i].name);
