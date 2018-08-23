@@ -11,7 +11,7 @@ public class Tests
     [Fact]
     public async Task Mutation()
     {
-        var mutation = @"mutation ($item:ItemInput!){ addItem(item: $item) { count } }";
+        var mutation = @"mutation ($item:ItemInput!){ addItem(item: $item) { itemCount byteCount } }";
         var jObject = JObject.Parse(@"
 {
   ""item"":
@@ -24,6 +24,7 @@ public class Tests
         await RunQuery(mutation, items, jObject.ToInputs());
         ObjectApprover.VerifyWithJson(items);
     }
+
     [Fact]
     public async Task Query()
     {
@@ -36,7 +37,7 @@ public class Tests
 }";
         var items = new List<Item>
         {
-            new Item{Name = "theName"}
+            new Item {Name = "theName"}
         };
         var result = await RunQuery(queryString, items);
         ObjectApprover.VerifyWithJson(result);
@@ -45,7 +46,6 @@ public class Tests
     static async Task<object> RunQuery(string queryString, List<Item> items, Inputs inputs = null)
     {
         var services = new ServiceCollection();
-        //GraphQLGeoJsonConventions.RegisterInContainer((type, graphType) => services.AddSingleton(type, graphType));
 
         TestServices.AddGraphQlTestTypes(items, services);
 

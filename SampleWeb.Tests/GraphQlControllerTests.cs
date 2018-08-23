@@ -1,14 +1,17 @@
-﻿using System.Net.Http;
+﻿using System.Collections.Generic;
+using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
+using GraphQL.Attachments;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
 using Xunit;
 
 public class GraphQlControllerTests
 {
-    static HttpClient client;
+    HttpClient client;
 
-    static GraphQlControllerTests()
+    public GraphQlControllerTests()
     {
         var server = GetTestServer();
         client = server.CreateClient();
@@ -31,9 +34,9 @@ public class GraphQlControllerTests
     }
 
     [Fact]
-    public async Task Post()
+    public async Task BodyPost()
     {
-        var mutation = @"mutation ($item:ItemInput!){ addItem(item: $item) { count } }";
+        var mutation = @"mutation ($item:ItemInput!){ addItem(item: $item) { itemCount byteCount } }";
         var variables = new
         {
             item = new
@@ -43,7 +46,28 @@ public class GraphQlControllerTests
         };
         var response = await ClientQueryExecutor.ExecutePost(client, mutation, variables);
         var result = await response.Content.ReadAsStringAsync();
-        Assert.Equal("{\"data\":{\"addItem\":{\"count\":2}}}", result);
+        Assert.Equal("{\"data\":{\"addItem\":{\"itemCount\":2,\"byteCount\":0}}}", result);
+        response.EnsureSuccessStatusCode();
+    }
+
+    [Fact]
+    public async Task MultiFormPost()
+    {
+        var mutation = @"mutation ($item:ItemInput!){ addItem(item: $item) { itemCount byteCount } }";
+        var variables = new
+        {
+            item = new
+            {
+                name = "TheName"
+            }
+        };
+        var response = await ClientQueryExecutor.ExecuteMultiFormPost(
+            client,
+            mutation,
+            variables,
+            attachments: new Dictionary<string, byte[]>{{"key", Encoding.UTF8.GetBytes("foo") }});
+        var result = await response.Content.ReadAsStringAsync();
+        Assert.Equal("{\"data\":{\"addItem\":{\"itemCount\":2,\"byteCount\":3}}}", result);
         response.EnsureSuccessStatusCode();
     }
 
