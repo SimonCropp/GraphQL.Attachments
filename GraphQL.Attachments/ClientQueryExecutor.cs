@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
@@ -19,14 +20,16 @@ namespace GraphQL.Attachments
             ClientQueryExecutor.uri = uri;
         }
 
-        public static Task<HttpResponseMessage> ExecutePost(HttpClient client, string query = null, object variables = null, Action<HttpHeaders> headerAction = null, CancellationToken cancellation = default)
+        public static Task<HttpResponseMessage> ExecutePost(HttpClient client, string query, object variables = null, string operationName = null, Action<HttpHeaders> headerAction = null, CancellationToken cancellation = default)
         {
             Guard.AgainstNull(nameof(client), client);
-            query = CompressQuery(query);
+            Guard.AgainstNullWhiteSpace(nameof(query), query);
+            query = Compress.Query(query);
             var body = new
             {
                 query,
-                variables
+                variables,
+                operationName
             };
             var request = new HttpRequestMessage(HttpMethod.Post, uri)
             {
@@ -36,59 +39,77 @@ namespace GraphQL.Attachments
             return client.SendAsync(request, cancellation);
         }
 
-        public static async Task<HttpResponseMessage> ExecuteMultiFormPost(HttpClient client, string query, object variables = null, Dictionary<string, byte[]> attachments = null, Action<HttpHeaders> headerAction = null, CancellationToken cancellation = default)
+        public static async Task<HttpResponseMessage> ExecuteMultiFormPost(HttpClient client, string query, object variables = null, string operationName = null, Dictionary<string, Func<Stream>> attachments = null, Action<HttpHeaders> headerAction = null, CancellationToken cancellation = default)
         {
             Guard.AgainstNull(nameof(client), client);
+            Guard.AgainstNullWhiteSpace(nameof(query), query);
 
             using (var content = new MultipartFormDataContent())
             {
-                if (query != null)
+                AddQueryAndVariables(content, query, variables, operationName);
+
+                if (attachments != null)
                 {
-                    content.Add(new StringContent(query), "query");
+                    foreach (var attachment in attachments)
+                    {
+                        var file = new StreamContent(attachment.Value());
+                        content.Add(file, attachment.Key, attachment.Key);
+                    }
                 }
-                if (variables != null)
+
+                headerAction?.Invoke(content.Headers);
+                return await client.PostAsync(uri, content, cancellation).ConfigureAwait(false);
+            }
+        }
+
+        public static async Task<HttpResponseMessage> ExecuteMultiFormPost(HttpClient client, string query, object variables = null, string operationName = null, Dictionary<string, byte[]> attachments = null, Action<HttpHeaders> headerAction = null, CancellationToken cancellation = default)
+        {
+            Guard.AgainstNull(nameof(client), client);
+            Guard.AgainstNullWhiteSpace(nameof(query), query);
+
+            using (var content = new MultipartFormDataContent())
+            {
+                AddQueryAndVariables(content, query, variables, operationName);
+
+                if (attachments != null)
                 {
-                    content.Add(new StringContent(ToJson(variables)), "variables");
-                }
-                List<ByteArrayContent> files;
-                if (attachments == null)
-                {
-                    files = new List<ByteArrayContent>();
-                }
-                else
-                {
-                    files = new List<ByteArrayContent>(attachments.Count);
                     foreach (var attachment in attachments)
                     {
                         var file = new ByteArrayContent(attachment.Value);
                         content.Add(file, attachment.Key, attachment.Key);
-                        files.Add(file);
                     }
                 }
 
-                try
-                {
-                    return await client.PostAsync(uri, content, cancellation).ConfigureAwait(false);
-                }
-                finally
-                {
-                    foreach (var file in files)
-                    {
-                        file.Dispose();
-                    }
-                }
+                headerAction?.Invoke(content.Headers);
+                return await client.PostAsync(uri, content, cancellation).ConfigureAwait(false);
             }
         }
 
         public static Task<HttpResponseMessage> ExecuteGet(HttpClient client, string query = null, object variables = null, Action<HttpHeaders> headerAction = null)
         {
             Guard.AgainstNull(nameof(client), client);
-            var compressed = CompressQuery(query);
+            Guard.AgainstNullWhiteSpace(nameof(query), query);
+            var compressed = Compress.Query(query);
             var variablesString = ToJson(variables);
             var getUri = $"{uri}?query={compressed}&variables={variablesString}";
             var request = new HttpRequestMessage(HttpMethod.Get, getUri);
             headerAction?.Invoke(request.Headers);
             return client.SendAsync(request);
+        }
+
+        static void AddQueryAndVariables(MultipartFormDataContent content, string query, object variables, string operationName)
+        {
+            content.Add(new StringContent(query), "query");
+
+            if (operationName != null)
+            {
+                content.Add(new StringContent(operationName), "operationName");
+            }
+
+            if (variables != null)
+            {
+                content.Add(new StringContent(ToJson(variables)), "variables");
+            }
         }
 
         static string ToJson(object target)
@@ -99,16 +120,6 @@ namespace GraphQL.Attachments
             }
 
             return JsonConvert.SerializeObject(target);
-        }
-
-        static string CompressQuery(string query)
-        {
-            if (query == null)
-            {
-                return "";
-            }
-
-            return Compress.Query(query);
         }
     }
 }

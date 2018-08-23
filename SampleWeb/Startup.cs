@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using GraphQL;
-using GraphQL.Attachments;
 using GraphQL.Types;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
@@ -10,8 +9,6 @@ public class Startup
 {
     public void ConfigureServices(IServiceCollection services)
     {
-        GraphQLAttachmentConventions.RegisterInContainer((type, instance) => { services.AddSingleton(type, instance); });
-
         TestServices.AddGraphQlTestTypes(
             new List<Item>
             {
