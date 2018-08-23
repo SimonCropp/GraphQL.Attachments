@@ -85,7 +85,7 @@ namespace GraphQL.Attachments
             }
         }
 
-        public static Task<HttpResponseMessage> ExecuteGet(HttpClient client, string query = null, object variables = null, Action<HttpHeaders> headerAction = null)
+        public static Task<HttpResponseMessage> ExecuteGet(HttpClient client, string query, object variables = null, Action<HttpHeaders> headerAction = null)
         {
             Guard.AgainstNull(nameof(client), client);
             Guard.AgainstNullWhiteSpace(nameof(query), query);
