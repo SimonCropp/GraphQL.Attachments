@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
@@ -24,65 +21,34 @@ public class GraphQlController : ControllerBase
     }
 
     [HttpPost]
-    public Task<ExecutionResult> Post(CancellationToken cancellation)
+    public async Task<ExecutionResult> Post(CancellationToken cancellation)
     {
-        if (!Request.Form.TryGetValue("query", out var queryValues))
-        {
-            throw new Exception("Expected to find a form value named 'query'.");
-        }
+        RequestReader.ReadRequestInformation(Request, out var query, out var inputs, out var attachments, out var operation);
 
-        if (queryValues.Count != 1)
+        var executionOptions = new ExecutionOptions
         {
-            throw new Exception("Expected 'query' to have a single value.");
-        }
+            Schema = schema,
+            Query = query,
+            OperationName = operation,
+            UserContext = attachments,
+            Inputs = inputs,
+            CancellationToken = cancellation,
+#if (DEBUG)
+            ThrowOnUnhandledException = true,
+            ExposeExceptions = true,
+            EnableMetrics = true,
+#endif
+        };
 
-        var query = queryValues.ToString();
+        var result = await executer.ExecuteAsync(executionOptions).ConfigureAwait(false);
 
-        Inputs inputs;
-        if (Request.Form.TryGetValue("variables", out var variablesValues))
-        {
-            if (variablesValues.Count != 1)
-            {
-                throw new Exception("Expected 'variables' to have a single value.");
-            }
-            var variables = JObject.Parse(variablesValues.ToString());
-            inputs = variables.ToInputs();
-        }
-        else
-        {
-            inputs = new Inputs();
-        }
-        //Request.Form.Files.ToDictionary(x => x.FileName, x => (Func<Stream>)x.OpenReadStream)
-        var file = Request.Form.Files.FirstOrDefault();
-        inputs.Add("attachment",
-               new Dictionary<string, object>
-               {
-                   {"name",file.FileName},
-                   {"stream",(Func<Stream>)file.OpenReadStream},
-               });
-       //inputs.Add("attachments", new List<object>( Request.Form.Files.Select(
-       //    x=>
-       //        new Dictionary<string, object>
-       //        {
-       //            {"name",x.FileName},
-       //            {"stream",(Func<Stream>)x.OpenReadStream},
-       //        })));
+        SetBadRequestIfErrors(result);
 
-        string operation = null;
-        if (Request.Form.TryGetValue("operation", out var operationValues))
-        {
-            if (variablesValues.Count != 1)
-            {
-                throw new Exception("Expected 'operation' to have a single value.");
-            }
-            operation = operationValues.ToString();
-        }
-        return Execute(query, operation, cancellation, inputs);
+        return result;
     }
 
-
     [HttpGet]
-    public Task<ExecutionResult> Get(
+    public async Task<ExecutionResult> Get(
         [FromQuery] string query,
         [FromQuery] string variables,
         [FromQuery] string operationName,
@@ -90,11 +56,6 @@ public class GraphQlController : ControllerBase
     {
         var jObject = ParseVariables(variables);
         var inputs = jObject?.ToInputs();
-        return Execute(query, operationName, cancellation, inputs);
-    }
-
-    private async Task<ExecutionResult> Execute(string query, string operationName, CancellationToken cancellation, Inputs inputs)
-    {
         var executionOptions = new ExecutionOptions
         {
             Schema = schema,
@@ -103,6 +64,7 @@ public class GraphQlController : ControllerBase
             Inputs = inputs,
             CancellationToken = cancellation,
 #if (DEBUG)
+            ThrowOnUnhandledException = true,
             ExposeExceptions = true,
             EnableMetrics = true,
 #endif
@@ -110,12 +72,17 @@ public class GraphQlController : ControllerBase
 
         var result = await executer.ExecuteAsync(executionOptions).ConfigureAwait(false);
 
+        SetBadRequestIfErrors(result);
+
+        return result;
+    }
+
+    void SetBadRequestIfErrors(ExecutionResult result)
+    {
         if (result.Errors?.Count > 0)
         {
             Response.StatusCode = (int) HttpStatusCode.BadRequest;
         }
-
-        return result;
     }
 
     static JObject ParseVariables(string variables)
