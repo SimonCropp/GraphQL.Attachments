@@ -10,11 +10,13 @@ using Xunit;
 public class GraphQlControllerTests
 {
     HttpClient client;
+    ClientQueryExecutor queryExecutor;
 
     public GraphQlControllerTests()
     {
         var server = GetTestServer();
         client = server.CreateClient();
+        queryExecutor = new ClientQueryExecutor(client);
     }
 
     [Fact]
@@ -27,7 +29,7 @@ public class GraphQlControllerTests
     name
   }
 }";
-        var response = await ClientQueryExecutor.ExecuteGet(client, query);
+        var response = await queryExecutor.ExecuteGet(query);
         response.EnsureSuccessStatusCode();
         var result = await response.Content.ReadAsStringAsync();
         Assert.Equal("{\"data\":{\"item\":{\"name\":\"TheName\"}}}", result);
@@ -44,7 +46,7 @@ public class GraphQlControllerTests
                 name = "TheName"
             }
         };
-        var response = await ClientQueryExecutor.ExecutePost(client, mutation, variables);
+        var response = await queryExecutor.ExecutePost(mutation, variables);
         var result = await response.Content.ReadAsStringAsync();
         Assert.Equal("{\"data\":{\"addItem\":{\"itemCount\":2,\"byteCount\":0}}}", result);
         response.EnsureSuccessStatusCode();
@@ -61,8 +63,7 @@ public class GraphQlControllerTests
                 name = "TheName"
             }
         };
-        var response = await ClientQueryExecutor.ExecuteMultiFormPost(
-            client,
+        var response = await queryExecutor.ExecuteMultiFormPost(
             mutation,
             variables,
             attachments: new Dictionary<string, byte[]>{{"key", Encoding.UTF8.GetBytes("foo") }});

@@ -10,19 +10,22 @@ using Newtonsoft.Json;
 
 namespace GraphQL.Attachments
 {
-    public static class ClientQueryExecutor
+    public class ClientQueryExecutor
     {
-        static string uri = "graphql";
+        HttpClient client;
+        string uri;
 
-        public static void SetQueryUri(string uri)
-        {
-            Guard.AgainstNullWhiteSpace(nameof(uri), uri);
-            ClientQueryExecutor.uri = uri;
-        }
-
-        public static Task<HttpResponseMessage> ExecutePost(HttpClient client, string query, object variables = null, string operationName = null, Action<HttpHeaders> headerAction = null, CancellationToken cancellation = default)
+        public ClientQueryExecutor(HttpClient client, string uri= "graphql")
         {
             Guard.AgainstNull(nameof(client), client);
+            Guard.AgainstNullWhiteSpace(nameof(uri), uri);
+
+            this.client = client;
+            this.uri = uri;
+        }
+
+        public Task<HttpResponseMessage> ExecutePost(string query, object variables = null, string operationName = null, Action<HttpHeaders> headerAction = null, CancellationToken cancellation = default)
+        {
             Guard.AgainstNullWhiteSpace(nameof(query), query);
             query = Compress.Query(query);
             var body = new
@@ -39,9 +42,8 @@ namespace GraphQL.Attachments
             return client.SendAsync(request, cancellation);
         }
 
-        public static async Task<HttpResponseMessage> ExecuteMultiFormPost(HttpClient client, string query, object variables = null, string operationName = null, Dictionary<string, Func<Stream>> attachments = null, Action<HttpHeaders> headerAction = null, CancellationToken cancellation = default)
+        public async Task<HttpResponseMessage> ExecuteMultiFormPost(string query, object variables = null, string operationName = null, Dictionary<string, Func<Stream>> attachments = null, Action<HttpHeaders> headerAction = null, CancellationToken cancellation = default)
         {
-            Guard.AgainstNull(nameof(client), client);
             Guard.AgainstNullWhiteSpace(nameof(query), query);
 
             using (var content = new MultipartFormDataContent())
@@ -62,9 +64,8 @@ namespace GraphQL.Attachments
             }
         }
 
-        public static async Task<HttpResponseMessage> ExecuteMultiFormPost(HttpClient client, string query, object variables = null, string operationName = null, Dictionary<string, byte[]> attachments = null, Action<HttpHeaders> headerAction = null, CancellationToken cancellation = default)
+        public async Task<HttpResponseMessage> ExecuteMultiFormPost(string query, object variables = null, string operationName = null, Dictionary<string, byte[]> attachments = null, Action<HttpHeaders> headerAction = null, CancellationToken cancellation = default)
         {
-            Guard.AgainstNull(nameof(client), client);
             Guard.AgainstNullWhiteSpace(nameof(query), query);
 
             using (var content = new MultipartFormDataContent())
@@ -85,9 +86,8 @@ namespace GraphQL.Attachments
             }
         }
 
-        public static Task<HttpResponseMessage> ExecuteGet(HttpClient client, string query, object variables = null, Action<HttpHeaders> headerAction = null)
+        public Task<HttpResponseMessage> ExecuteGet(string query, object variables = null, Action<HttpHeaders> headerAction = null)
         {
-            Guard.AgainstNull(nameof(client), client);
             Guard.AgainstNullWhiteSpace(nameof(query), query);
             var compressed = Compress.Query(query);
             var variablesString = ToJson(variables);
