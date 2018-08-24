@@ -1,4 +1,7 @@
-﻿using System.Text;
+﻿using System.Collections.ObjectModel;
+using System.Linq;
+using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
 using GraphQL.Attachments;
 using Microsoft.AspNetCore.Hosting;
@@ -47,8 +50,10 @@ public class GraphQlControllerTests
             mutation,
             variables,
             action: context => { context.AddAttachment("key", Encoding.UTF8.GetBytes("foo")); });
-        var result = await response.Content.ReadAsStringAsync();
-        Assert.Equal("{\"data\":{\"addItem\":{\"itemCount\":2,\"byteCount\":3}}}", result);
+        var result = await response.Content.ReadAsMultipartAsync();
+
+        var resultContents = result.Contents.ToDictionary(x => x.Headers.ContentDisposition.Name, x => x);
+        Assert.Equal("{\"data\":{\"addItem\":{\"itemCount\":2,\"byteCount\":3}}}", await resultContents["data"].ReadAsStringAsync());
         response.EnsureSuccessStatusCode();
     }
 

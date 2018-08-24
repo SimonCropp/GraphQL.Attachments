@@ -19,7 +19,8 @@ public class Mutation : ObjectGraphType
             resolve: context =>
             {
                 long length = 0;
-                var incomingAttachments = context.Attachments().Incoming;
+                var attachments = context.Attachments();
+                var incomingAttachments = attachments.Incoming;
                 if (incomingAttachments.TryRead(out var func))
                 {
                     using (var attachment = func())
@@ -30,6 +31,7 @@ public class Mutation : ObjectGraphType
                     }
                 }
 
+                attachments.Outgoing.Add("key", new byte[] {1});
                 var item = context.GetArgument<Item>("item");
                 items.Add(item);
                 return new Result
