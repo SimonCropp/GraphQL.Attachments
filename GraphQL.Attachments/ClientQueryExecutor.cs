@@ -38,7 +38,11 @@ namespace GraphQL.Attachments
                 }
 
                 var httpResponseMessage = await client.PostAsync(uri, content, cancellation).ConfigureAwait(false);
-
+                if (httpResponseMessage.Content.Headers.ContentType.MediaType == "multipart/form-data")
+                {
+                    httpResponseMessage.mul
+                }
+                var httpResponseHeaders = httpResponseMessage.Headers;
                 return httpResponseMessage;
             }
         }
