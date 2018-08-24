@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading;
@@ -22,29 +21,50 @@ namespace GraphQL.Attachments
             this.uri = uri;
         }
 
-        public async Task<HttpResponseMessage> ExecutePost(string query, object variables = null, string operationName = null, Action<PostContext> action=null, CancellationToken cancellation = default)
+        public async Task<QueryResult> ExecutePost(string query, object variables = null, string operationName = null, Action<PostContext> action = null, CancellationToken cancellation = default)
         {
             Guard.AgainstNullWhiteSpace(nameof(query), query);
+            var content = new MultipartFormDataContent();
 
-            using (var content = new MultipartFormDataContent())
+            AddQueryAndVariables(content, query, variables, operationName);
+
+            if (action != null)
             {
-                AddQueryAndVariables(content, query, variables, operationName);
-
-                if (action != null)
-                {
-                    var postContext = new PostContext(content);
-                    action.Invoke(postContext);
-                    postContext.HeadersAction?.Invoke(content.Headers);
-                }
-
-                var httpResponseMessage = await client.PostAsync(uri, content, cancellation).ConfigureAwait(false);
-                if (httpResponseMessage.Content.Headers.ContentType.MediaType == "multipart/form-data")
-                {
-                    httpResponseMessage.mul
-                }
-                var httpResponseHeaders = httpResponseMessage.Headers;
-                return httpResponseMessage;
+                var postContext = new PostContext(content);
+                action.Invoke(postContext);
+                postContext.HeadersAction?.Invoke(content.Headers);
             }
+
+            var response = await client.PostAsync(uri, content, cancellation).ConfigureAwait(false);
+
+            var queryResult = new QueryResult(response);
+            if (response.Content.Headers.ContentType.MediaType == "multipart/form-data")
+            {
+                var multipart = await response.Content.ReadAsMultipartAsync(cancellation);
+                foreach (var multipartContent in multipart.Contents)
+                {
+                    var name = multipartContent.Headers.ContentDisposition.Name;
+                    if (name == null)
+                    {
+                        queryResult.ResultStream = await multipartContent.ReadAsStreamAsync().ConfigureAwait(false);
+                    }
+                    else
+                    {
+                        queryResult.Attachments[name] = await multipartContent.ReadAsStreamAsync().ConfigureAwait(false);
+                    }
+                }
+
+                if (queryResult.ResultStream == null)
+                {
+                    throw new Exception("Expected the multipart response top contain a single un-named part which contains the graphql response data.");
+                }
+            }
+            else
+            {
+                queryResult.ResultStream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
+            }
+
+            return queryResult;
         }
 
         public Task<HttpResponseMessage> ExecuteGet(string query, object variables = null, Action<HttpHeaders> headerAction = null)
@@ -91,48 +111,5 @@ namespace GraphQL.Attachments
 
             return JsonConvert.SerializeObject(target);
         }
-        public class PostContext
-        {
-            MultipartFormDataContent content;
-
-            public PostContext(MultipartFormDataContent content)
-            {
-                Guard.AgainstNull(nameof(content), content);
-                this.content = content;
-            }
-
-            public void SetHeadersAction(Action<HttpHeaders> headerAction)
-            {
-                Guard.AgainstNull(nameof(headerAction), headerAction);
-                HeadersAction = headerAction;
-            }
-
-            public Action<HttpHeaders> HeadersAction { get; set; }
-
-            public void AddAttachment(string name, Stream value)
-            {
-                Guard.AgainstNullWhiteSpace(nameof(name), name);
-                Guard.AgainstNull(nameof(value), value);
-                var file = new StreamContent(value);
-                content.Add(file, name, name);
-            }
-
-            public void AddAttachment(string name, byte[] value)
-            {
-                Guard.AgainstNullWhiteSpace(nameof(name), name);
-                Guard.AgainstNull(nameof(value), value);
-                var file = new ByteArrayContent(value);
-                content.Add(file, name, name);
-            }
-
-            public void AddAttachment(string name, string value)
-            {
-                Guard.AgainstNullWhiteSpace(nameof(name), name);
-                Guard.AgainstNull(nameof(value), value);
-                var file = new StringContent(value);
-                content.Add(file, name, name);
-            }
-        }
     }
-
 }

@@ -1,6 +1,4 @@
-﻿using System.Linq;
-using System.Net.Http;
-using System.Text;
+﻿using System.Text;
 using System.Threading.Tasks;
 using GraphQL.Attachments;
 using GraphQL.Introspection;
@@ -48,7 +46,7 @@ public class GraphQlControllerTests
     [Fact]
     public async Task Post()
     {
-        var mutation = @"mutation ($item:ItemInput!){ addItem(item: $item) { itemCount byteCount } }";
+        var mutation = "mutation ($item:ItemInput!){ addItem(item: $item) { itemCount byteCount } }";
         var variables = new
         {
             item = new
@@ -60,11 +58,8 @@ public class GraphQlControllerTests
             mutation,
             variables,
             action: context => { context.AddAttachment("key", Encoding.UTF8.GetBytes("foo")); });
-        var result = await response.Content.ReadAsMultipartAsync();
 
-        var resultContents = result.Contents.ToDictionary(x => x.Headers.ContentDisposition.Name, x => x);
-        Assert.Equal("{\"data\":{\"addItem\":{\"itemCount\":2,\"byteCount\":3}}}", await resultContents["data"].ReadAsStringAsync());
-        response.EnsureSuccessStatusCode();
+        Assert.Equal("{\"data\":{\"addItem\":{\"itemCount\":2,\"byteCount\":3}}}", response.ResultStream.ConvertToString());
     }
 
     static TestServer GetTestServer()
