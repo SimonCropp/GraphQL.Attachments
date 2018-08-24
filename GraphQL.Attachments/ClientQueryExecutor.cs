@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
@@ -24,25 +22,7 @@ namespace GraphQL.Attachments
             this.uri = uri;
         }
 
-        public Task<HttpResponseMessage> ExecutePost(string query, object variables = null, string operationName = null, Action<HttpHeaders> headerAction = null, CancellationToken cancellation = default)
-        {
-            Guard.AgainstNullWhiteSpace(nameof(query), query);
-            query = Compress.Query(query);
-            var body = new
-            {
-                query,
-                variables,
-                operationName
-            };
-            var request = new HttpRequestMessage(HttpMethod.Post, uri)
-            {
-                Content = new StringContent(ToJson(body), Encoding.UTF8, "application/json")
-            };
-            headerAction?.Invoke(request.Headers);
-            return client.SendAsync(request, cancellation);
-        }
-
-        public async Task<HttpResponseMessage> ExecuteMultiFormPost(string query, object variables = null, string operationName = null, Dictionary<string, Func<Stream>> attachments = null, Action<HttpHeaders> headerAction = null, CancellationToken cancellation = default)
+        public async Task<HttpResponseMessage> ExecutePost(string query, object variables = null, string operationName = null, Action<PostContext> action=null, CancellationToken cancellation = default)
         {
             Guard.AgainstNullWhiteSpace(nameof(query), query);
 
@@ -50,38 +30,13 @@ namespace GraphQL.Attachments
             {
                 AddQueryAndVariables(content, query, variables, operationName);
 
-                if (attachments != null)
+                if (action != null)
                 {
-                    foreach (var attachment in attachments)
-                    {
-                        var file = new StreamContent(attachment.Value());
-                        content.Add(file, attachment.Key, attachment.Key);
-                    }
+                    var postContext = new PostContext(content);
+                    action.Invoke(postContext);
+                    postContext.HeadersAction?.Invoke(content.Headers);
                 }
 
-                headerAction?.Invoke(content.Headers);
-                return await client.PostAsync(uri, content, cancellation).ConfigureAwait(false);
-            }
-        }
-
-        public async Task<HttpResponseMessage> ExecuteMultiFormPost(string query, object variables = null, string operationName = null, Dictionary<string, byte[]> attachments = null, Action<HttpHeaders> headerAction = null, CancellationToken cancellation = default)
-        {
-            Guard.AgainstNullWhiteSpace(nameof(query), query);
-
-            using (var content = new MultipartFormDataContent())
-            {
-                AddQueryAndVariables(content, query, variables, operationName);
-
-                if (attachments != null)
-                {
-                    foreach (var attachment in attachments)
-                    {
-                        var file = new ByteArrayContent(attachment.Value);
-                        content.Add(file, attachment.Key, attachment.Key);
-                    }
-                }
-
-                headerAction?.Invoke(content.Headers);
                 return await client.PostAsync(uri, content, cancellation).ConfigureAwait(false);
             }
         }
@@ -121,5 +76,48 @@ namespace GraphQL.Attachments
 
             return JsonConvert.SerializeObject(target);
         }
+        public class PostContext
+        {
+            MultipartFormDataContent content;
+
+            public PostContext(MultipartFormDataContent content)
+            {
+                Guard.AgainstNull(nameof(content), content);
+                this.content = content;
+            }
+
+            public void SetHeadersAction(Action<HttpHeaders> headerAction)
+            {
+                Guard.AgainstNull(nameof(headerAction), headerAction);
+                HeadersAction = headerAction;
+            }
+
+            public Action<HttpHeaders> HeadersAction { get; set; }
+
+            public void AddAttachment(string name, Stream value)
+            {
+                Guard.AgainstNullWhiteSpace(nameof(name), name);
+                Guard.AgainstNull(nameof(value), value);
+                var file = new StreamContent(value);
+                content.Add(file, name, name);
+            }
+
+            public void AddAttachment(string name, byte[] value)
+            {
+                Guard.AgainstNullWhiteSpace(nameof(name), name);
+                Guard.AgainstNull(nameof(value), value);
+                var file = new ByteArrayContent(value);
+                content.Add(file, name, name);
+            }
+
+            public void AddAttachment(string name, string value)
+            {
+                Guard.AgainstNullWhiteSpace(nameof(name), name);
+                Guard.AgainstNull(nameof(value), value);
+                var file = new StringContent(value);
+                content.Add(file, name, name);
+            }
+        }
     }
+
 }

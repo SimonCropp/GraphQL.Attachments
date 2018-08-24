@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Net.Http;
+﻿using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using GraphQL.Attachments;
@@ -36,7 +35,7 @@ public class GraphQlControllerTests
     }
 
     [Fact]
-    public async Task BodyPost()
+    public async Task Post()
     {
         var mutation = @"mutation ($item:ItemInput!){ addItem(item: $item) { itemCount byteCount } }";
         var variables = new
@@ -46,27 +45,10 @@ public class GraphQlControllerTests
                 name = "TheName"
             }
         };
-        var response = await queryExecutor.ExecutePost(mutation, variables);
-        var result = await response.Content.ReadAsStringAsync();
-        Assert.Equal("{\"data\":{\"addItem\":{\"itemCount\":2,\"byteCount\":0}}}", result);
-        response.EnsureSuccessStatusCode();
-    }
-
-    [Fact]
-    public async Task MultiFormPost()
-    {
-        var mutation = @"mutation ($item:ItemInput!){ addItem(item: $item) { itemCount byteCount } }";
-        var variables = new
-        {
-            item = new
-            {
-                name = "TheName"
-            }
-        };
-        var response = await queryExecutor.ExecuteMultiFormPost(
+        var response = await queryExecutor.ExecutePost(
             mutation,
             variables,
-            attachments: new Dictionary<string, byte[]>{{"key", Encoding.UTF8.GetBytes("foo") }});
+            action: context => { context.AddAttachment("key", Encoding.UTF8.GetBytes("foo")); });
         var result = await response.Content.ReadAsStringAsync();
         Assert.Equal("{\"data\":{\"addItem\":{\"itemCount\":2,\"byteCount\":3}}}", result);
         response.EnsureSuccessStatusCode();
