@@ -6,7 +6,7 @@ public static class TestServices
 {
     static TestServices()
     {
-        ContextualAttachments.SetContextFuncs(o => (IncomingAttachments)o);
+        ContextualAttachments.SetContextFunc(o => (AttachmentContext)o);
     }
     public static void AddGraphQlTestTypes(List<Item> items, IServiceCollection services)
     {

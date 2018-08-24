@@ -5,37 +5,41 @@ namespace GraphQL.Attachments
 {
     public static class ContextualAttachments
     {
-        static Func<object, IncomingAttachments> readContextFunc;
+        static Func<object, AttachmentContext> contextFunc;
 
-        public static void SetContextFuncs(
-            Func<object, IncomingAttachments> readAttachmentFromUserContext)
+        public static void SetContextFunc(
+            Func<object, AttachmentContext> readAttachmentsFromUserContext)
         {
-            Guard.AgainstNull(nameof(readAttachmentFromUserContext), readAttachmentFromUserContext);
-            readContextFunc = readAttachmentFromUserContext;
+            Guard.AgainstNull(nameof(readAttachmentsFromUserContext), readAttachmentsFromUserContext);
+            contextFunc = readAttachmentsFromUserContext;
         }
 
-        public static IncomingAttachments Attachments<TSource>(this ResolveFieldContext<TSource> context)
+        public static AttachmentContext Attachments<TSource>(this ResolveFieldContext<TSource> context)
         {
             Guard.AgainstNull(nameof(context), context);
             return ReadContextFunc(context.UserContext);
         }
 
-        public static IncomingAttachments Attachments(this ResolveFieldContext context)
+        public static AttachmentContext Attachments(this ResolveFieldContext context)
         {
             Guard.AgainstNull(nameof(context), context);
             return ReadContextFunc(context.UserContext);
         }
 
-        static IncomingAttachments ReadContextFunc(object contextUserContext)
+        static AttachmentContext ReadContextFunc(object contextUserContext)
         {
-            var attachments = readContextFunc(contextUserContext);
+            var attachments = contextFunc(contextUserContext);
 
             if (attachments == null)
             {
-                return new IncomingAttachments();
+                throw new Exception("Could not resolve an instance of AttachmentContext.");
             }
 
             return attachments;
         }
+    }
+
+    public class OutgoingAttachments
+    {
     }
 }

@@ -1,11 +1,13 @@
-﻿using System;
+﻿using System.IO;
 using System.Net;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using GraphQL;
+using GraphQL.Attachments;
 using GraphQL.Types;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
 
 [Route("[controller]")]
 [ApiController]
@@ -21,46 +23,29 @@ public class GraphQlController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ExecutionResult> Post(CancellationToken cancellation)
+    public Task Post(CancellationToken cancellation)
     {
-        RequestReader.ReadPost(Request, out var query, out var inputs, out var attachments, out var operation);
-
-        var executionOptions = new ExecutionOptions
-        {
-            Schema = schema,
-            Query = query,
-            OperationName = operation,
-            UserContext = attachments,
-            Inputs = inputs,
-            CancellationToken = cancellation,
-#if (DEBUG)
-            ThrowOnUnhandledException = true,
-            ExposeExceptions = true,
-            EnableMetrics = true,
-#endif
-        };
-
-        var result = await executer.ExecuteAsync(executionOptions).ConfigureAwait(false);
-
-        SetBadRequestIfErrors(result);
-
-        return result;
+        RequestReader.ReadPost(Request, out var query, out var inputs, out var incomingAttachments, out var operationName);
+        var attachmentContext = new AttachmentContext(incomingAttachments);
+        return Execute(cancellation, query, operationName, attachmentContext, inputs);
     }
 
     [HttpGet]
-    public async Task<ExecutionResult> Get(
-        [FromQuery] string query,
-        [FromQuery] string variables,
-        [FromQuery] string operationName,
-        CancellationToken cancellation)
+    public Task Get(CancellationToken cancellation)
     {
-        var jObject = ParseVariables(variables);
-        var inputs = jObject?.ToInputs();
+        RequestReader.ReadGet(Request, out var query, out var inputs, out var operationName);
+        var attachmentContext = new AttachmentContext();
+        return Execute(cancellation, query, operationName, attachmentContext, inputs);
+    }
+
+    async Task Execute(CancellationToken cancellation, string query, string operationName, AttachmentContext attachmentContext, Inputs inputs)
+    {
         var executionOptions = new ExecutionOptions
         {
             Schema = schema,
             Query = query,
             OperationName = operationName,
+            UserContext = attachmentContext,
             Inputs = inputs,
             CancellationToken = cancellation,
 #if (DEBUG)
@@ -74,7 +59,10 @@ public class GraphQlController : ControllerBase
 
         SetBadRequestIfErrors(result);
 
-        return result;
+        using (var streamWriter = new StreamWriter(Response.Body, Encoding.UTF8, 1024, true))
+        {
+            await streamWriter.WriteAsync(JsonConvert.SerializeObject(result)).ConfigureAwait(false);
+        }
     }
 
     void SetBadRequestIfErrors(ExecutionResult result)
@@ -82,23 +70,6 @@ public class GraphQlController : ControllerBase
         if (result.Errors?.Count > 0)
         {
             Response.StatusCode = (int) HttpStatusCode.BadRequest;
-        }
-    }
-
-    static JObject ParseVariables(string variables)
-    {
-        if (variables == null)
-        {
-            return null;
-        }
-
-        try
-        {
-            return JObject.Parse(variables);
-        }
-        catch (Exception exception)
-        {
-            throw new Exception("Could not parse variables.", exception);
         }
     }
 }

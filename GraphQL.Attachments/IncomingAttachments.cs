@@ -70,13 +70,5 @@ namespace GraphQL.Attachments
                 throw new Exception("Reading an attachment with no name is only supported when their is a single attachment.");
             }
         }
-
-        void EnsureNameExists(string name)
-        {
-            if (!names.Contains(name))
-            {
-                throw new Exception($"Could not find an attachment named '{name}'.");
-            }
-        }
     }
 }

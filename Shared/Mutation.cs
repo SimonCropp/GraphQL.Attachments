@@ -19,7 +19,7 @@ public class Mutation : ObjectGraphType
             resolve: context =>
             {
                 long length = 0;
-                var incomingAttachments = context.Attachments();
+                var incomingAttachments = context.Attachments().Incoming;
                 if (incomingAttachments.TryRead(out var func))
                 {
                     using (var attachment = func())

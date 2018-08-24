@@ -12,16 +12,21 @@ public class RequestReader
 {
     static JsonSerializer serializer = JsonSerializer.CreateDefault();
 
-    public static void ReadPost(HttpRequest request, out string query, out Inputs inputs, out IncomingAttachments attachments, out string operation)
+    public static void ReadGet(HttpRequest request, out string query, out Inputs inputs, out string operationName)
+    {
+        ReadParams(request.Query.TryGetValue, out query, out inputs, out operationName);
+    }
+
+    public static void ReadPost(HttpRequest request, out string query, out Inputs inputs, out IncomingAttachments attachments, out string operationName)
     {
         if (request.HasFormContentType)
         {
-            ReadForm(request, out query, out inputs, out attachments, out operation);
+            ReadForm(request, out query, out inputs, out attachments, out operationName);
             return;
         }
 
         attachments = null;
-        ReadBody(request, out query, out inputs, out operation);
+        ReadBody(request, out query, out inputs, out operationName);
     }
 
     public class PostBody
@@ -43,16 +48,16 @@ public class RequestReader
         }
     }
 
-    static void ReadForm(HttpRequest request, out string query, out Inputs inputs, out IncomingAttachments attachments, out string operation)
+    static void ReadForm(HttpRequest request, out string query, out Inputs inputs, out IncomingAttachments attachments, out string operationName)
     {
-        ReadParams(request.Form.TryGetValue, out query, out inputs, out operation);
+        ReadParams(request.Form.TryGetValue, out query, out inputs, out operationName);
 
         attachments = new IncomingAttachments(request.Form.Files.ToDictionary(x => x.FileName, x => (Func<Stream>) x.OpenReadStream));
     }
 
     delegate bool TryGetValue(string key, out StringValues value);
 
-    private static void ReadParams(TryGetValue tryGetValue, out string query, out Inputs inputs, out string operation)
+    static void ReadParams(TryGetValue tryGetValue, out string query, out Inputs inputs, out string operationName)
     {
         if (!tryGetValue("query", out var queryValues))
         {
@@ -66,6 +71,22 @@ public class RequestReader
 
         query = queryValues.ToString();
 
+        inputs = GetInputs(tryGetValue);
+
+        operationName = null;
+        if (tryGetValue("operation", out var operationValues))
+        {
+            if (operationValues.Count != 1)
+            {
+                throw new Exception("Expected 'operation' to have a single value.");
+            }
+
+            operationName = operationValues.ToString();
+        }
+    }
+
+    static Inputs GetInputs(TryGetValue tryGetValue)
+    {
         if (tryGetValue("variables", out var variablesValues))
         {
             if (variablesValues.Count != 1)
@@ -73,23 +94,14 @@ public class RequestReader
                 throw new Exception("Expected 'variables' to have a single value.");
             }
 
-            var variables = JObject.Parse(variablesValues.ToString());
-            inputs = variables.ToInputs();
-        }
-        else
-        {
-            inputs = new Inputs();
-        }
-
-        operation = null;
-        if (tryGetValue("operation", out var operationValues))
-        {
-            if (variablesValues.Count != 1)
+            var json = variablesValues.ToString();
+            if (json.Length > 0)
             {
-                throw new Exception("Expected 'operation' to have a single value.");
+                var variables = JObject.Parse(json);
+                return variables.ToInputs();
             }
-
-            operation = operationValues.ToString();
         }
+
+        return new Inputs();
     }
 }

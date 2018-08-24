@@ -46,7 +46,16 @@ namespace GraphQL.Attachments
             Guard.AgainstNullWhiteSpace(nameof(query), query);
             var compressed = Compress.Query(query);
             var variablesString = ToJson(variables);
-            var getUri = $"{uri}?query={compressed}&variables={variablesString}";
+            string getUri;
+            if (variablesString == null)
+            {
+                getUri = $"{uri}?query={compressed}";
+            }
+            else
+            {
+                getUri = $"{uri}?query={compressed}&variables={variablesString}";
+            }
+
             var request = new HttpRequestMessage(HttpMethod.Get, getUri);
             headerAction?.Invoke(request.Headers);
             return client.SendAsync(request);
