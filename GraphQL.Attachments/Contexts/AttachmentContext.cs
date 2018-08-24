@@ -13,6 +13,7 @@
 
         public AttachmentContext(IncomingAttachments incoming)
         {
+            Guard.AgainstNull(nameof(incoming), incoming);
             Incoming = incoming;
             Outgoing = new OutgoingAttachments();
         }

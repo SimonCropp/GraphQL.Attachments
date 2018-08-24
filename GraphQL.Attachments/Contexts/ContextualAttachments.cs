@@ -7,8 +7,7 @@ namespace GraphQL.Attachments
     {
         static Func<object, AttachmentContext> contextFunc;
 
-        public static void SetContextFunc(
-            Func<object, AttachmentContext> readAttachmentsFromUserContext)
+        public static void SetContextFunc(Func<object, AttachmentContext> readAttachmentsFromUserContext)
         {
             Guard.AgainstNull(nameof(readAttachmentsFromUserContext), readAttachmentsFromUserContext);
             contextFunc = readAttachmentsFromUserContext;
@@ -26,9 +25,14 @@ namespace GraphQL.Attachments
             return ReadContextFunc(context.UserContext);
         }
 
-        static AttachmentContext ReadContextFunc(object contextUserContext)
+        static AttachmentContext ReadContextFunc(object userContext)
         {
-            var attachments = contextFunc(contextUserContext);
+            if (contextFunc == null)
+            {
+                throw new Exception("The Func to read attachment context from the GraphQL UserContext has not been set. Once at startup ContextualAttachments.SetContextFunc should be called.");
+            }
+
+            var attachments = contextFunc(userContext);
 
             if (attachments == null)
             {
@@ -37,9 +41,5 @@ namespace GraphQL.Attachments
 
             return attachments;
         }
-    }
-
-    public class OutgoingAttachments
-    {
     }
 }
