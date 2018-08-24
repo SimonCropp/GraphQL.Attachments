@@ -23,7 +23,7 @@ public class GraphQlController : ControllerBase
     [HttpPost]
     public async Task<ExecutionResult> Post(CancellationToken cancellation)
     {
-        RequestReader.ReadRequestInformation(Request, out var query, out var inputs, out var attachments, out var operation);
+        RequestReader.ReadPost(Request, out var query, out var inputs, out var attachments, out var operation);
 
         var executionOptions = new ExecutionOptions
         {

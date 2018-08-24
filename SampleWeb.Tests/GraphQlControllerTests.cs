@@ -1,5 +1,4 @@
-﻿using System.Net.Http;
-using System.Text;
+﻿using System.Text;
 using System.Threading.Tasks;
 using GraphQL.Attachments;
 using Microsoft.AspNetCore.Hosting;
@@ -8,13 +7,12 @@ using Xunit;
 
 public class GraphQlControllerTests
 {
-    HttpClient client;
     ClientQueryExecutor queryExecutor;
 
     public GraphQlControllerTests()
     {
         var server = GetTestServer();
-        client = server.CreateClient();
+        var client = server.CreateClient();
         queryExecutor = new ClientQueryExecutor(client);
     }
 

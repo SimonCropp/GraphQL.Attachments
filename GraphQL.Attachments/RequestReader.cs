@@ -4,13 +4,57 @@ using System.Linq;
 using GraphQL;
 using GraphQL.Attachments;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Primitives;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 public class RequestReader
 {
-    public static void ReadRequestInformation(HttpRequest request, out string query, out Inputs inputs, out IncomingAttachments attachments, out string operation)
+    static JsonSerializer serializer = JsonSerializer.CreateDefault();
+
+    public static void ReadPost(HttpRequest request, out string query, out Inputs inputs, out IncomingAttachments attachments, out string operation)
     {
-        if (!request.Form.TryGetValue("query", out var queryValues))
+        if (request.HasFormContentType)
+        {
+            ReadForm(request, out query, out inputs, out attachments, out operation);
+            return;
+        }
+
+        attachments = null;
+        ReadBody(request, out query, out inputs, out operation);
+    }
+
+    public class PostBody
+    {
+        public string OperationName;
+        public string Query;
+        public JObject Variables;
+    }
+
+    static void ReadBody(HttpRequest request, out string query, out Inputs inputs, out string operation)
+    {
+        using (var streamReader = new StreamReader(request.Body))
+        using (var textReader = new JsonTextReader(streamReader))
+        {
+            var postBody = serializer.Deserialize<PostBody>(textReader);
+            query = postBody.Query;
+            inputs = postBody.Variables.ToInputs();
+            operation = postBody.OperationName;
+        }
+    }
+
+    static void ReadForm(HttpRequest request, out string query, out Inputs inputs, out IncomingAttachments attachments, out string operation)
+    {
+        ReadParams(request.Form.TryGetValue, out query, out inputs, out operation);
+
+        attachments = new IncomingAttachments(request.Form.Files.ToDictionary(x => x.FileName, x => (Func<Stream>) x.OpenReadStream));
+    }
+
+    delegate bool TryGetValue(string key, out StringValues value);
+
+    private static void ReadParams(TryGetValue tryGetValue, out string query, out Inputs inputs, out string operation)
+    {
+        if (!tryGetValue("query", out var queryValues))
         {
             throw new Exception("Expected to find a form value named 'query'.");
         }
@@ -22,7 +66,7 @@ public class RequestReader
 
         query = queryValues.ToString();
 
-        if (request.Form.TryGetValue("variables", out var variablesValues))
+        if (tryGetValue("variables", out var variablesValues))
         {
             if (variablesValues.Count != 1)
             {
@@ -37,10 +81,8 @@ public class RequestReader
             inputs = new Inputs();
         }
 
-        attachments = new IncomingAttachments(request.Form.Files.ToDictionary(x => x.FileName, x => (Func<Stream>) x.OpenReadStream));
-
         operation = null;
-        if (request.Form.TryGetValue("operation", out var operationValues))
+        if (tryGetValue("operation", out var operationValues))
         {
             if (variablesValues.Count != 1)
             {
