@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using GraphQL;
 using GraphQL.Attachments;
 using GraphQL.Types;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
@@ -76,14 +77,14 @@ public class GraphQlController : ControllerBase
                 var streamContent = new ByteArrayContent(outgoingAttachment.Value);
                 multipartContent.Add(streamContent, outgoingAttachment.Key, outgoingAttachment.Key);
             }
-            multipartContent.Add(new StringContent(serializedResult),"data");
+            multipartContent.Add(new StringContent(serializedResult));
             Response.ContentLength = multipartContent.Headers.ContentLength;
             Response.ContentType = multipartContent.Headers.ContentType.ToString();
             await multipartContent.CopyToAsync(Response.Body).ConfigureAwait(false);
             return;
         }
 
-        await WriteResult(Response.Body, result).ConfigureAwait(false);
+        await Response.WriteAsync(serializedResult, cancellationToken: cancellation).ConfigureAwait(false);
     }
 
     static async Task WriteResult(Stream stream, ExecutionResult result)

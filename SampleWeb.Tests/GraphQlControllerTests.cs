@@ -1,9 +1,9 @@
-﻿using System.Collections.ObjectModel;
-using System.Linq;
+﻿using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using GraphQL.Attachments;
+using GraphQL.Introspection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
 using Xunit;
@@ -17,6 +17,16 @@ public class GraphQlControllerTests
         var server = GetTestServer();
         var client = server.CreateClient();
         queryExecutor = new ClientQueryExecutor(client);
+    }
+
+    [Fact]
+    public async Task GetIntrospection()
+    {
+        var response = await queryExecutor.ExecuteGet(SchemaIntrospection.IntrospectionQuery);
+        response.EnsureSuccessStatusCode();
+        var result = await response.Content.ReadAsStringAsync();
+        Assert.Contains("addItem", result);
+        Assert.Contains("item", result);
     }
 
     [Fact]

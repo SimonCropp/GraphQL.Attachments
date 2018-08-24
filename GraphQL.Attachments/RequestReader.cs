@@ -25,7 +25,7 @@ public class RequestReader
             return;
         }
 
-        attachments = null;
+        attachments = new IncomingAttachments();
         ReadBody(request, out query, out inputs, out operationName);
     }
 

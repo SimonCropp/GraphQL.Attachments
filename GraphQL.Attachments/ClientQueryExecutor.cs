@@ -37,7 +37,9 @@ namespace GraphQL.Attachments
                     postContext.HeadersAction?.Invoke(content.Headers);
                 }
 
-                return await client.PostAsync(uri, content, cancellation).ConfigureAwait(false);
+                var httpResponseMessage = await client.PostAsync(uri, content, cancellation).ConfigureAwait(false);
+
+                return httpResponseMessage;
             }
         }
 
