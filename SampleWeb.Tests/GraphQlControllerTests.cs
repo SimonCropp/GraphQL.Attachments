@@ -21,8 +21,7 @@ public class GraphQlControllerTests
     public async Task GetIntrospection()
     {
         var response = await queryExecutor.ExecuteGet(SchemaIntrospection.IntrospectionQuery);
-        response.EnsureSuccessStatusCode();
-        var result = await response.Content.ReadAsStringAsync();
+        var result = response.ResultStream.ConvertToString();
         Assert.Contains("addItem", result);
         Assert.Contains("item", result);
     }
@@ -38,9 +37,24 @@ public class GraphQlControllerTests
   }
 }";
         var response = await queryExecutor.ExecuteGet(query);
-        response.EnsureSuccessStatusCode();
-        var result = await response.Content.ReadAsStringAsync();
+        var result = response.ResultStream.ConvertToString();
         Assert.Equal("{\"data\":{\"item\":{\"name\":\"TheName\"}}}", result);
+    }
+    [Fact]
+    public async Task Get_with_attachment()
+    {
+        var query = @"
+{
+  itemWithAttachment
+  {
+    name
+  }
+}";
+        var response = await queryExecutor.ExecuteGet(query);
+        var result = response.ResultStream.ConvertToString();
+        Assert.Equal("{\"data\":{\"itemWithAttachment\":{\"name\":\"TheName\"}}}", result);
+        var responseAttachment = response.Attachments["key"];
+        Assert.Equal("foo", responseAttachment.ConvertToString());
     }
 
     [Fact]
@@ -77,7 +91,6 @@ public class GraphQlControllerTests
             mutation,
             variables,
             action: context => { context.AddAttachment("key", Encoding.UTF8.GetBytes("foo")); });
-        //TODO: asset attachment
         Assert.Equal("{\"data\":{\"addItem\":{\"itemCount\":2,\"byteCount\":3}}}", response.ResultStream.ConvertToString());
         var responseAttachment = response.Attachments["key"];
         Assert.Equal("foo", responseAttachment.ConvertToString());

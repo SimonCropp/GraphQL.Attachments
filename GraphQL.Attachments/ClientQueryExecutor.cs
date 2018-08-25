@@ -37,37 +37,10 @@ namespace GraphQL.Attachments
 
             var response = await client.PostAsync(uri, content, cancellation).ConfigureAwait(false);
 
-            var queryResult = new QueryResult(response);
-            if (response.IsMultipart())
-            {
-                var multipart = await response.Content.ReadAsMultipartAsync(cancellation);
-                foreach (var multipartContent in multipart.Contents)
-                {
-                    var name = multipartContent.Headers.ContentDisposition.Name;
-                    if (name == null)
-                    {
-                        queryResult.ResultStream = await multipartContent.ReadAsStreamAsync().ConfigureAwait(false);
-                    }
-                    else
-                    {
-                        queryResult.Attachments[name] = await multipartContent.ReadAsStreamAsync().ConfigureAwait(false);
-                    }
-                }
-
-                if (queryResult.ResultStream == null)
-                {
-                    throw new Exception("Expected the multipart response top contain a single un-named part which contains the graphql response data.");
-                }
-            }
-            else
-            {
-                queryResult.ResultStream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-            }
-
-            return queryResult;
+            return await ResponseParser.EvaluateResponse(response, cancellation);
         }
 
-        public Task<HttpResponseMessage> ExecuteGet(string query, object variables = null, Action<HttpHeaders> headerAction = null)
+        public async Task<QueryResult> ExecuteGet(string query, object variables = null, Action<HttpHeaders> headerAction = null, CancellationToken cancellation = default)
         {
             Guard.AgainstNullWhiteSpace(nameof(query), query);
             var compressed = Compress.Query(query);
@@ -84,7 +57,8 @@ namespace GraphQL.Attachments
 
             var request = new HttpRequestMessage(HttpMethod.Get, getUri);
             headerAction?.Invoke(request.Headers);
-            return client.SendAsync(request);
+            var response = await client.SendAsync(request, cancellation).ConfigureAwait(false);
+            return await ResponseParser.EvaluateResponse(response, cancellation).ConfigureAwait(false);
         }
 
         static void AddQueryAndVariables(MultipartFormDataContent content, string query, object variables, string operationName)
