@@ -19,16 +19,14 @@ public class Mutation : ObjectGraphType
             resolve: context =>
             {
                 long length = 0;
-                var attachments = context.Attachments();
-                var incomingAttachments = attachments.Incoming;
-                if (incomingAttachments.TryRead(out var func))
+                if (context.IncomingAttachments().TryRead(out var func))
                 {
                     using (var attachment = func())
                     using (var ms = new MemoryStream())
                     {
                         attachment.CopyTo(ms);
                         length = ms.Length;
-                        attachments.Outgoing.Add("key", ms.ToArray());
+                        context.OutgoingAttachments().Add("key", ms.ToArray());
                     }
                 }
 

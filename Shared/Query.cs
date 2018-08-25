@@ -18,7 +18,7 @@ public class Query : ObjectGraphType<object>
             "itemWithAttachment",
             resolve: context =>
             {
-                var outgoingAttachments = context.Attachments().Outgoing;
+                var outgoingAttachments = context.OutgoingAttachments();
                 outgoingAttachments.Add("key", Encoding.UTF8.GetBytes("foo"));
                 return items.First();
             });
