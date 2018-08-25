@@ -94,7 +94,6 @@ public class GraphQlControllerTests
         Assert.Equal("{\"data\":{\"addItem\":{\"itemCount\":2,\"byteCount\":3}}}", response.ResultStream.ConvertToString());
         var responseAttachment = response.Attachments["key"];
         Assert.Equal("foo", responseAttachment.ConvertToString());
-
     }
 
     static TestServer GetTestServer()

@@ -84,7 +84,7 @@ public class GraphQlController : ControllerBase
             return;
         }
 
-        await Response.WriteAsync(serializedResult, cancellationToken: cancellation).ConfigureAwait(false);
+        await Response.WriteAsync(serializedResult, cancellation).ConfigureAwait(false);
     }
 
     static async Task WriteResult(Stream stream, ExecutionResult result)
