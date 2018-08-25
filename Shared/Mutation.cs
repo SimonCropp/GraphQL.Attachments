@@ -28,10 +28,10 @@ public class Mutation : ObjectGraphType
                     {
                         attachment.CopyTo(ms);
                         length = ms.Length;
+                        attachments.Outgoing.Add("key", ms.ToArray());
                     }
                 }
 
-                attachments.Outgoing.Add("key", new byte[] {1});
                 var item = context.GetArgument<Item>("item");
                 items.Add(item);
                 return new Result

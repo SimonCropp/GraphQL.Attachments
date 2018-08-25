@@ -56,10 +56,32 @@ public class GraphQlControllerTests
         };
         var response = await queryExecutor.ExecutePost(
             mutation,
+            variables);
+
+        Assert.Equal("{\"data\":{\"addItem\":{\"itemCount\":2,\"byteCount\":0}}}", response.ResultStream.ConvertToString());
+        Assert.Empty(response.Attachments);
+    }
+
+    [Fact]
+    public async Task Post_with_attachment()
+    {
+        var mutation = "mutation ($item:ItemInput!){ addItem(item: $item) { itemCount byteCount } }";
+        var variables = new
+        {
+            item = new
+            {
+                name = "TheName"
+            }
+        };
+        var response = await queryExecutor.ExecutePost(
+            mutation,
             variables,
             action: context => { context.AddAttachment("key", Encoding.UTF8.GetBytes("foo")); });
-
+        //TODO: asset attachment
         Assert.Equal("{\"data\":{\"addItem\":{\"itemCount\":2,\"byteCount\":3}}}", response.ResultStream.ConvertToString());
+        var responseAttachment = response.Attachments["key"];
+        Assert.Equal("foo", responseAttachment.ConvertToString());
+
     }
 
     static TestServer GetTestServer()

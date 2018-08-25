@@ -38,7 +38,7 @@ namespace GraphQL.Attachments
             var response = await client.PostAsync(uri, content, cancellation).ConfigureAwait(false);
 
             var queryResult = new QueryResult(response);
-            if (response.Content.Headers.ContentType.MediaType == "multipart/form-data")
+            if (response.IsMultipart())
             {
                 var multipart = await response.Content.ReadAsMultipartAsync(cancellation);
                 foreach (var multipartContent in multipart.Contents)
