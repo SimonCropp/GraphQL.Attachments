@@ -70,17 +70,19 @@ public class GraphQlController : ControllerBase
         var outgoingAttachments = attachmentContext.Outgoing;
         if (outgoingAttachments.dictionary.Any())
         {
-            var multipartContent = new MultipartFormDataContent();
-
-            foreach (var outgoingAttachment in outgoingAttachments.dictionary)
+            using (var multipartContent = new MultipartFormDataContent())
             {
-                var streamContent = new ByteArrayContent(outgoingAttachment.Value);
-                multipartContent.Add(streamContent, outgoingAttachment.Key, outgoingAttachment.Key);
+                foreach (var outgoingAttachment in outgoingAttachments.dictionary)
+                {
+                    var streamContent = new ByteArrayContent(outgoingAttachment.Value);
+                    multipartContent.Add(streamContent, outgoingAttachment.Key, outgoingAttachment.Key);
+                }
+                multipartContent.Add(new StringContent(serializedResult));
+                Response.ContentLength = multipartContent.Headers.ContentLength;
+                Response.ContentType = multipartContent.Headers.ContentType.ToString();
+                await multipartContent.CopyToAsync(Response.Body).ConfigureAwait(false);
             }
-            multipartContent.Add(new StringContent(serializedResult));
-            Response.ContentLength = multipartContent.Headers.ContentLength;
-            Response.ContentType = multipartContent.Headers.ContentType.ToString();
-            await multipartContent.CopyToAsync(Response.Body).ConfigureAwait(false);
+
             return;
         }
 
