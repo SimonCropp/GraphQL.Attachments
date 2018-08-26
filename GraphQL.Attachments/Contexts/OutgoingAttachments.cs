@@ -15,13 +15,13 @@ namespace GraphQL.Attachments
 
         public IReadOnlyList<string> Names => Inner.Keys.ToList();
 
-        public void AddStream<T>(Func<Task<T>> streamFactory, Action cleanup = null, IReadOnlyDictionary<string, string> metadata = null)
+        public void AddStream<T>(Func<Task<T>> streamFactory, Action cleanup = null, IReadOnlyDictionary<string, IEnumerable<string>> headers = null)
             where T : Stream
         {
-            AddStream("default", streamFactory,  cleanup, metadata);
+            AddStream("default", streamFactory,  cleanup, headers);
         }
 
-        public void AddStream<T>(string name, Func<Task<T>> streamFactory, Action cleanup = null, IReadOnlyDictionary<string, string> metadata = null)
+        public void AddStream<T>(string name, Func<Task<T>> streamFactory, Action cleanup = null, IReadOnlyDictionary<string, IEnumerable<string>> headers = null)
             where T : Stream
         {
             Guard.AgainstNull(nameof(name),name);
@@ -30,21 +30,21 @@ namespace GraphQL.Attachments
             {
                 AsyncStreamFactory = streamFactory.WrapStreamFuncTaskInCheck(name),
                 Cleanup = cleanup.WrapCleanupInCheck(name),
-                Metadata = metadata
+                Headers = headers
             });
         }
 
-        public void AddStream(Func<Stream> streamFactory,  Action cleanup = null, IReadOnlyDictionary<string, string> metadata = null)
+        public void AddStream(Func<Stream> streamFactory,  Action cleanup = null, IReadOnlyDictionary<string, IEnumerable<string>> headers = null)
         {
-            AddStream("default", streamFactory, cleanup, metadata);
+            AddStream("default", streamFactory, cleanup, headers);
         }
 
-        public void AddStream(Stream stream, Action cleanup = null, IReadOnlyDictionary<string, string> metadata = null)
+        public void AddStream(Stream stream, Action cleanup = null, IReadOnlyDictionary<string, IEnumerable<string>> headers = null)
         {
-            AddStream("default", stream, cleanup, metadata);
+            AddStream("default", stream, cleanup, headers);
         }
 
-        public void AddStream(string name, Func<Stream> streamFactory, Action cleanup = null, IReadOnlyDictionary<string, string> metadata = null)
+        public void AddStream(string name, Func<Stream> streamFactory, Action cleanup = null, IReadOnlyDictionary<string, IEnumerable<string>> headers = null)
         {
             Guard.AgainstNull(nameof(name),name);
             Guard.AgainstNull(nameof(streamFactory), streamFactory);
@@ -52,11 +52,11 @@ namespace GraphQL.Attachments
             {
                 StreamFactory = streamFactory.WrapFuncInCheck(name),
                 Cleanup = cleanup.WrapCleanupInCheck(name),
-                Metadata = metadata
+                Headers = headers
             });
         }
 
-        public void AddStream(string name, Stream stream, Action cleanup = null, IReadOnlyDictionary<string, string> metadata = null)
+        public void AddStream(string name, Stream stream, Action cleanup = null, IReadOnlyDictionary<string, IEnumerable<string>> headers = null)
         {
             Guard.AgainstNull(nameof(name),name);
             Guard.AgainstNull(nameof(stream), stream);
@@ -64,21 +64,21 @@ namespace GraphQL.Attachments
             {
                 StreamInstance = stream,
                 Cleanup = cleanup.WrapCleanupInCheck(name),
-                Metadata = metadata
+                Headers = headers
             });
         }
 
-        public void AddBytes(Func<byte[]> bytesFactory, Action cleanup = null, IReadOnlyDictionary<string, string> metadata = null)
+        public void AddBytes(Func<byte[]> bytesFactory, Action cleanup = null, IReadOnlyDictionary<string, IEnumerable<string>> headers = null)
         {
-            AddBytes("default", bytesFactory, cleanup, metadata);
+            AddBytes("default", bytesFactory, cleanup, headers);
         }
 
-        public void AddBytes(byte[] bytes, Action cleanup = null, IReadOnlyDictionary<string, string> metadata = null)
+        public void AddBytes(byte[] bytes, Action cleanup = null, IReadOnlyDictionary<string, IEnumerable<string>> headers = null)
         {
-            AddBytes("default", bytes, cleanup, metadata);
+            AddBytes("default", bytes, cleanup, headers);
         }
 
-        public void AddBytes(string name, Func<byte[]> bytesFactory, Action cleanup = null, IReadOnlyDictionary<string, string> metadata = null)
+        public void AddBytes(string name, Func<byte[]> bytesFactory, Action cleanup = null, IReadOnlyDictionary<string, IEnumerable<string>> headers = null)
         {
             Guard.AgainstNull(nameof(name),name);
             Guard.AgainstNull(nameof(bytesFactory), bytesFactory);
@@ -86,11 +86,11 @@ namespace GraphQL.Attachments
             {
                 BytesFactory = bytesFactory.WrapFuncInCheck(name),
                 Cleanup = cleanup.WrapCleanupInCheck(name),
-                Metadata = metadata
+                Headers = headers
             });
         }
 
-        public void AddBytes(string name, byte[] bytes, Action cleanup = null, IReadOnlyDictionary<string, string> metadata = null)
+        public void AddBytes(string name, byte[] bytes, Action cleanup = null, IReadOnlyDictionary<string, IEnumerable<string>> headers = null)
         {
             Guard.AgainstNull(nameof(name),name);
             Guard.AgainstNull(nameof(bytes), bytes);
@@ -98,16 +98,16 @@ namespace GraphQL.Attachments
             {
                 BytesInstance = bytes,
                 Cleanup = cleanup.WrapCleanupInCheck(name),
-                Metadata = metadata
+                Headers = headers
             });
         }
 
-        public void AddBytes(Func<Task<byte[]>> bytesFactory, Action cleanup = null, IReadOnlyDictionary<string, string> metadata = null)
+        public void AddBytes(Func<Task<byte[]>> bytesFactory, Action cleanup = null, IReadOnlyDictionary<string, IEnumerable<string>> headers = null)
         {
-            AddBytes("default", bytesFactory, cleanup, metadata);
+            AddBytes("default", bytesFactory, cleanup, headers);
         }
 
-        public void AddBytes(string name, Func<Task<byte[]>> bytesFactory, Action cleanup = null, IReadOnlyDictionary<string, string> metadata = null)
+        public void AddBytes(string name, Func<Task<byte[]>> bytesFactory, Action cleanup = null, IReadOnlyDictionary<string, IEnumerable<string>> headers = null)
         {
             Guard.AgainstNull(nameof(name),name);
             Guard.AgainstNull(nameof(bytesFactory), bytesFactory);
@@ -115,23 +115,21 @@ namespace GraphQL.Attachments
             {
                 AsyncBytesFactory = bytesFactory.WrapFuncTaskInCheck(name),
                 Cleanup = cleanup.WrapCleanupInCheck(name),
-                Metadata = metadata
+                Headers = headers
             });
         }
 
-
-
-        public void AddString(Func<string> valueFactory, Action cleanup = null, IReadOnlyDictionary<string, string> metadata = null)
+        public void AddString(Func<string> valueFactory, Action cleanup = null, IReadOnlyDictionary<string, IEnumerable<string>> headers = null)
         {
-            AddString("default", valueFactory, cleanup, metadata);
+            AddString("default", valueFactory, cleanup, headers);
         }
 
-        public void AddString(string value, Action cleanup = null, IReadOnlyDictionary<string, string> metadata = null)
+        public void AddString(string value, Action cleanup = null, IReadOnlyDictionary<string, IEnumerable<string>> headers = null)
         {
-            AddString("default", value, cleanup, metadata);
+            AddString("default", value, cleanup, headers);
         }
 
-        public void AddString(string name, Func<string> valueFactory, Action cleanup = null, IReadOnlyDictionary<string, string> metadata = null)
+        public void AddString(string name, Func<string> valueFactory, Action cleanup = null, IReadOnlyDictionary<string, IEnumerable<string>> headers = null)
         {
             Guard.AgainstNull(nameof(name), name);
             Guard.AgainstNull(nameof(valueFactory), valueFactory);
@@ -139,11 +137,11 @@ namespace GraphQL.Attachments
             {
                 StringFactory = valueFactory.WrapFuncInCheck(name),
                 Cleanup = cleanup.WrapCleanupInCheck(name),
-                Metadata = metadata
+                Headers = headers
             });
         }
 
-        public void AddString(string name, string value, Action cleanup = null, IReadOnlyDictionary<string, string> metadata = null)
+        public void AddString(string name, string value, Action cleanup = null, IReadOnlyDictionary<string, IEnumerable<string>> headers = null)
         {
             Guard.AgainstNull(nameof(name), name);
             Guard.AgainstNull(nameof(value), value);
@@ -151,16 +149,16 @@ namespace GraphQL.Attachments
             {
                 StringInstance = value,
                 Cleanup = cleanup.WrapCleanupInCheck(name),
-                Metadata = metadata
+                Headers = headers
             });
         }
 
-        public void AddString(Func<Task<string>> valueFactory, Action cleanup = null, IReadOnlyDictionary<string, string> metadata = null)
+        public void AddString(Func<Task<string>> valueFactory, Action cleanup = null, IReadOnlyDictionary<string, IEnumerable<string>> headers = null)
         {
-            AddString("default", valueFactory, cleanup, metadata);
+            AddString("default", valueFactory, cleanup, headers);
         }
 
-        public void AddString(string name, Func<Task<string>> valueFactory, Action cleanup = null, IReadOnlyDictionary<string, string> metadata = null)
+        public void AddString(string name, Func<Task<string>> valueFactory, Action cleanup = null, IReadOnlyDictionary<string, IEnumerable<string>> headers = null)
         {
             Guard.AgainstNull(nameof(name), name);
             Guard.AgainstNull(nameof(valueFactory), valueFactory);
@@ -168,22 +166,8 @@ namespace GraphQL.Attachments
             {
                 AsyncStringFactory = valueFactory.WrapFuncTaskInCheck(name),
                 Cleanup = cleanup.WrapCleanupInCheck(name),
-                Metadata = metadata
+                Headers = headers
             });
         }
     }
-}
-class Outgoing
-{
-    public Func<Task<Stream>> AsyncStreamFactory;
-    public Func<Stream> StreamFactory;
-    public Stream StreamInstance;
-    public Func<Task<byte[]>> AsyncBytesFactory;
-    public Func<byte[]> BytesFactory;
-    public byte[] BytesInstance;
-    public Func<Task<string>> AsyncStringFactory;
-    public Func<string> StringFactory;
-    public string StringInstance;
-    public Action Cleanup;
-    public IReadOnlyDictionary<string, string> Metadata;
 }

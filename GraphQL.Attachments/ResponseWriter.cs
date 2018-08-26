@@ -28,7 +28,16 @@ public static class ResponseWriter
             {
                 foreach (var outgoingAttachment in outgoingAttachments.Inner)
                 {
-                    var streamContent = await BuildContent(outgoingAttachment.Value).ConfigureAwait(false);
+                    var outgoing = outgoingAttachment.Value;
+                    var streamContent = await BuildContent(outgoing).ConfigureAwait(false);
+                    if (outgoing.Headers != null)
+                    {
+                        foreach (var header in outgoing.Headers)
+                        {
+                            streamContent.Headers.Add(header.Key, header.Value);
+                        }
+                    }
+
                     multipartContent.Add(streamContent, outgoingAttachment.Key, outgoingAttachment.Key);
                 }
 
@@ -97,6 +106,7 @@ public static class ResponseWriter
 
         throw new Exception("No matching way to handle outgoing.");
     }
+
     static async Task WriteResult(Stream stream, ExecutionResult result)
     {
         using (var streamWriter = new StreamWriter(stream, Encoding.UTF8, 1024, true))
