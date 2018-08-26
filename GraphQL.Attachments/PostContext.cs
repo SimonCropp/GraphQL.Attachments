@@ -1,7 +1,5 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Net.Http;
-using System.Net.Http.Headers;
 
 namespace GraphQL.Attachments
 {
@@ -14,14 +12,6 @@ namespace GraphQL.Attachments
             Guard.AgainstNull(nameof(content), content);
             this.content = content;
         }
-
-        public void SetHeadersAction(Action<HttpHeaders> headerAction)
-        {
-            Guard.AgainstNull(nameof(headerAction), headerAction);
-            HeadersAction = headerAction;
-        }
-
-        public Action<HttpHeaders> HeadersAction { get; set; }
 
         public void AddAttachment(string name, Stream value)
         {

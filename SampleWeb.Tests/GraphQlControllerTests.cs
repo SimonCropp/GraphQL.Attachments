@@ -91,7 +91,7 @@ public class GraphQlControllerTests
         var response = await queryExecutor.ExecutePost(
             mutation,
             variables,
-            action: context => { context.AddAttachment("key", Encoding.UTF8.GetBytes("foo")); });
+            attachmentAppender: context => { context.AddAttachment("key", Encoding.UTF8.GetBytes("foo")); });
         Assert.Equal("{\"data\":{\"addItem\":{\"itemCount\":2,\"byteCount\":3}}}", response.ResultStream.ConvertToString());
         var responseAttachment = response.Attachments["key"];
         Assert.Equal("foo", responseAttachment.Stream.ConvertToString());

@@ -21,17 +21,18 @@ namespace GraphQL.Attachments
             this.uri = uri;
         }
 
-        public async Task<QueryResult> ExecutePost(string query, object variables = null, string operationName = null, Action<PostContext> action = null, CancellationToken cancellation = default)
+        public async Task<QueryResult> ExecutePost(string query, object variables = null, string operationName = null, HttpContentHeaders headers = null, Action<PostContext> attachmentAppender = null, CancellationToken cancellation = default)
         {
             Guard.AgainstNullWhiteSpace(nameof(query), query);
             var content = new MultipartFormDataContent();
             AddQueryAndVariables(content, query, variables, operationName);
 
-            if (action != null)
+            content.Headers.MergeHeaders(headers);
+
+            if (attachmentAppender != null)
             {
                 var postContext = new PostContext(content);
-                action.Invoke(postContext);
-                postContext.HeadersAction?.Invoke(content.Headers);
+                attachmentAppender.Invoke(postContext);
             }
 
             var response = await client.PostAsync(uri, content, cancellation).ConfigureAwait(false);
@@ -39,7 +40,7 @@ namespace GraphQL.Attachments
             return await ResponseParser.EvaluateResponse(response, cancellation);
         }
 
-        public async Task<QueryResult> ExecuteGet(string query, object variables = null, Action<HttpHeaders> headerAction = null, CancellationToken cancellation = default)
+        public async Task<QueryResult> ExecuteGet(string query, object variables = null, HttpRequestHeaders headers = null, CancellationToken cancellation = default)
         {
             Guard.AgainstNullWhiteSpace(nameof(query), query);
             var compressed = Compress.Query(query);
@@ -55,7 +56,7 @@ namespace GraphQL.Attachments
             }
 
             var request = new HttpRequestMessage(HttpMethod.Get, getUri);
-            headerAction?.Invoke(request.Headers);
+            request.Headers.MergeHeaders(headers);
             var response = await client.SendAsync(request, cancellation).ConfigureAwait(false);
             return await ResponseParser.EvaluateResponse(response, cancellation).ConfigureAwait(false);
         }
