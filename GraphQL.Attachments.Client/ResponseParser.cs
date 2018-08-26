@@ -16,6 +16,7 @@ static class ResponseParser
             foreach (var multipartContent in multipart.Contents)
             {
                 var name = multipartContent.Headers.ContentDisposition.Name;
+                var stream = await multipartContent.ReadAsStreamAsync().ConfigureAwait(false);
                 if (name == null)
                 {
                     if (resultProcessed)
@@ -24,14 +25,14 @@ static class ResponseParser
                     }
 
                     resultProcessed = true;
-                    resultAction(await multipartContent.ReadAsStreamAsync().ConfigureAwait(false));
+                    resultAction(stream);
                 }
                 else
                 {
                     var attachment = new IncomingAttachment
                     {
                         Name = name,
-                        Stream = await multipartContent.ReadAsStreamAsync().ConfigureAwait(false),
+                        Stream = stream,
                         Headers = multipartContent.Headers,
                     };
                     attachmentAction(attachment);
