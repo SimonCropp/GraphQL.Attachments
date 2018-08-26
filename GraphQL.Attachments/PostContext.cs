@@ -15,13 +15,13 @@ namespace GraphQL.Attachments
             this.content = content;
         }
 
-        public void SetHeadersAction(Action<HttpHeaders> headerAction)
+        public void SetHeadersAction(Action<HttpContentHeaders> headerAction)
         {
             Guard.AgainstNull(nameof(headerAction), headerAction);
             HeadersAction = headerAction;
         }
 
-        public Action<HttpHeaders> HeadersAction { get; set; }
+        public Action<HttpContentHeaders> HeadersAction { get; set; }
 
         public void AddAttachment(string name, Stream value)
         {

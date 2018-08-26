@@ -62,16 +62,17 @@ public class GraphQlControllerTests
     public async Task Post()
     {
         var mutation = "mutation ($item:ItemInput!){ addItem(item: $item) { itemCount byteCount } }";
-        var variables = new
+        var queryRequest = new PostRequest(mutation)
         {
-            item = new
+            Variables = new
             {
-                name = "TheName"
+                item = new
+                {
+                    name = "TheName"
+                }
             }
         };
-        var response = await queryExecutor.ExecutePost(
-            mutation,
-            variables);
+        var response = await queryExecutor.ExecutePost(queryRequest );
 
         Assert.Equal("{\"data\":{\"addItem\":{\"itemCount\":2,\"byteCount\":0}}}", response.ResultStream.ConvertToString());
         Assert.Empty(response.Attachments);
@@ -81,17 +82,21 @@ public class GraphQlControllerTests
     public async Task Post_with_attachment()
     {
         var mutation = "mutation ($item:ItemInput!){ addItem(item: $item) { itemCount byteCount } }";
-        var variables = new
+        var postRequest = new PostRequest(mutation)
         {
-            item = new
+            Variables = new
             {
-                name = "TheName"
+                item = new
+                {
+                    name = "TheName"
+                }
+            },
+            Action = context =>
+            {
+                context.AddAttachment("key", Encoding.UTF8.GetBytes("foo"));
             }
         };
-        var response = await queryExecutor.ExecutePost(
-            mutation,
-            variables,
-            action: context => { context.AddAttachment("key", Encoding.UTF8.GetBytes("foo")); });
+        var response = await queryExecutor.ExecutePost(postRequest);
         Assert.Equal("{\"data\":{\"addItem\":{\"itemCount\":2,\"byteCount\":3}}}", response.ResultStream.ConvertToString());
         var responseAttachment = response.Attachments["key"];
         Assert.Equal("foo", responseAttachment.Stream.ConvertToString());

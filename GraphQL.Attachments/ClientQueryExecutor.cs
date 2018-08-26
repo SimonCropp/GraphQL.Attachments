@@ -21,22 +21,21 @@ namespace GraphQL.Attachments
             this.uri = uri;
         }
 
-        public async Task<QueryResult> ExecutePost(string query, object variables = null, string operationName = null, Action<PostContext> action = null, CancellationToken cancellation = default)
+        public async Task<QueryResult> ExecutePost(PostRequest request, CancellationToken cancellation = default)
         {
-            Guard.AgainstNullWhiteSpace(nameof(query), query);
             var content = new MultipartFormDataContent();
-            AddQueryAndVariables(content, query, variables, operationName);
+            AddQueryAndVariables(content, request.Query, request.Variables, request.OperationName);
 
-            if (action != null)
+            if (request.Action != null)
             {
                 var postContext = new PostContext(content);
-                action.Invoke(postContext);
+                request.Action.Invoke(postContext);
                 postContext.HeadersAction?.Invoke(content.Headers);
             }
 
             var response = await client.PostAsync(uri, content, cancellation).ConfigureAwait(false);
 
-            return await ResponseParser.EvaluateResponse(response, cancellation);
+            return await ResponseParser.EvaluateResponse(response, cancellation).ConfigureAwait(false);
         }
 
         public async Task<QueryResult> ExecuteGet(string query, object variables = null, Action<HttpHeaders> headerAction = null, CancellationToken cancellation = default)
@@ -84,5 +83,20 @@ namespace GraphQL.Attachments
 
             return JsonConvert.SerializeObject(target);
         }
+    }
+
+    public class PostRequest
+    {
+        public string Query { get; }
+
+        public PostRequest(string query)
+        {
+            Guard.AgainstNullWhiteSpace(nameof(query), query);
+            Query = query;
+        }
+
+        public Action<PostContext> Action { get; set; }
+        public object Variables { get; set; }
+        public string OperationName { get; set; }
     }
 }
