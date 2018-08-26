@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
@@ -7,16 +6,16 @@ using GraphQL.Attachments;
 
 static class ResponseParser
 {
-    public static async Task ProcessResponse(HttpResponseMessage response, Action<Stream> resultAction, Action<IncomingAttachment> attachmentAction, CancellationToken cancellation = default)
+    public static async Task ProcessResponse(HttpResponseMessage response, QueryResponseHandler handler, CancellationToken cancellation = default)
     {
         if (response.IsMultipart())
         {
             var multipart = await response.Content.ReadAsMultipartAsync(cancellation);
             var resultProcessed = false;
-            foreach (var multipartContent in multipart.Contents)
+            foreach (var content in multipart.Contents)
             {
-                var name = multipartContent.Headers.ContentDisposition.Name;
-                var stream = await multipartContent.ReadAsStreamAsync().ConfigureAwait(false);
+                var name = content.Headers.ContentDisposition.Name;
+                var stream = await content.ReadAsStreamAsync().ConfigureAwait(false);
                 if (name == null)
                 {
                     if (resultProcessed)
@@ -25,17 +24,21 @@ static class ResponseParser
                     }
 
                     resultProcessed = true;
-                    resultAction(stream);
+                    handler.ResultAction(stream);
                 }
                 else
                 {
-                    var attachment = new IncomingAttachment
+                    if (handler.AttachmentAction == null)
+                    {
+                        throw new Exception("Found an attachment but handler had no AttachmentAction.");
+                    }
+                    var attachment = new Attachment
                     {
                         Name = name,
                         Stream = stream,
-                        Headers = multipartContent.Headers,
+                        Headers = content.Headers,
                     };
-                    attachmentAction(attachment);
+                    handler.AttachmentAction(attachment);
                 }
             }
 
@@ -46,18 +49,7 @@ static class ResponseParser
         }
         else
         {
-            resultAction(await response.Content.ReadAsStreamAsync().ConfigureAwait(false));
+            handler.ResultAction(await response.Content.ReadAsStreamAsync().ConfigureAwait(false));
         }
-    }
-
-    public static async Task<QueryResult> EvaluateResponse(HttpResponseMessage response, CancellationToken cancellation = default)
-    {
-        var queryResult = new QueryResult(response);
-        await ProcessResponse(
-                response: response,
-                resultAction: stream => queryResult.ResultStream = stream,
-                attachmentAction: attachment => queryResult.Attachments.Add(attachment.Name, attachment), cancellation)
-            .ConfigureAwait(false);
-        return queryResult;
     }
 }

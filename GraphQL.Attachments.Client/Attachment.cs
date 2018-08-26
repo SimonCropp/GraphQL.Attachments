@@ -3,7 +3,7 @@ using System.Net.Http.Headers;
 
 namespace GraphQL.Attachments
 {
-    public class IncomingAttachment
+    public class Attachment
     {
         public Stream Stream { get; set; }
         public string Name { get; set; }
