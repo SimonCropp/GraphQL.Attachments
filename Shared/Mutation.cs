@@ -26,7 +26,7 @@ public class Mutation : ObjectGraphType
                     {
                         attachment.CopyTo(ms);
                         length = ms.Length;
-                        context.OutgoingAttachments().Add("key", ms.ToArray());
+                        context.OutgoingAttachments().AddBytes("key", ms.ToArray());
                     }
                 }
 

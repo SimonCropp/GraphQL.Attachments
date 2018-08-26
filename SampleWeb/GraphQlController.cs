@@ -1,16 +1,9 @@
-﻿using System.IO;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Text;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using GraphQL;
 using GraphQL.Attachments;
 using GraphQL.Types;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
 
 [Route("[controller]")]
 [ApiController]
@@ -59,41 +52,7 @@ public class GraphQlController : ControllerBase
         };
 
         var result = await executer.ExecuteAsync(executionOptions).ConfigureAwait(false);
-        var serializedResult = JsonConvert.SerializeObject(result);
-        if (result.Errors?.Count > 0)
-        {
-            Response.StatusCode = (int) HttpStatusCode.BadRequest;
-            await WriteResult(Response.Body, result).ConfigureAwait(false);
-            return;
-        }
-
-        var outgoingAttachments = attachmentContext.Outgoing;
-        if (outgoingAttachments.dictionary.Any())
-        {
-            using (var multipartContent = new MultipartFormDataContent())
-            {
-                foreach (var outgoingAttachment in outgoingAttachments.dictionary)
-                {
-                    var streamContent = new ByteArrayContent(outgoingAttachment.Value);
-                    multipartContent.Add(streamContent, outgoingAttachment.Key, outgoingAttachment.Key);
-                }
-                multipartContent.Add(new StringContent(serializedResult));
-                Response.ContentLength = multipartContent.Headers.ContentLength;
-                Response.ContentType = multipartContent.Headers.ContentType.ToString();
-                await multipartContent.CopyToAsync(Response.Body).ConfigureAwait(false);
-            }
-
-            return;
-        }
-
-        await Response.WriteAsync(serializedResult, cancellation).ConfigureAwait(false);
+        await ResponseWriter.WriteResult(attachmentContext, Response, result);
     }
 
-    static async Task WriteResult(Stream stream, ExecutionResult result)
-    {
-        using (var streamWriter = new StreamWriter(stream, Encoding.UTF8, 1024, true))
-        {
-            await streamWriter.WriteAsync(JsonConvert.SerializeObject(result)).ConfigureAwait(false);
-        }
-    }
 }

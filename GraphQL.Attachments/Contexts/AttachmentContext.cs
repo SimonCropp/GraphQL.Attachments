@@ -3,7 +3,7 @@
     public class AttachmentContext
     {
         public IncomingAttachments Incoming { get; }
-        public OutgoingAttachments Outgoing { get; }
+        public IOutgoingAttachments Outgoing { get; }
 
         public AttachmentContext()
         {

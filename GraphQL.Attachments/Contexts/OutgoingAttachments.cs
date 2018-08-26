@@ -1,13 +1,189 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace GraphQL.Attachments
 {
-    public class OutgoingAttachments
+
+    class OutgoingAttachments : IOutgoingAttachments
     {
-        public Dictionary<string, byte[] > dictionary  =new   Dictionary<string, byte[]>();
-        public void Add(string key, byte[] bytes)
+        internal Dictionary<string, Outgoing> Inner = new Dictionary<string, Outgoing>(StringComparer.OrdinalIgnoreCase);
+
+        public bool HasPendingAttachments => Inner.Any();
+
+        public IReadOnlyList<string> Names => Inner.Keys.ToList();
+
+        public void AddStream<T>(Func<Task<T>> streamFactory, Action cleanup = null, IReadOnlyDictionary<string, string> metadata = null)
+            where T : Stream
         {
-            dictionary.Add(key,bytes);
+            AddStream("default", streamFactory,  cleanup, metadata);
+        }
+
+        public void AddStream<T>(string name, Func<Task<T>> streamFactory, Action cleanup = null, IReadOnlyDictionary<string, string> metadata = null)
+            where T : Stream
+        {
+            Guard.AgainstNull(nameof(name),name);
+            Guard.AgainstNull(nameof(streamFactory), streamFactory);
+            Inner.Add(name, new Outgoing
+            {
+                AsyncStreamFactory = streamFactory.WrapStreamFuncTaskInCheck(name),
+                Cleanup = cleanup.WrapCleanupInCheck(name),
+                Metadata = metadata
+            });
+        }
+
+        public void AddStream(Func<Stream> streamFactory,  Action cleanup = null, IReadOnlyDictionary<string, string> metadata = null)
+        {
+            AddStream("default", streamFactory, cleanup, metadata);
+        }
+
+        public void AddStream(Stream stream, Action cleanup = null, IReadOnlyDictionary<string, string> metadata = null)
+        {
+            AddStream("default", stream, cleanup, metadata);
+        }
+
+        public void AddStream(string name, Func<Stream> streamFactory, Action cleanup = null, IReadOnlyDictionary<string, string> metadata = null)
+        {
+            Guard.AgainstNull(nameof(name),name);
+            Guard.AgainstNull(nameof(streamFactory), streamFactory);
+            Inner.Add(name, new Outgoing
+            {
+                StreamFactory = streamFactory.WrapFuncInCheck(name),
+                Cleanup = cleanup.WrapCleanupInCheck(name),
+                Metadata = metadata
+            });
+        }
+
+        public void AddStream(string name, Stream stream, Action cleanup = null, IReadOnlyDictionary<string, string> metadata = null)
+        {
+            Guard.AgainstNull(nameof(name),name);
+            Guard.AgainstNull(nameof(stream), stream);
+            Inner.Add(name, new Outgoing
+            {
+                StreamInstance = stream,
+                Cleanup = cleanup.WrapCleanupInCheck(name),
+                Metadata = metadata
+            });
+        }
+
+        public void AddBytes(Func<byte[]> bytesFactory, Action cleanup = null, IReadOnlyDictionary<string, string> metadata = null)
+        {
+            AddBytes("default", bytesFactory, cleanup, metadata);
+        }
+
+        public void AddBytes(byte[] bytes, Action cleanup = null, IReadOnlyDictionary<string, string> metadata = null)
+        {
+            AddBytes("default", bytes, cleanup, metadata);
+        }
+
+        public void AddBytes(string name, Func<byte[]> bytesFactory, Action cleanup = null, IReadOnlyDictionary<string, string> metadata = null)
+        {
+            Guard.AgainstNull(nameof(name),name);
+            Guard.AgainstNull(nameof(bytesFactory), bytesFactory);
+            Inner.Add(name, new Outgoing
+            {
+                BytesFactory = bytesFactory.WrapFuncInCheck(name),
+                Cleanup = cleanup.WrapCleanupInCheck(name),
+                Metadata = metadata
+            });
+        }
+
+        public void AddBytes(string name, byte[] bytes, Action cleanup = null, IReadOnlyDictionary<string, string> metadata = null)
+        {
+            Guard.AgainstNull(nameof(name),name);
+            Guard.AgainstNull(nameof(bytes), bytes);
+            Inner.Add(name, new Outgoing
+            {
+                BytesInstance = bytes,
+                Cleanup = cleanup.WrapCleanupInCheck(name),
+                Metadata = metadata
+            });
+        }
+
+        public void AddBytes(Func<Task<byte[]>> bytesFactory, Action cleanup = null, IReadOnlyDictionary<string, string> metadata = null)
+        {
+            AddBytes("default", bytesFactory, cleanup, metadata);
+        }
+
+        public void AddBytes(string name, Func<Task<byte[]>> bytesFactory, Action cleanup = null, IReadOnlyDictionary<string, string> metadata = null)
+        {
+            Guard.AgainstNull(nameof(name),name);
+            Guard.AgainstNull(nameof(bytesFactory), bytesFactory);
+            Inner.Add(name, new Outgoing
+            {
+                AsyncBytesFactory = bytesFactory.WrapFuncTaskInCheck(name),
+                Cleanup = cleanup.WrapCleanupInCheck(name),
+                Metadata = metadata
+            });
+        }
+
+
+
+        public void AddString(Func<string> valueFactory, Action cleanup = null, IReadOnlyDictionary<string, string> metadata = null)
+        {
+            AddString("default", valueFactory, cleanup, metadata);
+        }
+
+        public void AddString(string value, Action cleanup = null, IReadOnlyDictionary<string, string> metadata = null)
+        {
+            AddString("default", value, cleanup, metadata);
+        }
+
+        public void AddString(string name, Func<string> valueFactory, Action cleanup = null, IReadOnlyDictionary<string, string> metadata = null)
+        {
+            Guard.AgainstNull(nameof(name), name);
+            Guard.AgainstNull(nameof(valueFactory), valueFactory);
+            Inner.Add(name, new Outgoing
+            {
+                StringFactory = valueFactory.WrapFuncInCheck(name),
+                Cleanup = cleanup.WrapCleanupInCheck(name),
+                Metadata = metadata
+            });
+        }
+
+        public void AddString(string name, string value, Action cleanup = null, IReadOnlyDictionary<string, string> metadata = null)
+        {
+            Guard.AgainstNull(nameof(name), name);
+            Guard.AgainstNull(nameof(value), value);
+            Inner.Add(name, new Outgoing
+            {
+                StringInstance = value,
+                Cleanup = cleanup.WrapCleanupInCheck(name),
+                Metadata = metadata
+            });
+        }
+
+        public void AddString(Func<Task<string>> valueFactory, Action cleanup = null, IReadOnlyDictionary<string, string> metadata = null)
+        {
+            AddString("default", valueFactory, cleanup, metadata);
+        }
+
+        public void AddString(string name, Func<Task<string>> valueFactory, Action cleanup = null, IReadOnlyDictionary<string, string> metadata = null)
+        {
+            Guard.AgainstNull(nameof(name), name);
+            Guard.AgainstNull(nameof(valueFactory), valueFactory);
+            Inner.Add(name, new Outgoing
+            {
+                AsyncStringFactory = valueFactory.WrapFuncTaskInCheck(name),
+                Cleanup = cleanup.WrapCleanupInCheck(name),
+                Metadata = metadata
+            });
         }
     }
+}
+class Outgoing
+{
+    public Func<Task<Stream>> AsyncStreamFactory;
+    public Func<Stream> StreamFactory;
+    public Stream StreamInstance;
+    public Func<Task<byte[]>> AsyncBytesFactory;
+    public Func<byte[]> BytesFactory;
+    public byte[] BytesInstance;
+    public Func<Task<string>> AsyncStringFactory;
+    public Func<string> StringFactory;
+    public string StringInstance;
+    public Action Cleanup;
+    public IReadOnlyDictionary<string, string> Metadata;
 }

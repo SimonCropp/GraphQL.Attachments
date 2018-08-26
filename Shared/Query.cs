@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using GraphQL.Attachments;
 using GraphQL.Types;
 
@@ -19,7 +18,7 @@ public class Query : ObjectGraphType<object>
             resolve: context =>
             {
                 var outgoingAttachments = context.OutgoingAttachments();
-                outgoingAttachments.Add("key", Encoding.UTF8.GetBytes("foo"));
+                outgoingAttachments.AddString("key", "foo");
                 return items.First();
             });
     }
