@@ -29,16 +29,16 @@ public static class ResponseWriter
                 foreach (var outgoingAttachment in outgoingAttachments.Inner)
                 {
                     var outgoing = outgoingAttachment.Value;
-                    var streamContent = await BuildContent(outgoing).ConfigureAwait(false);
+                    var httpContent = await BuildContent(outgoing).ConfigureAwait(false);
                     if (outgoing.Headers != null)
                     {
                         foreach (var header in outgoing.Headers)
                         {
-                            streamContent.Headers.Add(header.Key, header.Value);
+                            httpContent.Headers.Add(header.Key, header.Value);
                         }
                     }
 
-                    multipartContent.Add(streamContent, outgoingAttachment.Key, outgoingAttachment.Key);
+                    multipartContent.Add(httpContent, outgoingAttachment.Key, outgoingAttachment.Key);
                 }
 
                 var serializedResult = JsonConvert.SerializeObject(result);
