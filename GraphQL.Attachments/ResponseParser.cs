@@ -1,40 +1,62 @@
 ﻿using System;
+using System.IO;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using GraphQL.Attachments;
 
-class ResponseParser
+static class ResponseParser
 {
-    public static async Task<QueryResult> EvaluateResponse(HttpResponseMessage response, CancellationToken cancellation)
+    public static async Task ProcessResponse(HttpResponseMessage response, Action<Stream> resultAction, Action<IncomingAttachment> attachmentAction, CancellationToken cancellation = default)
     {
-        var queryResult = new QueryResult(response);
         if (response.IsMultipart())
         {
             var multipart = await response.Content.ReadAsMultipartAsync(cancellation);
+            var resultProcessed = false;
             foreach (var multipartContent in multipart.Contents)
             {
                 var name = multipartContent.Headers.ContentDisposition.Name;
                 if (name == null)
                 {
-                    queryResult.ResultStream = await multipartContent.ReadAsStreamAsync().ConfigureAwait(false);
+                    if (resultProcessed)
+                    {
+                        throw new Exception("Expected the multipart response to contain a single un-named part which contains the graphql response data.");
+                    }
+
+                    resultProcessed = true;
+                    resultAction(await multipartContent.ReadAsStreamAsync().ConfigureAwait(false));
                 }
                 else
                 {
-                    queryResult.Attachments[name] = await multipartContent.ReadAsStreamAsync().ConfigureAwait(false);
+                    var attachment = new IncomingAttachment
+                    {
+                        Name = name,
+                        Stream = await multipartContent.ReadAsStreamAsync().ConfigureAwait(false),
+                        Headers = multipartContent.Headers,
+                    };
+                    attachmentAction(attachment);
                 }
             }
 
-            if (queryResult.ResultStream == null)
+            if (!resultProcessed)
             {
-                throw new Exception("Expected the multipart response top contain a single un-named part which contains the graphql response data.");
+                throw new Exception("Expected the multipart response to contain a single un-named part which contains the graphql response data.");
             }
         }
         else
         {
-            queryResult.ResultStream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
+            resultAction(await response.Content.ReadAsStreamAsync().ConfigureAwait(false));
         }
+    }
 
+    public static async Task<QueryResult> EvaluateResponse(HttpResponseMessage response, CancellationToken cancellation = default)
+    {
+        var queryResult = new QueryResult(response);
+        await ProcessResponse(
+                response: response,
+                resultAction: stream => queryResult.ResultStream = stream,
+                attachmentAction: attachment => queryResult.Attachments.Add(attachment.Name, attachment), cancellation)
+            .ConfigureAwait(false);
         return queryResult;
     }
 }

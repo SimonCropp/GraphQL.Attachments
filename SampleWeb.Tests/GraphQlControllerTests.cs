@@ -55,7 +55,7 @@ public class GraphQlControllerTests
         var result = response.ResultStream.ConvertToString();
         Assert.Equal("{\"data\":{\"itemWithAttachment\":{\"name\":\"TheName\"}}}", result);
         var responseAttachment = response.Attachments["key"];
-        Assert.Equal("foo", responseAttachment.ConvertToString());
+        Assert.Equal("foo", responseAttachment.Stream.ConvertToString());
     }
 
     [Fact]
@@ -94,7 +94,7 @@ public class GraphQlControllerTests
             action: context => { context.AddAttachment("key", Encoding.UTF8.GetBytes("foo")); });
         Assert.Equal("{\"data\":{\"addItem\":{\"itemCount\":2,\"byteCount\":3}}}", response.ResultStream.ConvertToString());
         var responseAttachment = response.Attachments["key"];
-        Assert.Equal("foo", responseAttachment.ConvertToString());
+        Assert.Equal("foo", responseAttachment.Stream.ConvertToString());
     }
 
     static TestServer GetTestServer()

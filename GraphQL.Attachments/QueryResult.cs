@@ -15,7 +15,7 @@ namespace GraphQL.Attachments
         }
 
         public Stream ResultStream { get; set; }
-        public Dictionary<string, Stream> Attachments { get; set; } = new Dictionary<string, Stream>();
+        public Dictionary<string, IncomingAttachment> Attachments { get; set; } = new Dictionary<string, IncomingAttachment>();
 
         public void Dispose()
         {
@@ -23,7 +23,7 @@ namespace GraphQL.Attachments
             ResultStream?.Dispose();
             foreach (var attachment in Attachments.Values)
             {
-                attachment.Dispose();
+                attachment.Stream.Dispose();
             }
         }
     }

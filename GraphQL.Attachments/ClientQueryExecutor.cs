@@ -25,7 +25,6 @@ namespace GraphQL.Attachments
         {
             Guard.AgainstNullWhiteSpace(nameof(query), query);
             var content = new MultipartFormDataContent();
-
             AddQueryAndVariables(content, query, variables, operationName);
 
             if (action != null)
