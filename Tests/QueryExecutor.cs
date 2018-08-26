@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using GraphQL;
+using GraphQL.Attachments;
 using Microsoft.Extensions.DependencyInjection;
 
 static class QueryExecutor
@@ -18,6 +19,7 @@ static class QueryExecutor
             {
                 Schema = schema,
                 Inputs = inputs,
+                UserContext = new AttachmentContext(),
                 Query = queryString
             };
 
