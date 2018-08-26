@@ -38,11 +38,15 @@ namespace GraphQL.Attachments
             return await ResponseParser.EvaluateResponse(response, cancellation).ConfigureAwait(false);
         }
 
-        public async Task<QueryResult> ExecuteGet(string query, object variables = null, Action<HttpHeaders> headerAction = null, CancellationToken cancellation = default)
+        public Task<QueryResult> ExecuteGet(string query, CancellationToken cancellation = default)
         {
-            Guard.AgainstNullWhiteSpace(nameof(query), query);
-            var compressed = Compress.Query(query);
-            var variablesString = ToJson(variables);
+            return ExecuteGet(new GetRequest(query), cancellation);
+        }
+
+        public async Task<QueryResult> ExecuteGet(GetRequest request, CancellationToken cancellation = default)
+        {
+            var compressed = Compress.Query(request.Query);
+            var variablesString = ToJson(request.Variables);
             string getUri;
             if (variablesString == null)
             {
@@ -53,9 +57,9 @@ namespace GraphQL.Attachments
                 getUri = $"{uri}?query={compressed}&variables={variablesString}";
             }
 
-            var request = new HttpRequestMessage(HttpMethod.Get, getUri);
-            headerAction?.Invoke(request.Headers);
-            var response = await client.SendAsync(request, cancellation).ConfigureAwait(false);
+            var getRequest = new HttpRequestMessage(HttpMethod.Get, getUri);
+            request.HeadersAction?.Invoke(getRequest.Headers);
+            var response = await client.SendAsync(getRequest, cancellation).ConfigureAwait(false);
             return await ResponseParser.EvaluateResponse(response, cancellation).ConfigureAwait(false);
         }
 
@@ -96,6 +100,21 @@ namespace GraphQL.Attachments
         }
 
         public Action<PostContext> Action { get; set; }
+        public object Variables { get; set; }
+        public string OperationName { get; set; }
+    }
+
+    public class GetRequest
+    {
+        public string Query { get; }
+
+        public GetRequest(string query)
+        {
+            Guard.AgainstNullWhiteSpace(nameof(query), query);
+            Query = query;
+        }
+
+        public Action<HttpRequestHeaders> HeadersAction { get; set; }
         public object Variables { get; set; }
         public string OperationName { get; set; }
     }
