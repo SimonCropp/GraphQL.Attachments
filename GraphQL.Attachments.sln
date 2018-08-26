@@ -16,7 +16,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SampleWeb", "SampleWeb\Samp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SampleWeb.Tests", "SampleWeb.Tests\SampleWeb.Tests.csproj", "{84C32C20-79EB-4AAA-ADC8-4842DDB30C0B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shared", "Shared\Shared.csproj", "{B0BCFBCE-D75C-49AC-8A65-D4DD924E9976}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shared", "Shared\Shared.csproj", "{B0BCFBCE-D75C-49AC-8A65-D4DD924E9976}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GraphQL.Attachments.Client", "GraphQL.Attachments.Client\GraphQL.Attachments.Client.csproj", "{3651FA4B-AB16-42B4-803A-E61C9E14D1D1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -44,6 +46,10 @@ Global
 		{B0BCFBCE-D75C-49AC-8A65-D4DD924E9976}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B0BCFBCE-D75C-49AC-8A65-D4DD924E9976}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B0BCFBCE-D75C-49AC-8A65-D4DD924E9976}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3651FA4B-AB16-42B4-803A-E61C9E14D1D1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3651FA4B-AB16-42B4-803A-E61C9E14D1D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3651FA4B-AB16-42B4-803A-E61C9E14D1D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3651FA4B-AB16-42B4-803A-E61C9E14D1D1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
