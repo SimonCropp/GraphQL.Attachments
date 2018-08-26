@@ -17,7 +17,7 @@ namespace GraphQL.Attachments
             ReadParams(request.Query.TryGetValue, out query, out inputs, out operationName);
         }
 
-        public static void ReadPost(HttpRequest request, out string query, out Inputs inputs, out IncomingAttachments attachments, out string operationName)
+        public static void ReadPost(HttpRequest request, out string query, out Inputs inputs, out IIncomingAttachments attachments, out string operationName)
         {
             if (request.HasFormContentType)
             {
@@ -48,11 +48,14 @@ namespace GraphQL.Attachments
             }
         }
 
-        static void ReadForm(HttpRequest request, out string query, out Inputs inputs, out IncomingAttachments attachments, out string operationName)
+        static void ReadForm(HttpRequest request, out string query, out Inputs inputs, out IIncomingAttachments attachments, out string operationName)
         {
             ReadParams(request.Form.TryGetValue, out query, out inputs, out operationName);
 
-            attachments = new IncomingAttachments(request.Form.Files.ToDictionary(x => x.FileName, x => (Func<Stream>) x.OpenReadStream));
+            attachments = new IncomingAttachments(request.Form.Files.ToDictionary(x => x.FileName, x =>
+            {
+                return new AttachmentStream(x.OpenReadStream(), x.Length, x.Headers);
+            }));
         }
 
         delegate bool TryGetValue(string key, out StringValues value);

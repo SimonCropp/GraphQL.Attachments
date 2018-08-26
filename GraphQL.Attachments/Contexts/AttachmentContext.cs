@@ -2,7 +2,7 @@
 {
     public class AttachmentContext
     {
-        public IncomingAttachments Incoming { get; }
+        public IIncomingAttachments Incoming { get; }
         public IOutgoingAttachments Outgoing { get; }
 
         public AttachmentContext()
@@ -11,7 +11,7 @@
             Incoming = new IncomingAttachments();
         }
 
-        public AttachmentContext(IncomingAttachments incoming)
+        public AttachmentContext(IIncomingAttachments incoming)
         {
             Guard.AgainstNull(nameof(incoming), incoming);
             Incoming = incoming;

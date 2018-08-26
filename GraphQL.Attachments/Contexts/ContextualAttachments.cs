@@ -13,11 +13,12 @@ namespace GraphQL.Attachments
             contextFunc = readAttachmentsFromUserContext;
         }
 
-        public static IncomingAttachments IncomingAttachments<TSource>(this ResolveFieldContext<TSource> context)
+        public static IIncomingAttachments IncomingAttachments<TSource>(this ResolveFieldContext<TSource> context)
         {
             Guard.AgainstNull(nameof(context), context);
             return ReadContextFunc(context.UserContext).Incoming;
         }
+
         public static IOutgoingAttachments OutgoingAttachments<TSource>(this ResolveFieldContext<TSource> context)
         {
             Guard.AgainstNull(nameof(context), context);
@@ -30,7 +31,7 @@ namespace GraphQL.Attachments
             return ReadContextFunc(context.UserContext).Outgoing;
         }
 
-        public static IncomingAttachments IncomingAttachments(this ResolveFieldContext context)
+        public static IIncomingAttachments IncomingAttachments(this ResolveFieldContext context)
         {
             Guard.AgainstNull(nameof(context), context);
             return ReadContextFunc(context.UserContext).Incoming;

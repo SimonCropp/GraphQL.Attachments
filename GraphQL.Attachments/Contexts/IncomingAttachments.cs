@@ -1,74 +1,88 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
+using GraphQL.Attachments;
 
-namespace GraphQL.Attachments
+class IncomingAttachments : IIncomingAttachments
 {
-    public class IncomingAttachments
+    ConcurrentDictionary<string, AttachmentStream> dictionary;
+    List<string> names;
+
+    public IncomingAttachments()
     {
-        ConcurrentDictionary<string, Func<Stream>> dictionary;
-        List<string> names;
+        names = new List<string>();
+    }
 
-        public IncomingAttachments()
+    public IncomingAttachments(Dictionary<string, AttachmentStream> dictionary)
+    {
+        Guard.AgainstNull(nameof(dictionary), dictionary);
+        names = dictionary.Keys.ToList();
+        this.dictionary = new ConcurrentDictionary<string, AttachmentStream>(dictionary);
+    }
+
+    public AttachmentStream Read(string name)
+    {
+        if (TryRead(name, out var stream))
         {
-            names = new List<string>();
+            return stream;
+        }
+        throw new Exception($"Attachment named {name} not found.");
+    }
+
+    public bool TryRead(string name, out AttachmentStream stream)
+    {
+        Guard.AgainstNullWhiteSpace(nameof(name), name);
+        if (!names.Contains(name))
+        {
+            stream = null;
+            return false;
         }
 
-        public IncomingAttachments(Dictionary<string, Func<Stream>> dictionary)
+        GetAndRemove(name, out stream);
+
+        return true;
+    }
+
+    public AttachmentStream Read()
+    {
+        if (TryRead(out var stream))
         {
-            Guard.AgainstNull(nameof(dictionary), dictionary);
-            names = dictionary.Keys.ToList();
-            this.dictionary = new ConcurrentDictionary<string, Func<Stream>>(dictionary);
+            return stream;
+        }
+        throw new Exception("Attachment not found.");
+    }
+
+    public bool TryRead(out AttachmentStream stream)
+    {
+        if (names.Count == 0)
+        {
+            stream = null;
+            return false;
         }
 
-        public bool TryRead(string name, out Stream stream)
+        EnsureSingle();
+
+        var name = names.Single();
+
+        GetAndRemove(name, out stream);
+
+        return true;
+    }
+
+    void GetAndRemove(string name, out AttachmentStream func)
+    {
+        if (!dictionary.TryRemove(name, out func))
         {
-            Guard.AgainstNullWhiteSpace(nameof(name), name);
-            if (!names.Contains(name))
-            {
-                stream = null;
-                return false;
-            }
-
-            GetAndRemove(name, out var value);
-
-            stream = value();
-            return true;
+            throw new Exception($"Found attachment named '{name}' but it has already been consumed.");
         }
+    }
 
-        public bool TryRead(out Func<Stream> func)
+    void EnsureSingle()
+    {
+        if (names.Count != 1)
         {
-            if (names.Count == 0)
-            {
-                func = null;
-                return false;
-            }
-
-            EnsureSingle();
-
-            var name = names.Single();
-
-            GetAndRemove(name, out func);
-
-            return true;
-        }
-
-        void GetAndRemove(string name, out Func<Stream> func)
-        {
-            if (!dictionary.TryRemove(name, out func))
-            {
-                throw new Exception($"Found attachment named '{name}' but it has already been consumed.");
-            }
-        }
-
-        void EnsureSingle()
-        {
-            if (names.Count != 1)
-            {
-                throw new Exception("Reading an attachment with no name is only supported when their is a single attachment.");
-            }
+            throw new Exception("Reading an attachment with no name is only supported when their is a single attachment.");
         }
     }
 }
