@@ -40,6 +40,7 @@ public class GraphQlControllerTests
         var result = response.ResultStream.ConvertToString();
         Assert.Equal("{\"data\":{\"item\":{\"name\":\"TheName\"}}}", result);
     }
+
     [Fact]
     public async Task Get_with_attachment()
     {

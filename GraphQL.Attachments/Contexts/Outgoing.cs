@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 
 class Outgoing
@@ -15,5 +15,5 @@ class Outgoing
     public Func<string> StringFactory;
     public string StringInstance;
     public Action Cleanup;
-    public IReadOnlyDictionary<string, IEnumerable<string>> Headers;
+    public HttpContentHeaders Headers;
 }
