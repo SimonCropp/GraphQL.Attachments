@@ -56,7 +56,6 @@ public class GraphQlController : ControllerBase
         };
 
         var result = await executer.ExecuteAsync(executionOptions).ConfigureAwait(false);
-        await ResponseWriter.WriteResult(attachmentContext, Response, result);
+        await ResponseWriter.WriteResult(attachmentContext, Response, result).ConfigureAwait(false);
     }
-
 }
