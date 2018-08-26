@@ -19,19 +19,23 @@ public class GraphQlController : ControllerBase
     }
 
     [HttpPost]
-    public Task Post(CancellationToken cancellation)
+    public async Task Post(CancellationToken cancellation)
     {
         RequestReader.ReadPost(Request, out var query, out var inputs, out var incomingAttachments, out var operationName);
-        var attachmentContext = new AttachmentContext(incomingAttachments);
-        return Execute(cancellation, query, operationName, attachmentContext, inputs);
+        using (var attachmentContext = new AttachmentContext(incomingAttachments))
+        {
+            await Execute(cancellation, query, operationName, attachmentContext, inputs).ConfigureAwait(false);
+        }
     }
 
     [HttpGet]
-    public Task Get(CancellationToken cancellation)
+    public async Task Get(CancellationToken cancellation)
     {
         RequestReader.ReadGet(Request, out var query, out var inputs, out var operationName);
-        var attachmentContext = new AttachmentContext();
-        return Execute(cancellation, query, operationName, attachmentContext, inputs);
+        using (var attachmentContext = new AttachmentContext())
+        {
+            await Execute(cancellation, query, operationName, attachmentContext, inputs).ConfigureAwait(false);
+        }
     }
 
     async Task Execute(CancellationToken cancellation, string query, string operationName, AttachmentContext attachmentContext, Inputs inputs)

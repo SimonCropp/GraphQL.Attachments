@@ -1,6 +1,8 @@
-﻿namespace GraphQL.Attachments
+﻿using System;
+
+namespace GraphQL.Attachments
 {
-    public class AttachmentContext
+    public class AttachmentContext: IDisposable
     {
         public IIncomingAttachments Incoming { get; }
         public IOutgoingAttachments Outgoing { get; }
@@ -16,6 +18,14 @@
             Guard.AgainstNull(nameof(incoming), incoming);
             Incoming = incoming;
             Outgoing = new OutgoingAttachments();
+        }
+
+        public void Dispose()
+        {
+            if (Incoming is IDisposable disposable)
+            {
+                disposable.Dispose();
+            }
         }
     }
 }

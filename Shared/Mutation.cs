@@ -19,9 +19,9 @@ public class Mutation : ObjectGraphType
             resolve: context =>
             {
                 long length = 0;
-                if (context.IncomingAttachments().TryRead(out var attachment))
+                var incomingAttachments = context.IncomingAttachments();
+                if (incomingAttachments.TryRead(out var attachment))
                 {
-                    using (attachment)
                     using (var ms = new MemoryStream())
                     {
                         attachment.CopyTo(ms);

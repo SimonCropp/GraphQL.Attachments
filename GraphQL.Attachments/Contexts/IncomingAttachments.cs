@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using GraphQL.Attachments;
 
-class IncomingAttachments : IIncomingAttachments
+class IncomingAttachments : IIncomingAttachments, IDisposable
 {
     ConcurrentDictionary<string, AttachmentStream> dictionary;
     List<string> names;
@@ -83,6 +83,17 @@ class IncomingAttachments : IIncomingAttachments
         if (names.Count != 1)
         {
             throw new Exception("Reading an attachment with no name is only supported when their is a single attachment.");
+        }
+    }
+
+    public void Dispose()
+    {
+        if (dictionary != null)
+        {
+            foreach (var stream in dictionary.Values)
+            {
+                stream.Dispose();
+            }
         }
     }
 }
