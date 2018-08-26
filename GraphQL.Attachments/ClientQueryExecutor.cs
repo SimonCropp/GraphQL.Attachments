@@ -1,6 +1,4 @@
-﻿using System;
-using System.Net.Http;
-using System.Net.Http.Headers;
+﻿using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
@@ -12,13 +10,18 @@ namespace GraphQL.Attachments
         HttpClient client;
         string uri;
 
-        public ClientQueryExecutor(HttpClient client, string uri= "graphql")
+        public ClientQueryExecutor(HttpClient client, string uri = "graphql")
         {
             Guard.AgainstNull(nameof(client), client);
             Guard.AgainstNullWhiteSpace(nameof(uri), uri);
 
             this.client = client;
             this.uri = uri;
+        }
+
+        public Task<QueryResult> ExecutePost(string query, CancellationToken cancellation = default)
+        {
+            return ExecutePost(new PostRequest(query), cancellation);
         }
 
         public async Task<QueryResult> ExecutePost(PostRequest request, CancellationToken cancellation = default)
@@ -29,7 +32,7 @@ namespace GraphQL.Attachments
             if (request.Action != null)
             {
                 var postContext = new PostContext(content);
-                request.Action.Invoke(postContext);
+                request.Action?.Invoke(postContext);
                 postContext.HeadersAction?.Invoke(content.Headers);
             }
 
@@ -47,20 +50,29 @@ namespace GraphQL.Attachments
         {
             var compressed = Compress.Query(request.Query);
             var variablesString = ToJson(request.Variables);
-            string getUri;
-            if (variablesString == null)
-            {
-                getUri = $"{uri}?query={compressed}";
-            }
-            else
-            {
-                getUri = $"{uri}?query={compressed}&variables={variablesString}";
-            }
+            var getUri = GetUri(variablesString, compressed, request.OperationName);
 
             var getRequest = new HttpRequestMessage(HttpMethod.Get, getUri);
             request.HeadersAction?.Invoke(getRequest.Headers);
             var response = await client.SendAsync(getRequest, cancellation).ConfigureAwait(false);
             return await ResponseParser.EvaluateResponse(response, cancellation).ConfigureAwait(false);
+        }
+
+        string GetUri(string variablesString, string compressed, string operationName)
+        {
+            var getUri= $"{uri}?query={compressed}";
+
+            if (variablesString != null)
+            {
+                getUri += $"&variables={variablesString}";
+            }
+
+            if (operationName != null)
+            {
+                getUri += $"&operationName={operationName}";
+            }
+
+            return getUri;
         }
 
         static void AddQueryAndVariables(MultipartFormDataContent content, string query, object variables, string operationName)
@@ -87,35 +99,5 @@ namespace GraphQL.Attachments
 
             return JsonConvert.SerializeObject(target);
         }
-    }
-
-    public class PostRequest
-    {
-        public string Query { get; }
-
-        public PostRequest(string query)
-        {
-            Guard.AgainstNullWhiteSpace(nameof(query), query);
-            Query = query;
-        }
-
-        public Action<PostContext> Action { get; set; }
-        public object Variables { get; set; }
-        public string OperationName { get; set; }
-    }
-
-    public class GetRequest
-    {
-        public string Query { get; }
-
-        public GetRequest(string query)
-        {
-            Guard.AgainstNullWhiteSpace(nameof(query), query);
-            Query = query;
-        }
-
-        public Action<HttpRequestHeaders> HeadersAction { get; set; }
-        public object Variables { get; set; }
-        public string OperationName { get; set; }
     }
 }
