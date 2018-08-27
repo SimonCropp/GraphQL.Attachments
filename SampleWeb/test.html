@@ -8,7 +8,7 @@
         for (var i = 0; i < files.length; i++) {
             data.append('files[]', files[i], files[i].name);
         }
-        data.append("query", "mutation($item: ItemInput!){addItem(item: $item){itemCount byteCount}}");
+        data.append("query", "mutation($item: ItemInput!){addItem(item: $item){itemCount attachmentCount}}");
         data.append("variables", '{"item":{"name":"TheName"}}');
 
         var postSettings = {

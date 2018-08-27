@@ -1,22 +1,23 @@
 ﻿using System;
-using System.Collections.Concurrent;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using GraphQL.Attachments;
 
 class IncomingAttachments : IIncomingAttachments, IDisposable
 {
-    ConcurrentDictionary<string, AttachmentStream> dictionary;
+    Dictionary<string, AttachmentStream> dictionary;
 
     public IncomingAttachments()
     {
-        dictionary = new ConcurrentDictionary<string, AttachmentStream>(); 
+        dictionary = new Dictionary<string, AttachmentStream>();
     }
 
     public IncomingAttachments(Dictionary<string, AttachmentStream> dictionary)
     {
         Guard.AgainstNull(nameof(dictionary), dictionary);
-        this.dictionary = new ConcurrentDictionary<string, AttachmentStream>(dictionary);
+        Count = (ushort) dictionary.Count;
+        this.dictionary = dictionary;
     }
 
     public AttachmentStream Read(string name)
@@ -33,6 +34,8 @@ class IncomingAttachments : IIncomingAttachments, IDisposable
         Guard.AgainstNullWhiteSpace(nameof(name), name);
         return dictionary.TryGetValue(name, out stream);
     }
+
+    public ushort Count { get; }
 
     public AttachmentStream Read()
     {
@@ -75,5 +78,15 @@ class IncomingAttachments : IIncomingAttachments, IDisposable
                 stream.Dispose();
             }
         }
+    }
+
+    public IEnumerator<AttachmentStream> GetEnumerator()
+    {
+        return dictionary.Values.GetEnumerator();
+    }
+
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        return GetEnumerator();
     }
 }

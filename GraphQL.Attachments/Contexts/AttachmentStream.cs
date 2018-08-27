@@ -16,14 +16,17 @@ namespace GraphQL.Attachments
         /// <summary>
         /// Initialises a new instance of <see cref="AttachmentStream"/>.
         /// </summary>
+        /// <param name="name">The name of the attachment.</param>
         /// <param name="inner">The <see cref="Stream"/> to wrap.</param>
         /// <param name="length">The length of <paramref name="inner"/>.</param>
         /// <param name="metadata">The attachment metadata.</param>
-        public AttachmentStream(Stream inner, long length, IHeaderDictionary metadata)
+        public AttachmentStream(string name, Stream inner, long length, IHeaderDictionary metadata)
         {
+            Guard.AgainstNullWhiteSpace(nameof(name), name);
             Guard.AgainstNull(nameof(inner), inner);
             Guard.AgainstNull(nameof(metadata), metadata);
             this.inner = inner;
+            Name = name;
             Length = length;
             Metadata = metadata;
         }
@@ -68,6 +71,7 @@ namespace GraphQL.Attachments
         public override bool CanTimeout => inner.CanTimeout;
         public override bool CanWrite => false;
 
+        public string Name { get; }
         public override long Length { get; }
         /// <summary>
         /// The attachment metadata.

@@ -55,7 +55,7 @@ namespace GraphQL.Attachments
 
             attachments = new IncomingAttachments(form.Files.ToDictionary(x => x.FileName, x =>
             {
-                return new AttachmentStream(x.OpenReadStream(), x.Length, x.Headers);
+                return new AttachmentStream(x.FileName, x.OpenReadStream(), x.Length, x.Headers);
             }));
         }
 

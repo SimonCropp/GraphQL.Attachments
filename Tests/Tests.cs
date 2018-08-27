@@ -11,7 +11,7 @@ public class Tests
     [Fact]
     public async Task Mutation()
     {
-        var mutation = @"mutation ($item:ItemInput!){ addItem(item: $item) { itemCount byteCount } }";
+        var mutation = @"mutation ($item:ItemInput!){ addItem(item: $item) { itemCount attachmentCount } }";
         var jObject = JObject.Parse(@"
 {
   ""item"":

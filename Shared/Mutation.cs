@@ -20,13 +20,13 @@ public class Mutation : ObjectGraphType
             {
                 long length = 0;
                 var incomingAttachments = context.IncomingAttachments();
-                if (incomingAttachments.TryRead(out var attachment))
+                foreach (var incoming in incomingAttachments)
                 {
                     using (var ms = new MemoryStream())
                     {
-                        attachment.CopyTo(ms);
+                        incoming.CopyTo(ms);
                         length = ms.Length;
-                        context.OutgoingAttachments().AddBytes("key", ms.ToArray());
+                        context.OutgoingAttachments().AddBytes(incoming.Name, ms.ToArray());
                     }
                 }
 
@@ -35,7 +35,7 @@ public class Mutation : ObjectGraphType
                 return new Result
                 {
                     ItemCount = items.Count,
-                    ByteCount = length
+                    AttachmentCount = incomingAttachments.Count
                 };
             });
     }

@@ -61,7 +61,7 @@ public class GraphQlControllerTests
     [Fact]
     public async Task Post()
     {
-        var mutation = "mutation ($item:ItemInput!){ addItem(item: $item) { itemCount byteCount } }";
+        var mutation = "mutation ($item:ItemInput!){ addItem(item: $item) { itemCount attachmentCount } }";
         var queryRequest = new PostRequest(mutation)
         {
             Variables = new
@@ -74,14 +74,14 @@ public class GraphQlControllerTests
         };
         var response = await queryExecutor.ExecutePost(queryRequest );
 
-        Assert.Equal("{\"data\":{\"addItem\":{\"itemCount\":2,\"byteCount\":0}}}", response.ResultStream.ConvertToString());
+        Assert.Equal("{\"data\":{\"addItem\":{\"itemCount\":2,\"attachmentCount\":0}}}", response.ResultStream.ConvertToString());
         Assert.Empty(response.Attachments);
     }
 
     [Fact]
     public async Task Post_with_attachment()
     {
-        var mutation = "mutation ($item:ItemInput!){ addItem(item: $item) { itemCount byteCount } }";
+        var mutation = "mutation ($item:ItemInput!){ addItem(item: $item) { itemCount attachmentCount } }";
         var postRequest = new PostRequest(mutation)
         {
             Variables = new
@@ -97,7 +97,7 @@ public class GraphQlControllerTests
             }
         };
         var response = await queryExecutor.ExecutePost(postRequest);
-        Assert.Equal("{\"data\":{\"addItem\":{\"itemCount\":2,\"byteCount\":3}}}", response.ResultStream.ConvertToString());
+        Assert.Equal("{\"data\":{\"addItem\":{\"itemCount\":2,\"attachmentCount\":1}}}", response.ResultStream.ConvertToString());
         var responseAttachment = response.Attachments["key"];
         Assert.Equal("foo", responseAttachment.Stream.ConvertToString());
     }
