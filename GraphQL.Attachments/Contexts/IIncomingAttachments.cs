@@ -2,12 +2,9 @@
 
 namespace GraphQL.Attachments
 {
-    public interface IIncomingAttachments: IEnumerable<AttachmentStream>
+    public interface IIncomingAttachments: IReadOnlyDictionary<string,AttachmentStream>
     {
-        AttachmentStream Read(string name);
-        AttachmentStream Read();
-        bool TryRead(out AttachmentStream func);
-        bool TryRead(string name, out AttachmentStream func);
-        ushort Count { get; }
+        AttachmentStream GetValue();
+        bool TryGetValue(out AttachmentStream func);
     }
 }

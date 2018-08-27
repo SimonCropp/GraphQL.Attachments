@@ -1,54 +1,32 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using GraphQL.Attachments;
 
-class IncomingAttachments : IIncomingAttachments, IDisposable
+class IncomingAttachments : Dictionary<string, AttachmentStream>, IIncomingAttachments, IDisposable
 {
-    Dictionary<string, AttachmentStream> dictionary;
-
     public IncomingAttachments()
     {
-        dictionary = new Dictionary<string, AttachmentStream>();
     }
 
-    public IncomingAttachments(Dictionary<string, AttachmentStream> dictionary)
+    public IncomingAttachments(Dictionary<string, AttachmentStream> dictionary) : base(dictionary)
     {
         Guard.AgainstNull(nameof(dictionary), dictionary);
-        Count = (ushort) dictionary.Count;
-        this.dictionary = dictionary;
     }
 
-    public AttachmentStream Read(string name)
+    public AttachmentStream GetValue()
     {
-        if (TryRead(name, out var stream))
+        if (TryGetValue(out var stream))
         {
             return stream;
         }
-        throw new Exception($"Attachment named {name} not found.");
-    }
 
-    public bool TryRead(string name, out AttachmentStream stream)
-    {
-        Guard.AgainstNullWhiteSpace(nameof(name), name);
-        return dictionary.TryGetValue(name, out stream);
-    }
-
-    public ushort Count { get; }
-
-    public AttachmentStream Read()
-    {
-        if (TryRead(out var stream))
-        {
-            return stream;
-        }
         throw new Exception("Attachment not found.");
     }
 
-    public bool TryRead(out AttachmentStream stream)
+    public bool TryGetValue(out AttachmentStream stream)
     {
-        if (dictionary.Count == 0)
+        if (Count == 0)
         {
             stream = null;
             return false;
@@ -56,14 +34,14 @@ class IncomingAttachments : IIncomingAttachments, IDisposable
 
         EnsureSingle();
 
-        stream = dictionary.Single().Value;
+        stream = Values.Single();
 
         return true;
     }
 
     void EnsureSingle()
     {
-        if (dictionary.Count != 1)
+        if (Count != 1)
         {
             throw new Exception("Reading an attachment with no name is only supported when their is a single attachment.");
         }
@@ -71,22 +49,9 @@ class IncomingAttachments : IIncomingAttachments, IDisposable
 
     public void Dispose()
     {
-        if (dictionary != null)
+        foreach (var stream in Values)
         {
-            foreach (var stream in dictionary.Values)
-            {
-                stream.Dispose();
-            }
+            stream.Dispose();
         }
-    }
-
-    public IEnumerator<AttachmentStream> GetEnumerator()
-    {
-        return dictionary.Values.GetEnumerator();
-    }
-
-    IEnumerator IEnumerable.GetEnumerator()
-    {
-        return GetEnumerator();
     }
 }

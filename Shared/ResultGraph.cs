@@ -4,7 +4,7 @@ public class ResultGraph : ObjectGraphType<Result>
 {
     public ResultGraph()
     {
-        Field(x=>x.ItemCount);
-        Field(x=>x.AttachmentCount);
+        Field(x => x.ItemCount);
+        Field(x => x.AttachmentCount);
     }
 }

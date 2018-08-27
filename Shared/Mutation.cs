@@ -18,14 +18,12 @@ public class Mutation : ObjectGraphType
             ),
             resolve: context =>
             {
-                long length = 0;
                 var incomingAttachments = context.IncomingAttachments();
-                foreach (var incoming in incomingAttachments)
+                foreach (var incoming in incomingAttachments.Values)
                 {
                     using (var ms = new MemoryStream())
                     {
                         incoming.CopyTo(ms);
-                        length = ms.Length;
                         context.OutgoingAttachments().AddBytes(incoming.Name, ms.ToArray());
                     }
                 }
