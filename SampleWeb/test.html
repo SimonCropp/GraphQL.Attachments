@@ -18,8 +18,8 @@
 
         return fetch('graphql', postSettings)
             .then(function (data) {
-                return data.json().then(x => {
-                    result.innerHTML = JSON.stringify(x);
+                return data.text().then(x => {
+                    result.innerHTML = x;
                 });
             });
     }
@@ -28,6 +28,6 @@
 <body>
 Select files: <input type="file" id="files" multiple /><br />
 <button onclick="PostMutation()">PostMutation</button><br />
-<div id="result"></div>
+<pre id="result"></pre>
 </body>
 </html>
