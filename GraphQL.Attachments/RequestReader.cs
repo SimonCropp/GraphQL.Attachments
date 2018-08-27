@@ -50,9 +50,10 @@ namespace GraphQL.Attachments
 
         static void ReadForm(HttpRequest request, out string query, out Inputs inputs, out IIncomingAttachments attachments, out string operationName)
         {
-            ReadParams(request.Form.TryGetValue, out query, out inputs, out operationName);
+            var form = request.Form;
+            ReadParams(form.TryGetValue, out query, out inputs, out operationName);
 
-            attachments = new IncomingAttachments(request.Form.Files.ToDictionary(x => x.FileName, x =>
+            attachments = new IncomingAttachments(form.Files.ToDictionary(x => x.FileName, x =>
             {
                 return new AttachmentStream(x.OpenReadStream(), x.Length, x.Headers);
             }));
