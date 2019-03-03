@@ -43,12 +43,12 @@ public class Tests
         ObjectApprover.VerifyWithJson(result);
     }
 
-    static async Task<object> RunQuery(string queryString, List<Item> items, Inputs inputs = null)
+    static Task<object> RunQuery(string queryString, List<Item> items, Inputs inputs = null)
     {
         var services = new ServiceCollection();
 
         TestServices.AddGraphQlTestTypes(items, services);
 
-        return await QueryExecutor.ExecuteQuery(queryString, services, inputs);
+        return QueryExecutor.ExecuteQuery(queryString, services, inputs);
     }
 }
