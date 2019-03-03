@@ -51,7 +51,7 @@ public static class ResponseWriter
             return;
         }
 
-        await WriteResult(responseBody, result);
+        await WriteResult(responseBody, result).ConfigureAwait(false);
     }
 
     static async Task<HttpContent> BuildContent(Outgoing outgoing)

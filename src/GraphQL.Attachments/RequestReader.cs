@@ -53,10 +53,10 @@ namespace GraphQL.Attachments
             var form = request.Form;
             ReadParams(form.TryGetValue, out query, out inputs, out operationName);
 
-            attachments = new IncomingAttachments(form.Files.ToDictionary(x => x.FileName, x =>
-            {
-                return new AttachmentStream(x.FileName, x.OpenReadStream(), x.Length, x.Headers);
-            }));
+            var attachmentStreams = form.Files.ToDictionary(
+                x => x.FileName,
+                x => new AttachmentStream(x.FileName, x.OpenReadStream(), x.Length, x.Headers));
+            attachments = new IncomingAttachments(attachmentStreams);
         }
 
         delegate bool TryGetValue(string key, out StringValues value);

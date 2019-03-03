@@ -14,9 +14,9 @@ public class Tests
         var mutation = @"mutation ($item:ItemInput!){ addItem(item: $item) { itemCount attachmentCount } }";
         var jObject = JObject.Parse(@"
 {
-  ""item"":
+  'item':
   {
-    ""name"": ""TheName"",
+    'name': 'TheName',
   }
 }");
 
@@ -37,7 +37,10 @@ public class Tests
 }";
         var items = new List<Item>
         {
-            new Item {Name = "theName"}
+            new Item
+            {
+                Name = "theName"
+            }
         };
         var result = await RunQuery(queryString, items);
         ObjectApprover.VerifyWithJson(result);
