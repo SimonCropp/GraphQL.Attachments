@@ -13,15 +13,11 @@
     <PackageTags>GraphQL, Attachments</PackageTags>
     <PackageIconUrl>https://raw.githubusercontent.com/SimonCropp/GraphQL.Attachments/master/icon.png</PackageIconUrl>
     <PackageProjectUrl>http://github.com/SimonCropp/GraphQL.Attachments</PackageProjectUrl>
-    <PackageOutputPath>..\nugets</PackageOutputPath>
-    <TargetsForTfmSpecificContentInPackage>$(TargetsForTfmSpecificContentInPackage);IncludePDBsInPackage</TargetsForTfmSpecificContentInPackage>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <PackageOutputPath>..\..\nugets</PackageOutputPath>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <DebugType>embedded</DebugType>
+    <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
-
-  <Target Name="IncludePDBsInPackage" Condition="'$(IncludeBuildOutput)' != 'false'">
-    <ItemGroup>
-      <TfmSpecificPackageFile Include="$(OutputPath)\$(AssemblyName).pdb" PackagePath="lib/$(TargetFramework)" />
-    </ItemGroup>
-  </Target>
 </Project>
