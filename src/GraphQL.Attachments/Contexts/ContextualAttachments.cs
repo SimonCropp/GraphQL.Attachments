@@ -41,14 +41,14 @@ namespace GraphQL.Attachments
         {
             if (contextFunc == null)
             {
-                throw new Exception("The Func to read attachment context from the GraphQL UserContext has not been set. Once at startup ContextualAttachments.SetContextFunc should be called.");
+                throw new Exception($"The Func to read attachment context from the GraphQL UserContext has not been set. Once at startup {nameof(ContextualAttachments)}{nameof(SetContextFunc)} should be called.");
             }
 
             var attachments = contextFunc(userContext);
 
             if (attachments == null)
             {
-                throw new Exception("Could not resolve an instance of AttachmentContext.");
+                throw new Exception($"Could not resolve an instance of {nameof(AttachmentContext)}.");
             }
 
             return attachments;

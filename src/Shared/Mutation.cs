@@ -21,10 +21,10 @@ public class Mutation : ObjectGraphType
                 var incomingAttachments = context.IncomingAttachments();
                 foreach (var incoming in incomingAttachments.Values)
                 {
-                    using (var ms = new MemoryStream())
+                    using (var memoryStream = new MemoryStream())
                     {
-                        incoming.CopyTo(ms);
-                        context.OutgoingAttachments().AddBytes(incoming.Name, ms.ToArray());
+                        incoming.CopyTo(memoryStream);
+                        context.OutgoingAttachments().AddBytes(incoming.Name, memoryStream.ToArray());
                     }
                 }
 
