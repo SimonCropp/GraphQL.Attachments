@@ -19,33 +19,26 @@ public class GraphQlController : ControllerBase
     }
 
     [HttpPost]
-    public async Task Post(CancellationToken cancellation)
+    public Task Post(CancellationToken cancellation)
     {
         RequestReader.ReadPost(Request, out var query, out var inputs, out var incomingAttachments, out var operationName);
-        using (var attachmentContext = new AttachmentContext(incomingAttachments))
-        {
-            await Execute(cancellation, query, operationName, attachmentContext, inputs);
-        }
+        return Execute(cancellation, query, operationName, incomingAttachments, inputs);
     }
 
     [HttpGet]
-    public async Task Get(CancellationToken cancellation)
+    public Task Get(CancellationToken cancellation)
     {
         RequestReader.ReadGet(Request, out var query, out var inputs, out var operationName);
-        using (var attachmentContext = new AttachmentContext())
-        {
-            await Execute(cancellation, query, operationName, attachmentContext, inputs);
-        }
+        return Execute(cancellation, query, operationName, null, inputs);
     }
 
-    async Task Execute(CancellationToken cancellation, string query, string operationName, AttachmentContext attachmentContext, Inputs inputs)
+    async Task Execute(CancellationToken cancellation, string query, string operationName, IIncomingAttachments incomingAttachments, Inputs inputs)
     {
         var executionOptions = new ExecutionOptions
         {
             Schema = schema,
             Query = query,
             OperationName = operationName,
-            UserContext = attachmentContext,
             Inputs = inputs,
             CancellationToken = cancellation,
 #if (DEBUG)
@@ -55,7 +48,7 @@ public class GraphQlController : ControllerBase
 #endif
         };
 
-        var result = await executer.ExecuteAsync(executionOptions);
-        await ResponseWriter.WriteResult(attachmentContext, Response, result);
+        var result = await executer.ExecuteWithAttachments(executionOptions, incomingAttachments);
+        await ResponseWriter.WriteResult(Response, result);
     }
 }

@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 
 namespace GraphQL.Attachments
 {
-
     class OutgoingAttachments : IOutgoingAttachments
     {
         internal Dictionary<string, Outgoing> Inner = new Dictionary<string, Outgoing>(StringComparer.OrdinalIgnoreCase);
