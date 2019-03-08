@@ -17,7 +17,7 @@ public static class ResponseWriter
         if (result.Errors?.Count > 0)
         {
             httpResponse.StatusCode = (int) HttpStatusCode.BadRequest;
-            await WriteResult(responseBody, result).ConfigureAwait(false);
+            await WriteResult(responseBody, result);
             return;
         }
 
@@ -29,7 +29,7 @@ public static class ResponseWriter
                 foreach (var outgoingAttachment in outgoingAttachments.Inner)
                 {
                     var outgoing = outgoingAttachment.Value;
-                    var httpContent = await BuildContent(outgoing).ConfigureAwait(false);
+                    var httpContent = await BuildContent(outgoing);
                     if (outgoing.Headers != null)
                     {
                         foreach (var header in outgoing.Headers)
@@ -45,20 +45,20 @@ public static class ResponseWriter
                 multipartContent.Add(new StringContent(serializedResult));
                 httpResponse.ContentLength = multipartContent.Headers.ContentLength;
                 httpResponse.ContentType = multipartContent.Headers.ContentType.ToString();
-                await multipartContent.CopyToAsync(responseBody).ConfigureAwait(false);
+                await multipartContent.CopyToAsync(responseBody);
             }
 
             return;
         }
 
-        await WriteResult(responseBody, result).ConfigureAwait(false);
+        await WriteResult(responseBody, result);
     }
 
     static async Task<HttpContent> BuildContent(Outgoing outgoing)
     {
         if (outgoing.AsyncStreamFactory != null)
         {
-            var value = await outgoing.AsyncStreamFactory().ConfigureAwait(false);
+            var value = await outgoing.AsyncStreamFactory();
             return new StreamContent(value);
         }
 
@@ -74,7 +74,7 @@ public static class ResponseWriter
 
         if (outgoing.AsyncBytesFactory != null)
         {
-            var value = await outgoing.AsyncBytesFactory().ConfigureAwait(false);
+            var value = await outgoing.AsyncBytesFactory();
             return new ByteArrayContent(value);
         }
 
@@ -90,7 +90,7 @@ public static class ResponseWriter
 
         if (outgoing.AsyncStringFactory != null)
         {
-            var value = await outgoing.AsyncStringFactory().ConfigureAwait(false);
+            var value = await outgoing.AsyncStringFactory();
             return new StringContent(value);
         }
 
@@ -111,8 +111,7 @@ public static class ResponseWriter
     {
         using (var streamWriter = new StreamWriter(stream, Encoding.UTF8, 1024, true))
         {
-            await streamWriter.WriteAsync(JsonConvert.SerializeObject(result))
-                .ConfigureAwait(false);
+            await streamWriter.WriteAsync(JsonConvert.SerializeObject(result));
         }
     }
 }

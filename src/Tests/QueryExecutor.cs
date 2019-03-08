@@ -23,8 +23,7 @@ static class QueryExecutor
                 Query = queryString
             };
 
-            var executionResult = await documentExecuter.ExecuteAsync(executionOptions)
-                .ConfigureAwait(false);
+            var executionResult = await documentExecuter.ExecuteAsync(executionOptions);
 
             if (executionResult.Errors != null && executionResult.Errors.Any())
             {

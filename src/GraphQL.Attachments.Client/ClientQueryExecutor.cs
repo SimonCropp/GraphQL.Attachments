@@ -36,8 +36,7 @@ namespace GraphQL.Attachments
             {
                 AttachmentAction = attachment => queryResult.Attachments.Add(attachment.Name, attachment)
             };
-            await ExecutePost(request, handler, cancellation)
-                .ConfigureAwait(false);
+            await ExecutePost(request, handler, cancellation);
             return queryResult;
         }
 
@@ -54,9 +53,9 @@ namespace GraphQL.Attachments
                 postContext.HeadersAction?.Invoke(content.Headers);
             }
 
-            var response = await client.PostAsync(uri, content, cancellation).ConfigureAwait(false);
+            var response = await client.PostAsync(uri, content, cancellation);
 
-            await ResponseParser.ProcessResponse(response, handler, cancellation).ConfigureAwait(false);
+            await ResponseParser.ProcessResponse(response, handler, cancellation);
         }
 
         public Task ExecuteGet(string query, QueryResponseHandler handler, CancellationToken cancellation = default)
@@ -76,8 +75,7 @@ namespace GraphQL.Attachments
             {
                 AttachmentAction = attachment => queryResult.Attachments.Add(attachment.Name, attachment)
             };
-            await ExecuteGet(request, handler, cancellation)
-                .ConfigureAwait(false);
+            await ExecuteGet(request, handler, cancellation);
             return queryResult;
         }
 
@@ -89,8 +87,8 @@ namespace GraphQL.Attachments
 
             var getRequest = new HttpRequestMessage(HttpMethod.Get, getUri);
             request.HeadersAction?.Invoke(getRequest.Headers);
-            var response = await client.SendAsync(getRequest, cancellation).ConfigureAwait(false);
-            await ResponseParser.ProcessResponse(response, handler, cancellation).ConfigureAwait(false);
+            var response = await client.SendAsync(getRequest, cancellation);
+            await ResponseParser.ProcessResponse(response, handler, cancellation);
         }
 
         string GetUri(string variablesString, string compressed, string operationName)

@@ -24,7 +24,7 @@ public class GraphQlController : ControllerBase
         RequestReader.ReadPost(Request, out var query, out var inputs, out var incomingAttachments, out var operationName);
         using (var attachmentContext = new AttachmentContext(incomingAttachments))
         {
-            await Execute(cancellation, query, operationName, attachmentContext, inputs).ConfigureAwait(false);
+            await Execute(cancellation, query, operationName, attachmentContext, inputs);
         }
     }
 
@@ -34,7 +34,7 @@ public class GraphQlController : ControllerBase
         RequestReader.ReadGet(Request, out var query, out var inputs, out var operationName);
         using (var attachmentContext = new AttachmentContext())
         {
-            await Execute(cancellation, query, operationName, attachmentContext, inputs).ConfigureAwait(false);
+            await Execute(cancellation, query, operationName, attachmentContext, inputs);
         }
     }
 
@@ -55,7 +55,7 @@ public class GraphQlController : ControllerBase
 #endif
         };
 
-        var result = await executer.ExecuteAsync(executionOptions).ConfigureAwait(false);
-        await ResponseWriter.WriteResult(attachmentContext, Response, result).ConfigureAwait(false);
+        var result = await executer.ExecuteAsync(executionOptions);
+        await ResponseWriter.WriteResult(attachmentContext, Response, result);
     }
 }
