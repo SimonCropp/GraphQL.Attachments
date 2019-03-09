@@ -11,7 +11,14 @@ public class Tests
     [Fact]
     public async Task Mutation()
     {
-        var mutation = @"mutation ($item:ItemInput!){ addItem(item: $item) { itemCount attachmentCount } }";
+        var mutation = @"
+mutation ($item:ItemInput!)
+{
+  addItem(item: $item)
+  {
+    itemCount attachmentCount
+  }
+}";
         var jObject = JObject.Parse(@"
 {
   'item':
@@ -42,11 +49,11 @@ public class Tests
                 Name = "theName"
             }
         };
-        var result = await RunQuery(queryString, items);
+        var result = await RunQuery(queryString, items, null);
         ObjectApprover.VerifyWithJson(result);
     }
 
-    static Task<object> RunQuery(string queryString, List<Item> items, Inputs inputs = null)
+    static Task<AttachmentExecutionResult> RunQuery(string queryString, List<Item> items, Inputs inputs)
     {
         var services = new ServiceCollection();
 

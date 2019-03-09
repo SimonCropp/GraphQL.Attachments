@@ -1,5 +1,12 @@
 ﻿{
-  item: {
-    name: 'theName'
+  ExecutionResult: {
+    data: {
+      item: {
+        name: 'theName'
+      }
+    }
+  },
+  Attachments: {
+    Names: []
   }
 }

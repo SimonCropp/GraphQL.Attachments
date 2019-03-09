@@ -21,7 +21,7 @@ static class ArgumentTypeCacheBag
         context.Arguments.Remove("GraphQL.Attachments.AttachmentContext");
     }
 
-    public static AttachmentContext GetAttachmentContext<T>(ResolveFieldContext<T> context)
+    public static AttachmentContext GetAttachmentContext<T>(this ResolveFieldContext<T> context)
     {
         return GetAttachmentContext(context.Arguments);
     }
