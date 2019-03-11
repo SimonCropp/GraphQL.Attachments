@@ -1,16 +1,21 @@
 ﻿using System.Text;
 using System.Threading.Tasks;
+using ApprovalTests;
 using GraphQL.Attachments;
 using GraphQL.Introspection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
+using ObjectApproval;
 using Xunit;
+using Xunit.Abstractions;
 
-public class GraphQlControllerTests
+public class GraphQlControllerTests:
+    TestBase
 {
     ClientQueryExecutor queryExecutor;
 
-    public GraphQlControllerTests()
+    public GraphQlControllerTests(ITestOutputHelper output) :
+        base(output)
     {
         var server = GetTestServer();
         var client = server.CreateClient();
@@ -20,10 +25,8 @@ public class GraphQlControllerTests
     [Fact]
     public async Task GetIntrospection()
     {
-        var response = await queryExecutor.ExecuteGet(SchemaIntrospection.IntrospectionQuery);
-        var result = response.ResultStream.ConvertToString();
-        Assert.Contains("addItem", result);
-        Assert.Contains("item", result);
+        var result = await queryExecutor.ExecuteGet(SchemaIntrospection.IntrospectionQuery);
+        ObjectApprover.VerifyWithJson(result);
     }
 
     [Fact]
@@ -31,14 +34,13 @@ public class GraphQlControllerTests
     {
         var query = @"
 {
-  item
+  noAttachment (argument: ""argumentValue"")
   {
-    name
+    argument
   }
 }";
-        var response = await queryExecutor.ExecuteGet(query);
-        var result = response.ResultStream.ConvertToString();
-        Assert.Equal("{\"data\":{\"item\":{\"name\":\"TheName\"}}}", result);
+        var result = await queryExecutor.ExecuteGet(query);
+        ObjectApprover.VerifyWithJson(result);
     }
 
     [Fact]
@@ -46,16 +48,13 @@ public class GraphQlControllerTests
     {
         var query = @"
 {
-  itemWithAttachment
+  withAttachment (argument: ""argumentValue"")
   {
-    name
+    argument
   }
 }";
-        var response = await queryExecutor.ExecuteGet(query);
-        var result = response.ResultStream.ConvertToString();
-        Assert.Equal("{\"data\":{\"itemWithAttachment\":{\"name\":\"TheName\"}}}", result);
-        var responseAttachment = response.Attachments["key"];
-        Assert.Equal("foo", responseAttachment.Stream.ConvertToString());
+        var result = await queryExecutor.ExecuteGet(query);
+        ObjectApprover.VerifyWithJson(result);
     }
 
     [Fact]

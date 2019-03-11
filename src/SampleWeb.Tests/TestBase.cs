@@ -5,13 +5,13 @@ public class TestBase
 {
     static TestBase()
     {
-        SerializerBuilder.ExtraSettings= settings =>
+        SerializerBuilder.ExtraSettings = settings =>
         {
-            settings.Converters.Add(new OutgoingConverter());
-            settings.Converters.Add(new AttachmentStreamConverter());
-            settings.Converters.Add(new OutgoingAttachmentsConverter());
+            settings.Converters.Add(new AttachmentConverter());
+            settings.Converters.Add(new QueryResultConverter());
         };
     }
+
     public TestBase(ITestOutputHelper output)
     {
         Output = output;
