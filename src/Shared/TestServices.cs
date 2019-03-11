@@ -1,19 +1,12 @@
-﻿using System.Collections.Generic;
-using GraphQL.Attachments;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 
 public static class TestServices
 {
-    static TestServices()
+    public static void AddGraphQlTestTypes(IServiceCollection services)
     {
-        ContextualAttachments.SetContextFunc(o => (AttachmentContext)o);
-    }
-    public static void AddGraphQlTestTypes(List<Item> items, IServiceCollection services)
-    {
-        services.AddSingleton(new ItemGraph());
-        services.AddSingleton(new ItemInput());
-        services.AddSingleton(new Query(items));
-        services.AddSingleton(new Mutation(items));
+        services.AddSingleton(new InputArgumentGraph());
+        services.AddSingleton(new Query());
+        services.AddSingleton(new Mutation());
         services.AddSingleton(new ResultGraph());
     }
 }

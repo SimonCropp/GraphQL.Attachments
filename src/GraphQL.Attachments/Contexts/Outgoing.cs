@@ -3,7 +3,7 @@ using System.IO;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 
-class Outgoing
+public class Outgoing
 {
     public Func<Task<Stream>> AsyncStreamFactory;
     public Func<Stream> StreamFactory;

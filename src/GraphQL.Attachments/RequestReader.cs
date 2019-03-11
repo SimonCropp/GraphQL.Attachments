@@ -12,21 +12,21 @@ namespace GraphQL.Attachments
     {
         static JsonSerializer serializer = JsonSerializer.CreateDefault();
 
-        public static void ReadGet(HttpRequest request, out string query, out Inputs inputs, out string operationName)
+        public static void ReadGet(HttpRequest request, out string query, out Inputs inputs, out string operation)
         {
-            ReadParams(request.Query.TryGetValue, out query, out inputs, out operationName);
+            ReadParams(request.Query.TryGetValue, out query, out inputs, out operation);
         }
 
-        public static void ReadPost(HttpRequest request, out string query, out Inputs inputs, out IIncomingAttachments attachments, out string operationName)
+        public static void ReadPost(HttpRequest request, out string query, out Inputs inputs, out IIncomingAttachments attachments, out string operation)
         {
             if (request.HasFormContentType)
             {
-                ReadForm(request, out query, out inputs, out attachments, out operationName);
+                ReadForm(request, out query, out inputs, out attachments, out operation);
                 return;
             }
 
             attachments = new IncomingAttachments();
-            ReadBody(request, out query, out inputs, out operationName);
+            ReadBody(request, out query, out inputs, out operation);
         }
 
         public class PostBody
@@ -48,10 +48,10 @@ namespace GraphQL.Attachments
             }
         }
 
-        static void ReadForm(HttpRequest request, out string query, out Inputs inputs, out IIncomingAttachments attachments, out string operationName)
+        static void ReadForm(HttpRequest request, out string query, out Inputs inputs, out IIncomingAttachments attachments, out string operation)
         {
             var form = request.Form;
-            ReadParams(form.TryGetValue, out query, out inputs, out operationName);
+            ReadParams(form.TryGetValue, out query, out inputs, out operation);
 
             var attachmentStreams = form.Files.ToDictionary(
                 x => x.FileName,
@@ -61,7 +61,7 @@ namespace GraphQL.Attachments
 
         delegate bool TryGetValue(string key, out StringValues value);
 
-        static void ReadParams(TryGetValue tryGetValue, out string query, out Inputs inputs, out string operationName)
+        static void ReadParams(TryGetValue tryGetValue, out string query, out Inputs inputs, out string operation)
         {
             if (!tryGetValue("query", out var queryValues))
             {
@@ -77,7 +77,7 @@ namespace GraphQL.Attachments
 
             inputs = GetInputs(tryGetValue);
 
-            operationName = null;
+            operation = null;
             if (tryGetValue("operation", out var operationValues))
             {
                 if (operationValues.Count != 1)
@@ -85,7 +85,7 @@ namespace GraphQL.Attachments
                     throw new Exception("Expected 'operation' to have a single value.");
                 }
 
-                operationName = operationValues.ToString();
+                operation = operationValues.ToString();
             }
         }
 

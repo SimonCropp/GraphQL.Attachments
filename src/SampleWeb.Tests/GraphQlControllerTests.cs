@@ -1,29 +1,36 @@
-﻿using System.Text;
+﻿using System.Net.Http;
 using System.Threading.Tasks;
 using GraphQL.Attachments;
 using GraphQL.Introspection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
+using ObjectApproval;
 using Xunit;
+using Xunit.Abstractions;
 
-public class GraphQlControllerTests
+public class GraphQlControllerTests:
+    TestBase
 {
-    ClientQueryExecutor queryExecutor;
+    static ClientQueryExecutor queryExecutor;
+    static TestServer server;
+    static HttpClient client;
 
-    public GraphQlControllerTests()
+    static GraphQlControllerTests()
     {
-        var server = GetTestServer();
-        var client = server.CreateClient();
+        server = GetTestServer();
+        client = server.CreateClient();
         queryExecutor = new ClientQueryExecutor(client);
+    }
+    public GraphQlControllerTests(ITestOutputHelper output) :
+        base(output)
+    {
     }
 
     [Fact]
     public async Task GetIntrospection()
     {
-        var response = await queryExecutor.ExecuteGet(SchemaIntrospection.IntrospectionQuery);
-        var result = response.ResultStream.ConvertToString();
-        Assert.Contains("addItem", result);
-        Assert.Contains("item", result);
+        var result = await queryExecutor.ExecuteGet(SchemaIntrospection.IntrospectionQuery);
+        ObjectApprover.VerifyWithJson(result);
     }
 
     [Fact]
@@ -31,14 +38,13 @@ public class GraphQlControllerTests
     {
         var query = @"
 {
-  item
+  noAttachment (argument: ""argumentValue"")
   {
-    name
+    argument
   }
 }";
-        var response = await queryExecutor.ExecuteGet(query);
-        var result = response.ResultStream.ConvertToString();
-        Assert.Equal("{\"data\":{\"item\":{\"name\":\"TheName\"}}}", result);
+        var result = await queryExecutor.ExecuteGet(query);
+        ObjectApprover.VerifyWithJson(result);
     }
 
     [Fact]
@@ -46,60 +52,49 @@ public class GraphQlControllerTests
     {
         var query = @"
 {
-  itemWithAttachment
+  withAttachment (argument: ""argumentValue"")
   {
-    name
+    argument
   }
 }";
-        var response = await queryExecutor.ExecuteGet(query);
-        var result = response.ResultStream.ConvertToString();
-        Assert.Equal("{\"data\":{\"itemWithAttachment\":{\"name\":\"TheName\"}}}", result);
-        var responseAttachment = response.Attachments["key"];
-        Assert.Equal("foo", responseAttachment.Stream.ConvertToString());
+        var result = await queryExecutor.ExecuteGet(query);
+        ObjectApprover.VerifyWithJson(result);
     }
 
     [Fact]
     public async Task Post()
     {
-        var mutation = "mutation ($item:ItemInput!){ addItem(item: $item) { itemCount attachmentCount } }";
-        var queryRequest = new PostRequest(mutation)
-        {
-            Variables = new
-            {
-                item = new
-                {
-                    name = "TheName"
-                }
-            }
-        };
-        var response = await queryExecutor.ExecutePost(queryRequest );
-
-        Assert.Equal("{\"data\":{\"addItem\":{\"itemCount\":2,\"attachmentCount\":0}}}", response.ResultStream.ConvertToString());
-        Assert.Empty(response.Attachments);
+        var mutation = @"mutation
+{
+  withAttachment (argument: ""argumentValue"")
+  {
+    argument
+  }
+}";
+        var content = new MultipartFormDataContent();
+        content.AddQueryAndVariables(mutation);
+        var response = await client.PostAsync("graphql", content);
+        var queryResult = await response.ProcessResponse();
+        ObjectApprover.VerifyWithJson(queryResult);
     }
 
     [Fact]
     public async Task Post_with_attachment()
     {
-        var mutation = "mutation ($item:ItemInput!){ addItem(item: $item) { itemCount attachmentCount } }";
-        var postRequest = new PostRequest(mutation)
-        {
-            Variables = new
-            {
-                item = new
-                {
-                    name = "TheName"
-                }
-            },
-            Action = context =>
-            {
-                context.AddAttachment("key", Encoding.UTF8.GetBytes("foo"));
-            }
-        };
-        var response = await queryExecutor.ExecutePost(postRequest);
-        Assert.Equal("{\"data\":{\"addItem\":{\"itemCount\":2,\"attachmentCount\":1}}}", response.ResultStream.ConvertToString());
-        var responseAttachment = response.Attachments["key"];
-        Assert.Equal("foo", responseAttachment.Stream.ConvertToString());
+        var mutation = @"mutation
+{
+  withAttachment (argument: ""argumentValue"")
+  {
+    argument
+  }
+}";
+
+        var content = new MultipartFormDataContent();
+        content.AddQueryAndVariables(mutation);
+        content.AddContent("key", "foo");
+        var response = await client.PostAsync("graphql", content);
+        var queryResult = await response.ProcessResponse();
+        ObjectApprover.VerifyWithJson(queryResult);
     }
 
     static TestServer GetTestServer()

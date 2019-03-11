@@ -1,57 +1,31 @@
-﻿using System;
-using GraphQL.Types;
+﻿using GraphQL.Types;
 
 namespace GraphQL.Attachments
 {
     public static class ContextualAttachments
     {
-        static Func<object, AttachmentContext> contextFunc;
-
-        public static void SetContextFunc(Func<object, AttachmentContext> readAttachmentsFromUserContext)
-        {
-            Guard.AgainstNull(nameof(readAttachmentsFromUserContext), readAttachmentsFromUserContext);
-            contextFunc = readAttachmentsFromUserContext;
-        }
-
         public static IIncomingAttachments IncomingAttachments<TSource>(this ResolveFieldContext<TSource> context)
         {
             Guard.AgainstNull(nameof(context), context);
-            return ReadContextFunc(context.UserContext).Incoming;
+            return context.GetAttachmentContext().Incoming;
         }
 
         public static IOutgoingAttachments OutgoingAttachments<TSource>(this ResolveFieldContext<TSource> context)
         {
             Guard.AgainstNull(nameof(context), context);
-            return ReadContextFunc(context.UserContext).Outgoing;
+            return context.GetAttachmentContext().Outgoing;
         }
 
         public static IOutgoingAttachments OutgoingAttachments(this ResolveFieldContext context)
         {
             Guard.AgainstNull(nameof(context), context);
-            return ReadContextFunc(context.UserContext).Outgoing;
+            return context.GetAttachmentContext().Outgoing;
         }
 
         public static IIncomingAttachments IncomingAttachments(this ResolveFieldContext context)
         {
             Guard.AgainstNull(nameof(context), context);
-            return ReadContextFunc(context.UserContext).Incoming;
-        }
-
-        static AttachmentContext ReadContextFunc(object userContext)
-        {
-            if (contextFunc == null)
-            {
-                throw new Exception($"The Func to read attachment context from the GraphQL UserContext has not been set. Once at startup {nameof(ContextualAttachments)}{nameof(SetContextFunc)} should be called.");
-            }
-
-            var attachments = contextFunc(userContext);
-
-            if (attachments == null)
-            {
-                throw new Exception($"Could not resolve an instance of {nameof(AttachmentContext)}.");
-            }
-
-            return attachments;
+            return context.GetAttachmentContext().Incoming;
         }
     }
 }

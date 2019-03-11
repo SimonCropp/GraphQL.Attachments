@@ -4,7 +4,8 @@ using System.IO;
 
 namespace GraphQL.Attachments
 {
-    public class QueryResult:IDisposable
+    public class QueryResult :
+        IDisposable
     {
         public Stream ResultStream { get; set; }
         public Dictionary<string, Attachment> Attachments { get; set; } = new Dictionary<string, Attachment>();

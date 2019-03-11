@@ -1,5 +1,18 @@
 ﻿{
-  item: {
-    name: 'theName'
+  ExecutionResult: {
+    data: {
+      withAttachment: {
+        argument: 'argumentValue'
+      }
+    }
+  },
+  Attachments: {
+    HasPendingAttachments: true,
+    Inner: {
+      key: {
+        Headers: null,
+        Value: 'Incoming'
+      }
+    }
   }
 }
