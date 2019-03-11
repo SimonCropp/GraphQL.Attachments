@@ -11,16 +11,20 @@ namespace GraphQL
         /// <summary>
         /// Executes a graphql query and makes attachments available.
         /// </summary>
-        public static async Task<AttachmentExecutionResult> ExecuteWithAttachments(this IDocumentExecuter executer, ExecutionOptions options, IIncomingAttachments incoming = null)
+        public static async Task<AttachmentExecutionResult> ExecuteWithAttachments(this IDocumentExecuter executer, ExecutionOptions options, IIncomingAttachments incomingAttachments = null)
         {
-            var attachmentContext = GetAttachmentContext(incoming);
+            var attachmentContext = GetAttachmentContext(incomingAttachments);
 
             Guard.AgainstNull(nameof(executer), executer);
             Guard.AgainstNull(nameof(options), options);
-            var validationMiddleware = new AttachmentMiddleware(attachmentContext);
-            options.FieldMiddleware.Use(next => { return context => validationMiddleware.Resolve(context, next); });
-            var executionResult = await executer.ExecuteAsync(options);
-            return new AttachmentExecutionResult(executionResult, attachmentContext.Outgoing);
+            var middleware = new AttachmentMiddleware(attachmentContext);
+            options.FieldMiddleware.Use(
+                next =>
+                {
+                    return context => middleware.Resolve(context, next);
+                });
+            var result = await executer.ExecuteAsync(options);
+            return new AttachmentExecutionResult(result, attachmentContext.Outgoing);
         }
 
         static AttachmentContext GetAttachmentContext(IIncomingAttachments incoming)

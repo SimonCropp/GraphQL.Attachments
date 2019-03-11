@@ -1,12 +1,17 @@
 ﻿{
   ExecutionResult: {
     data: {
-      item: {
-        name: 'theName'
+      withAttachment: {
+        argument: 'argumentValue'
       }
     }
   },
   Attachments: {
-    Names: []
+    HasPendingAttachments: true,
+    Inner: {
+      key: {
+        BytesInstance: 'SW5jb21pbmc='
+      }
+    }
   }
 }

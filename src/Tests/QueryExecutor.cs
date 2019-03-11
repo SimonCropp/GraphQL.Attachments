@@ -2,26 +2,26 @@
 using System.Linq;
 using System.Threading.Tasks;
 using GraphQL;
+using GraphQL.Attachments;
 using Microsoft.Extensions.DependencyInjection;
 
 static class QueryExecutor
 {
     static DocumentExecuter executer = new DocumentExecuter();
 
-    public static async Task<AttachmentExecutionResult> ExecuteQuery(string queryString, ServiceCollection services, Inputs inputs = null)
+    public static async Task<AttachmentExecutionResult> ExecuteQuery(string queryString, ServiceCollection services, IIncomingAttachments incomingAttachments)
     {
         queryString = queryString.Replace("'", "\"");
         using (var provider = services.BuildServiceProvider())
         using (var schema = new Schema(new FuncDependencyResolver(provider.GetRequiredService)))
         {
-            var executionOptions = new ExecutionOptions
+            var options = new ExecutionOptions
             {
                 Schema = schema,
-                Inputs = inputs,
                 Query = queryString
             };
 
-            var result = await executer.ExecuteWithAttachments(executionOptions);
+            var result = await executer.ExecuteWithAttachments(options,incomingAttachments);
             var executionResult = result.ExecutionResult;
             if (executionResult.Errors != null && executionResult.Errors.Any())
             {
