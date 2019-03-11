@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 
@@ -29,7 +30,12 @@ namespace GraphQL.Attachments
             Inner.Add(name,
                 new Outgoing
                 {
-                    AsyncStreamFactory = streamFactory.WrapStreamFuncTaskInCheck(name),
+                    ContentBuilder = async () =>
+                    {
+                        streamFactory = streamFactory.WrapFuncTaskInCheck(name);
+                        var value = await streamFactory();
+                        return new StreamContent(value);
+                    },
                     Cleanup = cleanup.WrapCleanupInCheck(name),
                     Headers = headers
                 });
@@ -52,7 +58,12 @@ namespace GraphQL.Attachments
             Inner.Add(name,
                 new Outgoing
                 {
-                    StreamFactory = streamFactory.WrapFuncInCheck(name),
+                    ContentBuilder = () =>
+                    {
+                        streamFactory = streamFactory.WrapFuncInCheck(name);
+                        var value = streamFactory();
+                        return Task.FromResult<HttpContent>(new StreamContent(value));
+                    },
                     Cleanup = cleanup.WrapCleanupInCheck(name),
                     Headers = headers
                 });
@@ -65,7 +76,7 @@ namespace GraphQL.Attachments
             Inner.Add(name,
                 new Outgoing
                 {
-                    StreamInstance = stream,
+                    ContentBuilder = () => Task.FromResult<HttpContent>(new StreamContent(stream)),
                     Cleanup = cleanup.WrapCleanupInCheck(name),
                     Headers = headers
                 });
@@ -88,7 +99,12 @@ namespace GraphQL.Attachments
             Inner.Add(name,
                 new Outgoing
                 {
-                    BytesFactory = bytesFactory.WrapFuncInCheck(name),
+                    ContentBuilder = () =>
+                    {
+                        bytesFactory = bytesFactory.WrapFuncInCheck(name);
+                        var value = bytesFactory();
+                        return Task.FromResult<HttpContent>(new ByteArrayContent(value));
+                    },
                     Cleanup = cleanup.WrapCleanupInCheck(name),
                     Headers = headers
                 });
@@ -101,7 +117,7 @@ namespace GraphQL.Attachments
             Inner.Add(name,
                 new Outgoing
                 {
-                    BytesInstance = bytes,
+                    ContentBuilder = () => Task.FromResult<HttpContent>(new ByteArrayContent(bytes)),
                     Cleanup = cleanup.WrapCleanupInCheck(name),
                     Headers = headers
                 });
@@ -119,7 +135,12 @@ namespace GraphQL.Attachments
             Inner.Add(name,
                 new Outgoing
                 {
-                    AsyncBytesFactory = bytesFactory.WrapFuncTaskInCheck(name),
+                    ContentBuilder = async () =>
+                    {
+                        bytesFactory = bytesFactory.WrapFuncTaskInCheck(name);
+                        var value = await bytesFactory();
+                        return new ByteArrayContent(value);
+                    },
                     Cleanup = cleanup.WrapCleanupInCheck(name),
                     Headers = headers
                 });
@@ -142,7 +163,12 @@ namespace GraphQL.Attachments
             Inner.Add(name,
                 new Outgoing
                 {
-                    StringFactory = valueFactory.WrapFuncInCheck(name),
+                    ContentBuilder = () =>
+                    {
+                        valueFactory = valueFactory.WrapFuncInCheck(name);
+                        var value = valueFactory();
+                        return Task.FromResult<HttpContent>(new StringContent(value));
+                    },
                     Cleanup = cleanup.WrapCleanupInCheck(name),
                     Headers = headers
                 });
@@ -155,7 +181,7 @@ namespace GraphQL.Attachments
             Inner.Add(name,
                 new Outgoing
                 {
-                    StringInstance = value,
+                    ContentBuilder = () => Task.FromResult<HttpContent>(new StringContent(value)),
                     Cleanup = cleanup.WrapCleanupInCheck(name),
                     Headers = headers
                 });
@@ -173,7 +199,12 @@ namespace GraphQL.Attachments
             Inner.Add(name,
                 new Outgoing
                 {
-                    AsyncStringFactory = valueFactory.WrapFuncTaskInCheck(name),
+                    ContentBuilder = async () =>
+                    {
+                        valueFactory = valueFactory.WrapFuncTaskInCheck(name);
+                        var value = await valueFactory();
+                        return new StringContent(value);
+                    },
                     Cleanup = cleanup.WrapCleanupInCheck(name),
                     Headers = headers
                 });

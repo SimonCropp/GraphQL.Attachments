@@ -1,19 +1,11 @@
 ﻿using System;
-using System.IO;
+using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 
 public class Outgoing
 {
-    public Func<Task<Stream>> AsyncStreamFactory;
-    public Func<Stream> StreamFactory;
-    public Stream StreamInstance;
-    public Func<Task<byte[]>> AsyncBytesFactory;
-    public Func<byte[]> BytesFactory;
-    public byte[] BytesInstance;
-    public Func<Task<string>> AsyncStringFactory;
-    public Func<string> StringFactory;
-    public string StringInstance;
+    public Func<Task<HttpContent>> ContentBuilder;
     public Action Cleanup;
     public HttpContentHeaders Headers;
 }

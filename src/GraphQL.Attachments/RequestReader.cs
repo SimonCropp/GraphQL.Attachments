@@ -91,19 +91,21 @@ namespace GraphQL.Attachments
 
         static Inputs GetInputs(TryGetValue tryGetValue)
         {
-            if (tryGetValue("variables", out var variablesValues))
+            if (!tryGetValue("variables", out var variablesValues))
             {
-                if (variablesValues.Count != 1)
-                {
-                    throw new Exception("Expected 'variables' to have a single value.");
-                }
+                return new Inputs();
+            }
 
-                var json = variablesValues.ToString();
-                if (json.Length > 0)
-                {
-                    var variables = JObject.Parse(json);
-                    return variables.ToInputs();
-                }
+            if (variablesValues.Count != 1)
+            {
+                throw new Exception("Expected 'variables' to have a single value.");
+            }
+
+            var json = variablesValues.ToString();
+            if (json.Length > 0)
+            {
+                var variables = JObject.Parse(json);
+                return variables.ToInputs();
             }
 
             return new Inputs();

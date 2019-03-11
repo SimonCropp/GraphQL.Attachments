@@ -10,7 +10,7 @@ public class OutgoingConverter : JsonConverter
         writer.WritePropertyName("Headers");
         serializer.Serialize(writer, outgoing.Headers);
         writer.WritePropertyName("Value");
-        var content = outgoing.BuildContent().GetAwaiter().GetResult();
+        var content = outgoing.ContentBuilder().GetAwaiter().GetResult();
         var result = content.ReadAsStringAsync().GetAwaiter().GetResult();
         serializer.Serialize(writer, result);
         writer.WriteEndObject();

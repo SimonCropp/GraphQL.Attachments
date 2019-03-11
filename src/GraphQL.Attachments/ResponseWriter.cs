@@ -36,7 +36,7 @@ namespace GraphQL.Attachments
                 foreach (var outgoingAttachment in outgoingAttachments.Inner)
                 {
                     var outgoing = outgoingAttachment.Value;
-                    var httpContent = await outgoing.BuildContent();
+                    var httpContent = await outgoing.ContentBuilder();
                     if (outgoing.Headers != null)
                     {
                         foreach (var header in outgoing.Headers)
