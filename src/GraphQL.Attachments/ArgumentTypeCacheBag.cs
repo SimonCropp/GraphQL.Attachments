@@ -11,11 +11,6 @@ static class ArgumentTypeCacheBag
         return GetAttachmentContext(context.UserContext);
     }
 
-    public static void SetAttachmentContext(this ResolveFieldContext context, AttachmentContext cache)
-    {
-        UserContextAsDictionary(context.UserContext).Add("GraphQL.Attachments.AttachmentContext", cache);
-    }
-    
     public static AttachmentContext GetAttachmentContext<T>(this ResolveFieldContext<T> context)
     {
         return GetAttachmentContext(context.UserContext);

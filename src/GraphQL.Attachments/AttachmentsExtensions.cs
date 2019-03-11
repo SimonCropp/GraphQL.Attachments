@@ -28,7 +28,7 @@ namespace GraphQL
         {
             if (options.UserContext == null)
             {
-                options.UserContext = new Dictionary<string, object>()
+                options.UserContext = new Dictionary<string, object>
                 {
                     {"GraphQL.Attachments.AttachmentContext", attachmentContext}
                 };
