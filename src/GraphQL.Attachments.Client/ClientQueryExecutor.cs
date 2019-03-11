@@ -82,29 +82,12 @@ namespace GraphQL.Attachments
         {
             var compressed = Compress.Query(request.Query);
             var variablesString = GraphQlRequestAppender.ToJson(request.Variables);
-            var getUri = GetUri(variablesString, compressed, request.OperationName);
+            var getUri = UriBuilder.GetUri(uri, variablesString, compressed, request.OperationName);
 
             var getRequest = new HttpRequestMessage(HttpMethod.Get, getUri);
             request.HeadersAction?.Invoke(getRequest.Headers);
             var response = await client.SendAsync(getRequest, cancellation);
             await ResponseParser.ProcessResponse(response, handler, cancellation);
-        }
-
-        string GetUri(string variablesString, string compressed, string operationName)
-        {
-            var getUri = $"{uri}?query={compressed}";
-
-            if (variablesString != null)
-            {
-                getUri += $"&variables={variablesString}";
-            }
-
-            if (operationName != null)
-            {
-                getUri += $"&operationName={operationName}";
-            }
-
-            return getUri;
         }
     }
 }
