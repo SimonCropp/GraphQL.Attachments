@@ -1,0 +1,23 @@
+﻿{
+  ResultStream: {
+  "data": {
+    "withAttachment": {
+      "argument": "argumentValue"
+    }
+  }
+},
+  Attachments: {
+    key: {
+      Name: 'key',
+      Metadata: [
+        {
+          Key: 'Content-Disposition',
+          Value: [
+            'form-data; name=key; filename=key; filename*=utf-8\'\'key'
+          ]
+        }
+      ],
+      Value: 'foo'
+    }
+  }
+}

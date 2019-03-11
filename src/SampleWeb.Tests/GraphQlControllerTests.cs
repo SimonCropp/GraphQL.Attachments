@@ -59,45 +59,38 @@ public class GraphQlControllerTests:
     [Fact]
     public async Task Post()
     {
-        var mutation = "mutation ($item:ItemInput!){ addItem(item: $item) { itemCount attachmentCount } }";
-        var queryRequest = new PostRequest(mutation)
-        {
-            Variables = new
-            {
-                item = new
-                {
-                    name = "TheName"
-                }
-            }
-        };
-        var response = await queryExecutor.ExecutePost(queryRequest );
+        var mutation = @"mutation
+{
+  withAttachment (argument: ""argumentValue"")
+  {
+    argument
+  }
+}";
+        var queryRequest = new PostRequest(mutation);
+        var result = await queryExecutor.ExecutePost(queryRequest );
 
-        Assert.Equal("{\"data\":{\"addItem\":{\"itemCount\":2,\"attachmentCount\":0}}}", response.ResultStream.ConvertToString());
-        Assert.Empty(response.Attachments);
+        ObjectApprover.VerifyWithJson(result);
     }
 
     [Fact]
     public async Task Post_with_attachment()
     {
-        var mutation = "mutation ($item:ItemInput!){ addItem(item: $item) { itemCount attachmentCount } }";
+        var mutation = @"mutation
+{
+  withAttachment (argument: ""argumentValue"")
+  {
+    argument
+  }
+}";
         var postRequest = new PostRequest(mutation)
         {
-            Variables = new
-            {
-                item = new
-                {
-                    name = "TheName"
-                }
-            },
             Action = context =>
             {
                 context.AddAttachment("key", Encoding.UTF8.GetBytes("foo"));
             }
         };
-        var response = await queryExecutor.ExecutePost(postRequest);
-        Assert.Equal("{\"data\":{\"addItem\":{\"itemCount\":2,\"attachmentCount\":1}}}", response.ResultStream.ConvertToString());
-        var responseAttachment = response.Attachments["key"];
-        Assert.Equal("foo", responseAttachment.Stream.ConvertToString());
+        var result = await queryExecutor.ExecutePost(postRequest);
+        ObjectApprover.VerifyWithJson(result);
     }
 
     static TestServer GetTestServer()

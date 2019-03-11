@@ -3,8 +3,8 @@ using Newtonsoft.Json;
 
 namespace GraphQL.Attachments
 {
-    public static class GraphQlRequestAppender{
-
+    public static class GraphQlRequestAppender
+    {
         public static void AddQueryAndVariables(this MultipartFormDataContent content, string query, object variables, string operationName)
         {
             content.Add(new StringContent(query), "query");
