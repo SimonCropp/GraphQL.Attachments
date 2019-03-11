@@ -8,6 +8,7 @@ public class TestBase
 
         SerializerBuilder.ExtraSettings= settings =>
         {
+            settings.Converters.Add(new OutgoingConverter());
             settings.Converters.Add(new AttachmentStreamConverter());
             settings.Converters.Add(new OutgoingAttachmentsConverter());
         };

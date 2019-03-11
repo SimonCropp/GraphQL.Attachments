@@ -10,7 +10,8 @@
     HasPendingAttachments: true,
     Inner: {
       key: {
-        BytesInstance: 'SW5jb21pbmc='
+        Headers: null,
+        Value: 'Incoming'
       }
     }
   }
