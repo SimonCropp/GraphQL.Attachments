@@ -1,41 +1,34 @@
 ﻿using System;
+using System.IO;
+using System.Linq;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
-using GraphQL.Attachments;
 
-static class ResponseParser
+namespace GraphQL.Attachments
 {
-    public static async Task ProcessResponse(HttpResponseMessage response, QueryResponseHandler handler, CancellationToken cancellation = default)
+    public static class ResponseParser
     {
-        if (!response.IsMultipart())
+        public static async Task ProcessResponse(this HttpResponseMessage response, Action<Stream> resultAction, Action<Attachment> attachmentAction, CancellationToken cancellation = default)
         {
-            handler.ResultAction(await response.Content.ReadAsStreamAsync());
-            return;
-        }
-
-        var multipart = await response.Content.ReadAsMultipartAsync(cancellation);
-        var resultProcessed = false;
-        foreach (var content in multipart.Contents)
-        {
-            var name = content.Headers.ContentDisposition.Name;
-            var stream = await content.ReadAsStreamAsync();
-            if (name == null)
+            if (!response.IsMultipart())
             {
-                if (resultProcessed)
-                {
-                    throw new Exception("Expected the multipart response to contain a single un-named part which contains the graphql response data.");
-                }
-
-                resultProcessed = true;
-                handler.ResultAction(stream);
+                resultAction(await response.Content.ReadAsStreamAsync());
+                return;
             }
-            else
+
+            var multipart = await response.Content.ReadAsMultipartAsync(cancellation);
+            await ProcessBody(multipart, resultAction);
+
+            foreach (var content in multipart.Contents.Skip(1))
             {
-                if (handler.AttachmentAction == null)
+                if (attachmentAction == null)
                 {
                     throw new Exception("Found an attachment but handler had no AttachmentAction.");
                 }
+
+                var name = content.Headers.ContentDisposition.Name;
+                var stream = await content.ReadAsStreamAsync();
 
                 var attachment = new Attachment
                 {
@@ -43,13 +36,26 @@ static class ResponseParser
                     Stream = stream,
                     Headers = content.Headers,
                 };
-                handler.AttachmentAction(attachment);
+                attachmentAction(attachment);
             }
         }
 
-        if (!resultProcessed)
+        static async Task ProcessBody(MultipartStreamProvider multipart, Action<Stream> resultAction)
         {
-            throw new Exception("Expected the multipart response to contain a single un-named part which contains the graphql response data.");
+            var first = multipart.Contents.FirstOrDefault();
+            if (first == null)
+            {
+                throw new Exception("Expected the multipart response have at least one part which contains the graphql response data.");
+            }
+
+            var name = first.Headers.ContentDisposition.Name;
+            if (name != null)
+            {
+                throw new Exception("Expected the first part in the multipart response to be un-named.");
+            }
+
+            var stream = await first.ReadAsStreamAsync();
+            resultAction(stream);
         }
     }
 }

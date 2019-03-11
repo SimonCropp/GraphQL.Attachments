@@ -22,36 +22,36 @@ namespace GraphQL.Attachments
                 return;
             }
 
-            if (outgoingAttachments.HasPendingAttachments)
+            if (!outgoingAttachments.HasPendingAttachments)
             {
-                using (var multipartContent = new MultipartFormDataContent())
-                {
-                    foreach (var outgoingAttachment in outgoingAttachments.Inner)
-                    {
-                        var outgoing = outgoingAttachment.Value;
-                        var httpContent = await outgoing.BuildContent();
-                        if (outgoing.Headers != null)
-                        {
-                            foreach (var header in outgoing.Headers)
-                            {
-                                httpContent.Headers.Add(header.Key, header.Value);
-                            }
-                        }
-
-                        multipartContent.Add(httpContent, outgoingAttachment.Key, outgoingAttachment.Key);
-                    }
-
-                    var serializedResult = JsonConvert.SerializeObject(result);
-                    multipartContent.Add(new StringContent(serializedResult));
-                    httpResponse.ContentLength = multipartContent.Headers.ContentLength;
-                    httpResponse.ContentType = multipartContent.Headers.ContentType.ToString();
-                    await multipartContent.CopyToAsync(responseBody);
-                }
-
+                await WriteResult(responseBody, result);
                 return;
             }
 
-            await WriteResult(responseBody, result);
+            using (var multipartContent = new MultipartFormDataContent())
+            {
+                var serializedResult = JsonConvert.SerializeObject(result);
+                multipartContent.Add(new StringContent(serializedResult));
+
+                foreach (var outgoingAttachment in outgoingAttachments.Inner)
+                {
+                    var outgoing = outgoingAttachment.Value;
+                    var httpContent = await outgoing.BuildContent();
+                    if (outgoing.Headers != null)
+                    {
+                        foreach (var header in outgoing.Headers)
+                        {
+                            httpContent.Headers.Add(header.Key, header.Value);
+                        }
+                    }
+
+                    multipartContent.Add(httpContent, outgoingAttachment.Key, outgoingAttachment.Key);
+                }
+
+                httpResponse.ContentLength = multipartContent.Headers.ContentLength;
+                httpResponse.ContentType = multipartContent.Headers.ContentType.ToString();
+                await multipartContent.CopyToAsync(responseBody);
+            }
         }
 
         static async Task WriteResult(Stream stream, ExecutionResult result)
