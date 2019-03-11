@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Net.Http;
 
-static class HttpExtensions
+public static class HttpExtensions
 {
     public static bool IsMultipart(this HttpResponseMessage response)
     {

@@ -1,6 +1,5 @@
 ﻿using System.Text;
 using System.Threading.Tasks;
-using ApprovalTests;
 using GraphQL.Attachments;
 using GraphQL.Introspection;
 using Microsoft.AspNetCore.Hosting;

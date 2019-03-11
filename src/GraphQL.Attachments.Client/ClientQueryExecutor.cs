@@ -1,7 +1,6 @@
 ﻿using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
 
 namespace GraphQL.Attachments
 {
@@ -44,7 +43,7 @@ namespace GraphQL.Attachments
         {
             Guard.AgainstNull(nameof(handler), handler);
             var content = new MultipartFormDataContent();
-            AddQueryAndVariables(content, request.Query, request.Variables, request.OperationName);
+            content.AddQueryAndVariables(request.Query, request.Variables, request.OperationName);
 
             if (request.Action != null)
             {
@@ -82,7 +81,7 @@ namespace GraphQL.Attachments
         public async Task ExecuteGet(GetRequest request, QueryResponseHandler handler, CancellationToken cancellation = default)
         {
             var compressed = Compress.Query(request.Query);
-            var variablesString = ToJson(request.Variables);
+            var variablesString = GraphQlRequestAppender.ToJson(request.Variables);
             var getUri = GetUri(variablesString, compressed, request.OperationName);
 
             var getRequest = new HttpRequestMessage(HttpMethod.Get, getUri);
@@ -93,7 +92,7 @@ namespace GraphQL.Attachments
 
         string GetUri(string variablesString, string compressed, string operationName)
         {
-            var getUri= $"{uri}?query={compressed}";
+            var getUri = $"{uri}?query={compressed}";
 
             if (variablesString != null)
             {
@@ -106,31 +105,6 @@ namespace GraphQL.Attachments
             }
 
             return getUri;
-        }
-
-        static void AddQueryAndVariables(MultipartFormDataContent content, string query, object variables, string operationName)
-        {
-            content.Add(new StringContent(query), "query");
-
-            if (operationName != null)
-            {
-                content.Add(new StringContent(operationName), "operationName");
-            }
-
-            if (variables != null)
-            {
-                content.Add(new StringContent(ToJson(variables)), "variables");
-            }
-        }
-
-        static string ToJson(object target)
-        {
-            if (target == null)
-            {
-                return "";
-            }
-
-            return JsonConvert.SerializeObject(target);
         }
     }
 }
