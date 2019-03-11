@@ -34,6 +34,7 @@ public class GraphQlController : ControllerBase
 
     async Task Execute(CancellationToken cancellation, string query, string operationName, IIncomingAttachments incomingAttachments, Inputs inputs)
     {
+
         var executionOptions = new ExecutionOptions
         {
             Schema = schema,

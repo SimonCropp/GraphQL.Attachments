@@ -8,31 +8,37 @@ static class ArgumentTypeCacheBag
 {
     public static AttachmentContext GetAttachmentContext(this ResolveFieldContext context)
     {
-        return GetAttachmentContext(context.Arguments);
+        return GetAttachmentContext(context.UserContext);
     }
 
     public static void SetAttachmentContext(this ResolveFieldContext context, AttachmentContext cache)
     {
-        context.Arguments.Add("GraphQL.Attachments.AttachmentContext", cache);
+        UserContextAsDictionary(context.UserContext).Add("GraphQL.Attachments.AttachmentContext", cache);
     }
-
-    public static void RemoveAttachmentContext(this ResolveFieldContext context)
-    {
-        context.Arguments.Remove("GraphQL.Attachments.AttachmentContext");
-    }
-
+    
     public static AttachmentContext GetAttachmentContext<T>(this ResolveFieldContext<T> context)
     {
-        return GetAttachmentContext(context.Arguments);
+        return GetAttachmentContext(context.UserContext);
     }
 
-    static AttachmentContext GetAttachmentContext(Dictionary<string, object> arguments)
+    static AttachmentContext GetAttachmentContext(object userContext)
     {
-        if (arguments.TryGetValue("GraphQL.Attachments.AttachmentContext", out var result))
+        var dictionary = UserContextAsDictionary(userContext);
+
+        if (dictionary.TryGetValue("GraphQL.Attachments.AttachmentContext", out var result))
         {
             return (AttachmentContext) result;
         }
 
         throw new Exception($"Could not extract {nameof(AttachmentContext)} from ResolveFieldContext.Arguments. It is possible {nameof(AttachmentsExtensions)}.{nameof(AttachmentsExtensions.ExecuteWithAttachments)} was not used.");
+    }
+
+    static IDictionary<string, object> UserContextAsDictionary(object userContext)
+    {
+        if (userContext is IDictionary<string, object> dictionary)
+        {
+            return dictionary;
+        }
+        throw new Exception("Expected UserContext to be of type IDictionary<string, object>.");
     }
 }

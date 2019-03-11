@@ -1,4 +1,4 @@
-﻿using System.Text;
+﻿using System.Net.Http;
 using System.Threading.Tasks;
 using GraphQL.Attachments;
 using GraphQL.Introspection;
@@ -11,14 +11,19 @@ using Xunit.Abstractions;
 public class GraphQlControllerTests:
     TestBase
 {
-    ClientQueryExecutor queryExecutor;
+    static ClientQueryExecutor queryExecutor;
+    static TestServer server;
+    static HttpClient client;
 
+    static GraphQlControllerTests()
+    {
+        server = GetTestServer();
+        client = server.CreateClient();
+        queryExecutor = new ClientQueryExecutor(client);
+    }
     public GraphQlControllerTests(ITestOutputHelper output) :
         base(output)
     {
-        var server = GetTestServer();
-        var client = server.CreateClient();
-        queryExecutor = new ClientQueryExecutor(client);
     }
 
     [Fact]
@@ -66,10 +71,11 @@ public class GraphQlControllerTests:
     argument
   }
 }";
-        var queryRequest = new PostRequest(mutation);
-        var result = await queryExecutor.ExecutePost(queryRequest );
-
-        ObjectApprover.VerifyWithJson(result);
+        var content = new MultipartFormDataContent();
+        content.AddQueryAndVariables(mutation);
+        var response = await client.PostAsync("graphql", content);
+        var queryResult = await response.ProcessResponse();
+        ObjectApprover.VerifyWithJson(queryResult);
     }
 
     [Fact]
@@ -82,15 +88,13 @@ public class GraphQlControllerTests:
     argument
   }
 }";
-        var postRequest = new PostRequest(mutation)
-        {
-            Action = context =>
-            {
-                context.AddAttachment("key", Encoding.UTF8.GetBytes("foo"));
-            }
-        };
-        var result = await queryExecutor.ExecutePost(postRequest);
-        ObjectApprover.VerifyWithJson(result);
+
+        var content = new MultipartFormDataContent();
+        content.AddQueryAndVariables(mutation);
+        content.AddContent("key", "foo");
+        var response = await client.PostAsync("graphql", content);
+        var queryResult = await response.ProcessResponse();
+        ObjectApprover.VerifyWithJson(queryResult);
     }
 
     static TestServer GetTestServer()

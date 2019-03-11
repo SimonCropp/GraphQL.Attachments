@@ -30,7 +30,6 @@ namespace GraphQL.Attachments
             return ExecutePost(new PostRequest(query), cancellation);
         }
 
-
         public async Task<QueryResult> ExecutePost(PostRequest request, CancellationToken cancellation = default)
         {
             var queryResult = new QueryResult();

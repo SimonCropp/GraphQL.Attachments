@@ -9,6 +9,17 @@ namespace GraphQL.Attachments
 {
     public static class ResponseParser
     {
+        public static async Task<QueryResult> ProcessResponse(this HttpResponseMessage response, CancellationToken cancellation = default)
+        {
+            var queryResult = new QueryResult();
+            await ProcessResponse(
+                response,
+                resultAction: stream => queryResult.ResultStream = stream,
+                attachmentAction: attachment => queryResult.Attachments.Add(attachment.Name, attachment),
+                cancellation);
+            return queryResult;
+        }
+
         public static async Task ProcessResponse(this HttpResponseMessage response, Action<Stream> resultAction, Action<Attachment> attachmentAction, CancellationToken cancellation = default)
         {
             if (!response.IsMultipart())

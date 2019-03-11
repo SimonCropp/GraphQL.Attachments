@@ -20,12 +20,13 @@ public abstract class BaseRootGraph : ObjectGraphType
             resolve: context =>
             {
                 var incomingAttachments = context.IncomingAttachments();
+                var outgoingAttachments = context.OutgoingAttachments();
                 foreach (var incoming in incomingAttachments.Values)
                 {
                     using (var memoryStream = new MemoryStream())
                     {
                         incoming.CopyTo(memoryStream);
-                        context.OutgoingAttachments().AddBytes(incoming.Name, memoryStream.ToArray());
+                        outgoingAttachments.AddBytes(incoming.Name, memoryStream.ToArray());
                     }
                 }
 
