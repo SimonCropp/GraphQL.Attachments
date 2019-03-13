@@ -1,4 +1,6 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Text;
@@ -28,6 +30,7 @@ namespace GraphQL.Attachments
                 return;
             }
 
+            var httpContents = new List<HttpContent>();
             using (var multipartContent = new MultipartFormDataContent())
             {
                 var serializedResult = JsonConvert.SerializeObject(result);
@@ -37,6 +40,7 @@ namespace GraphQL.Attachments
                 {
                     var outgoing = outgoingAttachment.Value;
                     var httpContent = await outgoing.ContentBuilder();
+                    httpContents.Add(httpContent);
                     if (outgoing.Headers != null)
                     {
                         foreach (var header in outgoing.Headers)
@@ -51,6 +55,16 @@ namespace GraphQL.Attachments
                 httpResponse.ContentLength = multipartContent.Headers.ContentLength;
                 httpResponse.ContentType = multipartContent.Headers.ContentType.ToString();
                 await multipartContent.CopyToAsync(responseBody);
+            }
+
+            foreach (var httpContent in httpContents)
+            {
+                httpContent.Dispose();
+            }
+
+            foreach (var cleanup in outgoingAttachments.Inner.Select(x=>x.Value.Cleanup))
+            {
+                cleanup?.Invoke();
             }
         }
 
