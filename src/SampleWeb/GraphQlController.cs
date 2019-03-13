@@ -5,6 +5,8 @@ using GraphQL.Attachments;
 using GraphQL.Types;
 using Microsoft.AspNetCore.Mvc;
 
+#region Controller
+
 [Route("[controller]")]
 [ApiController]
 public class GraphQlController : ControllerBase
@@ -34,7 +36,6 @@ public class GraphQlController : ControllerBase
 
     async Task Execute(CancellationToken cancellation, string query, string operationName, IIncomingAttachments incomingAttachments, Inputs inputs)
     {
-
         var executionOptions = new ExecutionOptions
         {
             Schema = schema,
@@ -53,3 +54,5 @@ public class GraphQlController : ControllerBase
         await ResponseWriter.WriteResult(Response, result);
     }
 }
+
+#endregion
