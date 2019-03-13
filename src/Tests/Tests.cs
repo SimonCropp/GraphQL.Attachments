@@ -39,7 +39,7 @@ mutation
         ObjectApprover.VerifyWithJson(result);
     }
 
-    static async Task<AttachmentExecutionResult> RunQuery(string queryString)
+    static Task<AttachmentExecutionResult> RunQuery(string queryString)
     {
         var incomingAttachments = new IncomingAttachments();
         var memoryStream = BuildStream();
@@ -52,8 +52,7 @@ mutation
 
         TestServices.AddGraphQlTestTypes(services);
 
-        var executeQuery = await QueryExecutor.ExecuteQuery(queryString, services, incomingAttachments);
-        return executeQuery;
+        return QueryExecutor.ExecuteQuery(queryString, services, incomingAttachments);
     }
 
     static MemoryStream BuildStream()
