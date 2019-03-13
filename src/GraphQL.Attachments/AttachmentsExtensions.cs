@@ -22,7 +22,6 @@ namespace GraphQL
             return new AttachmentExecutionResult(result, attachmentContext.Outgoing);
         }
 
-
         static AttachmentContext BuildAttachmentContext(IIncomingAttachments incoming)
         {
             if (incoming == null)
