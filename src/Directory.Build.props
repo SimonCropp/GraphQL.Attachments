@@ -5,7 +5,6 @@
     <LangVersion>latest</LangVersion>
     <NoWarn>CS1591;NU5104</NoWarn>
     <Version>0.4.1</Version>
-    <AssemblyInformationalVersion>$(Version)</AssemblyInformationalVersion>
     <Authors>Simon Cropp</Authors>
     <PackageLicenseUrl>http://www.opensource.org/licenses/mit-license.php</PackageLicenseUrl>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>

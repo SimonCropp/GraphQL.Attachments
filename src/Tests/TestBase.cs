@@ -1,4 +1,5 @@
-﻿using ObjectApproval;
+﻿using GraphQL.Attachments;
+using ObjectApproval;
 using Xunit.Abstractions;
 
 public class TestBase

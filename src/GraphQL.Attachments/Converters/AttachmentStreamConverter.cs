@@ -1,30 +1,32 @@
 ﻿using System;
 using System.IO;
-using GraphQL.Attachments;
 using Newtonsoft.Json;
 
-public class AttachmentStreamConverter : JsonConverter
+namespace GraphQL.Attachments
 {
-    public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+    public class AttachmentStreamConverter : JsonConverter
     {
-        var attachment = (AttachmentStream) value;
-        writer.WriteStartObject();
-        writer.WritePropertyName("Name");
-        serializer.Serialize(writer, attachment.Name);
-        writer.WritePropertyName("Metadata");
-        serializer.Serialize(writer, attachment.Metadata);
-        writer.WritePropertyName("Value");
-        serializer.Serialize(writer, new StreamReader(attachment).ReadToEnd());
-        writer.WriteEndObject();
-    }
+        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+        {
+            var attachment = (AttachmentStream) value;
+            writer.WriteStartObject();
+            writer.WritePropertyName("Name");
+            serializer.Serialize(writer, attachment.Name);
+            writer.WritePropertyName("Metadata");
+            serializer.Serialize(writer, attachment.Metadata);
+            writer.WritePropertyName("Value");
+            serializer.Serialize(writer, new StreamReader(attachment).ReadToEnd());
+            writer.WriteEndObject();
+        }
 
-    public override object ReadJson(JsonReader reader, Type type, object value, JsonSerializer serializer)
-    {
-        throw new NotImplementedException();
-    }
+        public override object ReadJson(JsonReader reader, Type type, object value, JsonSerializer serializer)
+        {
+            throw new NotImplementedException();
+        }
 
-    public override bool CanConvert(Type type)
-    {
-        return typeof(AttachmentStream).IsAssignableFrom(type);
+        public override bool CanConvert(Type type)
+        {
+            return typeof(AttachmentStream).IsAssignableFrom(type);
+        }
     }
 }

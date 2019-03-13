@@ -73,6 +73,7 @@ namespace GraphQL.Attachments
 
         public string Name { get; }
         public override long Length { get; }
+
         /// <summary>
         /// The attachment metadata.
         /// </summary>

@@ -22,10 +22,7 @@ namespace GraphQL.Attachments
 
         public void Dispose()
         {
-            if (Incoming is IDisposable disposable)
-            {
-                disposable.Dispose();
-            }
+            Incoming.Dispose();
         }
     }
 }
