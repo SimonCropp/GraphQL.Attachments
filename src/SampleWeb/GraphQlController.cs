@@ -21,27 +21,31 @@ public class GraphQlController :
         this.executer = executer;
     }
 
+    #region ControllerPost
     [HttpPost]
     public Task Post(CancellationToken cancellation)
     {
-        RequestReader.ReadPost(Request, out var query, out var inputs, out var incomingAttachments, out var operationName);
-        return Execute(cancellation, query, operationName, incomingAttachments, inputs);
+        RequestReader.ReadPost(Request, out var query, out var inputs, out var incomingAttachments, out var operation);
+        return Execute(query, operation, incomingAttachments, inputs, cancellation);
     }
+    #endregion
 
+    #region ControllerGet
     [HttpGet]
     public Task Get(CancellationToken cancellation)
     {
-        RequestReader.ReadGet(Request, out var query, out var inputs, out var operationName);
-        return Execute(cancellation, query, operationName, null, inputs);
+        RequestReader.ReadGet(Request, out var query, out var inputs, out var operation);
+        return Execute(query, operation, null, inputs,cancellation);
     }
+    #endregion
 
-    async Task Execute(CancellationToken cancellation, string query, string operationName, IIncomingAttachments incomingAttachments, Inputs inputs)
+    async Task Execute(string query, string operation, IIncomingAttachments incomingAttachments, Inputs inputs, CancellationToken cancellation)
     {
         var executionOptions = new ExecutionOptions
         {
             Schema = schema,
             Query = query,
-            OperationName = operationName,
+            OperationName = operation,
             Inputs = inputs,
             CancellationToken = cancellation,
 #if (DEBUG)
@@ -51,8 +55,12 @@ public class GraphQlController :
 #endif
         };
 
+        #region ExecuteWithAttachments
         var result = await executer.ExecuteWithAttachments(executionOptions, incomingAttachments);
+        #endregion
+        #region ResponseWriter
         await ResponseWriter.WriteResult(Response, result);
+        #endregion
     }
 }
 

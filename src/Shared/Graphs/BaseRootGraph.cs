@@ -8,16 +8,28 @@ public abstract class BaseRootGraph :
     protected BaseRootGraph()
     {
         Name = GetType().Name;
+
         Field<ResultGraph>(
             "noAttachment",
-            arguments: BuildArguments(),
+            arguments: new QueryArguments(
+                new QueryArgument<NonNullGraphType<StringGraphType>>
+                {
+                    Name = "argument"
+                }
+            ),
             resolve: context => new Result
             {
-                Argument = GetArgumentValue(context),
+                Argument = context.GetArgument<string>("argument"),
             });
+        #region UsageInGraphs
         Field<ResultGraph>(
             "withAttachment",
-            arguments: BuildArguments(),
+            arguments: new QueryArguments(
+                new QueryArgument<NonNullGraphType<StringGraphType>>
+                {
+                    Name = "argument"
+                }
+            ),
             resolve: context =>
             {
                 var incomingAttachments = context.IncomingAttachments();
@@ -31,23 +43,10 @@ public abstract class BaseRootGraph :
 
                 return new Result
                 {
-                    Argument = GetArgumentValue(context),
+                    Argument = context.GetArgument<string>("argument"),
                 };
             });
-    }
 
-    static string GetArgumentValue(ResolveFieldContext<object> context)
-    {
-        return context.GetArgument<string>("argument");
-    }
-
-    static QueryArguments BuildArguments()
-    {
-        return new QueryArguments(
-            new QueryArgument<NonNullGraphType<StringGraphType>>
-            {
-                Name = "argument"
-            }
-        );
+        #endregion
     }
 }
