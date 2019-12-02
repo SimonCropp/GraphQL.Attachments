@@ -16,7 +16,11 @@ namespace GraphQL.Attachments
             writer.WritePropertyName("Metadata");
             serializer.Serialize(writer, attachment.Headers);
             writer.WritePropertyName("Value");
-            serializer.Serialize(writer, new StreamReader(attachment.Stream).ReadToEnd());
+            using (var reader = new StreamReader(attachment.Stream))
+            {
+                serializer.Serialize(writer, reader.ReadToEnd());
+            }
+
             writer.WriteEndObject();
         }
 
