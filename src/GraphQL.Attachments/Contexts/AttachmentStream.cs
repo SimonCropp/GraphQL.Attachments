@@ -108,6 +108,12 @@ namespace GraphQL.Attachments
             inner.Dispose();
         }
 
+        public override async ValueTask DisposeAsync()
+        {
+            await base.DisposeAsync();
+            await inner.DisposeAsync();
+        }
+
         public override int EndRead(IAsyncResult asyncResult)
         {
             return inner.EndRead(asyncResult);

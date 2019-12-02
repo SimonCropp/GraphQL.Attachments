@@ -2,7 +2,6 @@
 
   <PropertyGroup>
     <TargetFrameworks>netstandard2.1</TargetFrameworks>
-    <Description>Add attachment support to GraphQL</Description>
   </PropertyGroup>
 
   <ItemGroup>

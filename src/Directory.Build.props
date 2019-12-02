@@ -1,21 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project>
   <PropertyGroup>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <LangVersion>latest</LangVersion>
     <NoWarn>CS1591;NU5104</NoWarn>
-    <Version>0.4.1</Version>
-    <Authors>Simon Cropp</Authors>
-    <PackageLicenseUrl>http://www.opensource.org/licenses/mit-license.php</PackageLicenseUrl>
-    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-    <Copyright>Copyright $([System.DateTime]::UtcNow.ToString(yyyy)) Simon Cropp. All rights reserved</Copyright>
+    <Version>0.5.0</Version>
     <PackageTags>GraphQL, Attachments</PackageTags>
-    <PackageIconUrl>https://raw.githubusercontent.com/SimonCropp/GraphQL.Attachments/master/icon.png</PackageIconUrl>
-    <PackageProjectUrl>http://github.com/SimonCropp/GraphQL.Attachments</PackageProjectUrl>
-    <EmbedUntrackedSources>true</EmbedUntrackedSources>
-    <PublishRepositoryUrl>true</PublishRepositoryUrl>
-    <PackageOutputPath>..\..\nugets</PackageOutputPath>
-    <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <SignAssembly>false</SignAssembly>
+    <Description>Add attachment support to GraphQL</Description>
   </PropertyGroup>
 </Project>
