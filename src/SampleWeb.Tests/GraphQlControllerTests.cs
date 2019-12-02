@@ -30,7 +30,7 @@ public class GraphQlControllerTests :
     [Fact]
     public async Task GetIntrospection()
     {
-        var result = await queryExecutor.ExecuteGet(SchemaIntrospection.IntrospectionQuery);
+        await using var result = await queryExecutor.ExecuteGet(SchemaIntrospection.IntrospectionQuery);
         await Verify(result);
     }
 
