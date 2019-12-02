@@ -10,7 +10,7 @@ To change this file edit the source file and then run MarkdownSnippets.
 [![Build status](https://ci.appveyor.com/api/projects/status/wq5ox06crbl9c2py/branch/master?svg=true)](https://ci.appveyor.com/project/SimonCropp/GraphQL.Attachments)
 [![NuGet Status](https://img.shields.io/nuget/v/GraphQL.Attachments.svg?cacheSeconds=86400)](https://www.nuget.org/packages/GraphQL.Attachments/)
 
-GraphQL.Attachments provides a bridge between an HTTP stream (via JavaScript on a web page) and exposes that stream to a [GraphQL](https://graphql-dotnet.github.io/) [Mutation](https://graphql-dotnet.github.io/docs/getting-started/mutations/) or [Query](https://graphql-dotnet.github.io/docs/getting-started/queries). Attachments are transfered via a [multipart form](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Disposition).
+Provides access to a HTTP stream (via JavaScript on a web page) in [GraphQL](https://graphql-dotnet.github.io/) [Mutations](https://graphql-dotnet.github.io/docs/getting-started/mutations/) or [Queries](https://graphql-dotnet.github.io/docs/getting-started/queries). Attachments are transfered via a [multipart form](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Disposition).
 
 
 <!-- toc -->
