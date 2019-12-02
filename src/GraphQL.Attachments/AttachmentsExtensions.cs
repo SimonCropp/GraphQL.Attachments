@@ -13,8 +13,7 @@ namespace GraphQL
         /// </summary>
         public static async Task<AttachmentExecutionResult> ExecuteWithAttachments(this IDocumentExecuter executer, ExecutionOptions options, IIncomingAttachments? incomingAttachments = null)
         {
-            var attachmentContext = BuildAttachmentContext(incomingAttachments);
-
+            await using var attachmentContext = BuildAttachmentContext(incomingAttachments);
             Guard.AgainstNull(nameof(executer), executer);
             Guard.AgainstNull(nameof(options), options);
             options.SetAttachmentContext(attachmentContext);

@@ -1,9 +1,10 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 namespace GraphQL.Attachments
 {
     public class AttachmentContext :
-        IDisposable
+        IAsyncDisposable
     {
         public IIncomingAttachments Incoming { get; }
         public IOutgoingAttachments Outgoing { get; }
@@ -21,9 +22,9 @@ namespace GraphQL.Attachments
             Outgoing = new OutgoingAttachments();
         }
 
-        public void Dispose()
+        public ValueTask DisposeAsync()
         {
-            Incoming.Dispose();
+            return Incoming.DisposeAsync();
         }
     }
 }

@@ -2,15 +2,19 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Threading.Tasks;
 using GraphQL.Attachments;
 
-class IncomingAttachments : Dictionary<string, AttachmentStream>, IIncomingAttachments, IDisposable
+class IncomingAttachments :
+    Dictionary<string, AttachmentStream>,
+    IIncomingAttachments
 {
     public IncomingAttachments()
     {
     }
 
-    public IncomingAttachments(Dictionary<string, AttachmentStream> dictionary) : base(dictionary)
+    public IncomingAttachments(Dictionary<string, AttachmentStream> dictionary) :
+        base(dictionary)
     {
         Guard.AgainstNull(nameof(dictionary), dictionary);
     }
@@ -48,11 +52,11 @@ class IncomingAttachments : Dictionary<string, AttachmentStream>, IIncomingAttac
         }
     }
 
-    public void Dispose()
+    public async ValueTask DisposeAsync()
     {
         foreach (var stream in Values)
         {
-            stream.Dispose();
+            await stream.DisposeAsync();
         }
     }
 }

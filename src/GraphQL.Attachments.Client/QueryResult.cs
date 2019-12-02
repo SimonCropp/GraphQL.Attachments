@@ -1,21 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading.Tasks;
 
 namespace GraphQL.Attachments
 {
     public class QueryResult :
-        IDisposable
+        IAsyncDisposable
     {
         public Stream ResultStream { get; set; } = null!;
         public Dictionary<string, Attachment> Attachments { get; set; } = new Dictionary<string, Attachment>();
 
-        public void Dispose()
+        public async ValueTask DisposeAsync()
         {
-            ResultStream?.Dispose();
+            if (ResultStream != null)
+            {
+                await ResultStream.DisposeAsync();
+            }
             foreach (var attachment in Attachments.Values)
             {
-                attachment.Stream.Dispose();
+                await attachment.Stream.DisposeAsync();
             }
         }
     }
