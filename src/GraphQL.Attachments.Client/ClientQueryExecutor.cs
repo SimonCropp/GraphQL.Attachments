@@ -22,16 +22,20 @@ namespace GraphQL.Attachments
 
         public Task ExecutePost(string query, Action<Stream> resultAction, Action<Attachment>? attachmentAction = null, CancellationToken cancellation = default)
         {
+            Guard.AgainstNullWhiteSpace(nameof(query), query);
+            Guard.AgainstNull(nameof(resultAction), resultAction);
             return ExecutePost(new PostRequest(query), resultAction, attachmentAction, cancellation);
         }
 
         public Task<QueryResult> ExecutePost(string query, CancellationToken cancellation = default)
         {
+            Guard.AgainstNullWhiteSpace(nameof(query), query);
             return ExecutePost(new PostRequest(query), cancellation);
         }
 
         public async Task<QueryResult> ExecutePost(PostRequest request, CancellationToken cancellation = default)
         {
+            Guard.AgainstNull(nameof(request), request);
             var queryResult = new QueryResult();
             await ExecutePost(
                 request,
@@ -43,6 +47,7 @@ namespace GraphQL.Attachments
 
         public async Task ExecutePost(PostRequest request, Action<Stream> resultAction, Action<Attachment>? attachmentAction = null, CancellationToken cancellation = default)
         {
+            Guard.AgainstNull(nameof(request), request);
             Guard.AgainstNull(nameof(resultAction), resultAction);
             var content = new MultipartFormDataContent();
             content.AddQueryAndVariables(request.Query, request.Variables, request.OperationName);
@@ -61,16 +66,20 @@ namespace GraphQL.Attachments
 
         public Task ExecuteGet(string query, Action<Stream> resultAction, Action<Attachment>? attachmentAction = null, CancellationToken cancellation = default)
         {
+            Guard.AgainstNullWhiteSpace(nameof(query), query);
+            Guard.AgainstNull(nameof(resultAction), resultAction);
             return ExecuteGet(new GetRequest(query), resultAction, attachmentAction, cancellation);
         }
 
         public Task<QueryResult> ExecuteGet(string query, CancellationToken cancellation = default)
         {
+            Guard.AgainstNullWhiteSpace(nameof(query), query);
             return ExecuteGet(new GetRequest(query), cancellation);
         }
 
         public async Task<QueryResult> ExecuteGet(GetRequest request, CancellationToken cancellation = default)
         {
+            Guard.AgainstNull(nameof(request), request);
             var queryResult = new QueryResult();
             await ExecuteGet(request,
                 resultAction: stream => queryResult.ResultStream = stream,
@@ -80,6 +89,8 @@ namespace GraphQL.Attachments
 
         public async Task ExecuteGet(GetRequest request, Action<Stream> resultAction, Action<Attachment>? attachmentAction = null, CancellationToken cancellation = default)
         {
+            Guard.AgainstNull(nameof(request), request);
+            Guard.AgainstNull(nameof(resultAction), resultAction);
             var compressed = Compress.Query(request.Query);
             var variablesString = GraphQlRequestAppender.ToJson(request.Variables);
             var getUri = UriBuilder.GetUri(uri, variablesString, compressed, request.OperationName);

@@ -14,11 +14,13 @@ namespace GraphQL.Attachments
 
         public static void ReadGet(HttpRequest request, out string query, out Inputs inputs, out string? operation)
         {
+            Guard.AgainstNull(nameof(request), request);
             ReadParams(request.Query.TryGetValue, out query, out inputs, out operation);
         }
 
         public static void ReadPost(HttpRequest request, out string query, out Inputs inputs, out IIncomingAttachments attachments, out string? operation)
         {
+            Guard.AgainstNull(nameof(request), request);
             if (request.HasFormContentType)
             {
                 ReadForm(request, out query, out inputs, out attachments, out operation);

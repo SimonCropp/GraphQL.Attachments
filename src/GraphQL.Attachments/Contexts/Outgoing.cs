@@ -3,7 +3,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 
-public class Outgoing
+class Outgoing
 {
     public Func<Task<HttpContent>> ContentBuilder { get; }
     public Action? Cleanup { get; }

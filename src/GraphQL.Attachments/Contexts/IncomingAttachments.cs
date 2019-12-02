@@ -16,7 +16,6 @@ class IncomingAttachments :
     public IncomingAttachments(Dictionary<string, AttachmentStream> dictionary) :
         base(dictionary)
     {
-        Guard.AgainstNull(nameof(dictionary), dictionary);
     }
 
     public AttachmentStream GetValue()

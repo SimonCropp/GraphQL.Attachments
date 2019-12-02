@@ -7,6 +7,9 @@ namespace GraphQL.Attachments
     {
         public Attachment(string name, Stream stream, HttpContentHeaders headers)
         {
+            Guard.AgainstNull(nameof(name), name);
+            Guard.AgainstNull(nameof(stream), stream);
+            Guard.AgainstNull(nameof(headers), headers);
             Name = name;
             Stream = stream;
             Headers = headers;

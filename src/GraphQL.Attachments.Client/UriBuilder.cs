@@ -4,6 +4,8 @@
     {
         public static string GetUri(string root, string? variablesString, string compressed, string? operationName)
         {
+            Guard.AgainstNullWhiteSpace(nameof(root), root);
+            Guard.AgainstNullWhiteSpace(nameof(compressed), compressed);
             var getUri = $"{root}?query={compressed}";
 
             if (variablesString != null)

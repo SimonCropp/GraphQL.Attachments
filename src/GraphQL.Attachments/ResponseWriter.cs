@@ -14,6 +14,8 @@ namespace GraphQL.Attachments
     {
         public static async Task WriteResult(HttpResponse httpResponse, AttachmentExecutionResult attachmentExecutionResult)
         {
+            Guard.AgainstNull(nameof(httpResponse), httpResponse);
+            Guard.AgainstNull(nameof(attachmentExecutionResult), attachmentExecutionResult);
             var result = attachmentExecutionResult.ExecutionResult;
             var outgoingAttachments = (OutgoingAttachments) attachmentExecutionResult.Attachments;
             var responseBody = httpResponse.Body;
