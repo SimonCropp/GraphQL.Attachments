@@ -76,6 +76,11 @@ As with RequestReader for the incoming data, the outgoing data needs to be writt
 snippet: ResponseWriter
 
 
+### Full Controller
+
+[Full sample GraphQlController](https://github.com/SimonCropp/GraphQL.Attachments/blob/master/src/SampleWeb/GraphQlController.cs).
+
+
 ## Client - JavaScript
 
 

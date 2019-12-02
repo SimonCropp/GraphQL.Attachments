@@ -20,6 +20,7 @@ Provides access to a HTTP stream (via JavaScript on a web page) in [GraphQL](htt
   * [Server-side Controller](#server-side-controller)
     * [Non Attachments scenario](#non-attachments-scenario)
     * [With Attachments scenario](#with-attachments-scenario)
+    * [Full Controller](#full-controller)
   * [Client - JavaScript](#client---javascript)
     * [Form submission](#form-submission)
   * [Client - .NET](#client---net)<!-- endtoc -->
@@ -153,6 +154,11 @@ await ResponseWriter.WriteResult(Response, result);
 ```
 <sup>[snippet source](/src/SampleWeb/GraphQlController.cs#L61-L63) / [anchor](#snippet-responsewriter)</sup>
 <!-- endsnippet -->
+
+
+### Full Controller
+
+[Full sample GraphQlController](https://github.com/SimonCropp/GraphQL.Attachments/blob/master/src/SampleWeb/GraphQlController.cs).
 
 
 ## Client - JavaScript
