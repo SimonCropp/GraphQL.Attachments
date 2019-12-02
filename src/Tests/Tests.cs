@@ -4,11 +4,12 @@ using GraphQL;
 using GraphQL.Attachments;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
-using ObjectApproval;
+using VerifyXunit;
 using Xunit;
 using Xunit.Abstractions;
 
-public class Tests: TestBase
+public class Tests :
+    VerifyBase
 {
     [Fact]
     public async Task Mutation()
@@ -22,7 +23,7 @@ mutation
   }
 }";
         var result = await RunQuery(mutation);
-        ObjectApprover.VerifyWithJson(result);
+        await Verify(result);
     }
 
     [Fact]
@@ -36,7 +37,7 @@ mutation
   }
 }";
         var result = await RunQuery(queryString);
-        ObjectApprover.VerifyWithJson(result);
+        await Verify(result);
     }
 
     static Task<AttachmentExecutionResult> RunQuery(string queryString)
@@ -65,7 +66,8 @@ mutation
         return stream;
     }
 
-    public Tests(ITestOutputHelper output) : base(output)
+    public Tests(ITestOutputHelper output) :
+        base(output)
     {
     }
 }

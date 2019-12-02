@@ -4,12 +4,12 @@ using GraphQL.Attachments;
 using GraphQL.Introspection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
-using ObjectApproval;
+using VerifyXunit;
 using Xunit;
 using Xunit.Abstractions;
 
 public class GraphQlControllerTests:
-    TestBase
+    VerifyBase
 {
     static ClientQueryExecutor queryExecutor;
     static TestServer server;
@@ -30,7 +30,7 @@ public class GraphQlControllerTests:
     public async Task GetIntrospection()
     {
         var result = await queryExecutor.ExecuteGet(SchemaIntrospection.IntrospectionQuery);
-        ObjectApprover.VerifyWithJson(result);
+        await Verify(result);
     }
 
     [Fact]
@@ -44,7 +44,7 @@ public class GraphQlControllerTests:
   }
 }";
         var result = await queryExecutor.ExecuteGet(query);
-        ObjectApprover.VerifyWithJson(result);
+        await Verify(result);
     }
 
     [Fact]
@@ -58,7 +58,7 @@ public class GraphQlControllerTests:
   }
 }";
         var result = await queryExecutor.ExecuteGet(query);
-        ObjectApprover.VerifyWithJson(result);
+        await Verify(result);
     }
 
     [Fact]
@@ -75,7 +75,7 @@ public class GraphQlControllerTests:
         content.AddQueryAndVariables(mutation);
         var response = await client.PostAsync("graphql", content);
         var queryResult = await response.ProcessResponse();
-        ObjectApprover.VerifyWithJson(queryResult);
+        await Verify(queryResult);
     }
 
     [Fact]
@@ -94,7 +94,7 @@ public class GraphQlControllerTests:
         content.AddContent("key", "foo");
         var response = await client.PostAsync("graphql", content);
         var queryResult = await response.ProcessResponse();
-        ObjectApprover.VerifyWithJson(queryResult);
+        await Verify(queryResult);
     }
 
     static TestServer GetTestServer()
