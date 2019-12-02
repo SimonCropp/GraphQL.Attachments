@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0</TargetFrameworks>
+    <TargetFrameworks>netstandard2.1</TargetFrameworks>
     <Description>Add attachment support to GraphQL</Description>
   </PropertyGroup>
 
@@ -11,6 +11,7 @@
     <PackageReference Include="GraphQL" Version="2.4.0" />
     <PackageReference Include="Nullable" Version="1.1.1" PrivateAssets="All" />
     <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="3.0.1" />
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
     <PackageReference Include="ProjectDefaults" Version="1.0.33" PrivateAssets="All" />

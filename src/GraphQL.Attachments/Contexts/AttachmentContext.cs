@@ -2,7 +2,8 @@
 
 namespace GraphQL.Attachments
 {
-    public class AttachmentContext : IDisposable
+    public class AttachmentContext :
+        IDisposable
     {
         public IIncomingAttachments Incoming { get; }
         public IOutgoingAttachments Outgoing { get; }

@@ -12,7 +12,7 @@ static class QueryExecutor
     public static async Task<AttachmentExecutionResult> ExecuteQuery(string queryString, ServiceCollection services, IIncomingAttachments incomingAttachments)
     {
         queryString = queryString.Replace("'", "\"");
-        using var provider = services.BuildServiceProvider();
+        await using var provider = services.BuildServiceProvider();
         using var schema = new Schema(new FuncDependencyResolver(provider.GetRequiredService));
         var options = new ExecutionOptions
         {
