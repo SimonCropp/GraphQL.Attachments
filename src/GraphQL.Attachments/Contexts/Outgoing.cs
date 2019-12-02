@@ -5,7 +5,14 @@ using System.Threading.Tasks;
 
 public class Outgoing
 {
-    public Func<Task<HttpContent>> ContentBuilder;
-    public Action Cleanup;
-    public HttpContentHeaders Headers;
+    public Func<Task<HttpContent>> ContentBuilder { get; }
+    public Action? Cleanup { get; }
+    public HttpContentHeaders? Headers { get; }
+
+    public Outgoing(Func<Task<HttpContent>> contentBuilder, Action? cleanup, HttpContentHeaders? headers)
+    {
+        ContentBuilder = contentBuilder;
+        Cleanup = cleanup;
+        Headers = headers;
+    }
 }

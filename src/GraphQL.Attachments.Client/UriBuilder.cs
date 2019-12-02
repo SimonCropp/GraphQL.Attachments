@@ -2,7 +2,7 @@
 {
     public static class UriBuilder
     {
-        public static string GetUri(string root, string variablesString, string compressed, string operationName)
+        public static string GetUri(string root, string? variablesString, string compressed, string? operationName)
         {
             var getUri = $"{root}?query={compressed}";
 

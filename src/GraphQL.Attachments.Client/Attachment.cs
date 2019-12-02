@@ -5,8 +5,15 @@ namespace GraphQL.Attachments
 {
     public class Attachment
     {
-        public Stream Stream { get; set; }
-        public string Name { get; set; }
-        public HttpContentHeaders Headers { get; set; }
+        public Attachment(string name, Stream stream, HttpContentHeaders headers)
+        {
+            Name = name;
+            Stream = stream;
+            Headers = headers;
+        }
+
+        public Stream Stream { get; }
+        public string Name { get; }
+        public HttpContentHeaders Headers { get; }
     }
 }

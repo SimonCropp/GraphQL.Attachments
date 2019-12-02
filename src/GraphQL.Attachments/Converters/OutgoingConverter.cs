@@ -3,11 +3,12 @@ using Newtonsoft.Json;
 
 namespace GraphQL.Attachments
 {
-    public class OutgoingConverter : JsonConverter
+    public class OutgoingConverter :
+        JsonConverter
     {
-        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+        public override void WriteJson(JsonWriter writer, object? value, JsonSerializer serializer)
         {
-            var outgoing = (Outgoing) value;
+            var outgoing = (Outgoing) value!;
             writer.WriteStartObject();
             writer.WritePropertyName("Headers");
             serializer.Serialize(writer, outgoing.Headers);
@@ -18,7 +19,7 @@ namespace GraphQL.Attachments
             writer.WriteEndObject();
         }
 
-        public override object ReadJson(JsonReader reader, Type type, object value, JsonSerializer serializer)
+        public override object ReadJson(JsonReader reader, Type type, object? value, JsonSerializer serializer)
         {
             throw new NotImplementedException();
         }

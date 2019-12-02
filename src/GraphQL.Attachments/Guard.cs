@@ -50,7 +50,7 @@ static class Guard
         return value;
     }
 
-    public static Action WrapCleanupInCheck(this Action cleanup, string attachmentName)
+    public static Action? WrapCleanupInCheck(this Action? cleanup, string attachmentName)
     {
         if (cleanup == null)
         {
@@ -95,26 +95,27 @@ static class Guard
         };
     }
 
-    public static void ThrowIfNullReturned(string messageId, string attachmentName, object value)
+    public static void ThrowIfNullReturned(string? messageId, string attachmentName, object? value)
     {
-        if (value == null)
+        if (value != null)
         {
-            if (attachmentName != null && messageId != null)
-            {
-                throw new Exception($"Provided delegate returned a null. MessageId: '{messageId}', Attachment: '{attachmentName}'.");
-            }
-
-            if (attachmentName != null)
-            {
-                throw new Exception($"Provided delegate returned a null. Attachment: '{attachmentName}'.");
-            }
-
-            if (messageId != null)
-            {
-                throw new Exception($"Provided delegate returned a null. MessageId: '{messageId}'.");
-            }
-
-            throw new Exception("Provided delegate returned a null.");
+            return;
         }
+        if (attachmentName != null && messageId != null)
+        {
+            throw new Exception($"Provided delegate returned a null. MessageId: '{messageId}', Attachment: '{attachmentName}'.");
+        }
+
+        if (attachmentName != null)
+        {
+            throw new Exception($"Provided delegate returned a null. Attachment: '{attachmentName}'.");
+        }
+
+        if (messageId != null)
+        {
+            throw new Exception($"Provided delegate returned a null. MessageId: '{messageId}'.");
+        }
+
+        throw new Exception("Provided delegate returned a null.");
     }
 }

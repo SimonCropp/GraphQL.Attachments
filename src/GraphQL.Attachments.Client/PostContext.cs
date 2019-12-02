@@ -21,7 +21,7 @@ namespace GraphQL.Attachments
             HeadersAction = headerAction;
         }
 
-        public Action<HttpContentHeaders> HeadersAction { get; set; }
+        public Action<HttpContentHeaders>? HeadersAction { get; private set; }
 
         public void AddAttachment(string name, Stream value)
         {

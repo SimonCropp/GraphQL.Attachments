@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using GraphQL.Attachments;
 
@@ -24,7 +25,7 @@ class IncomingAttachments : Dictionary<string, AttachmentStream>, IIncomingAttac
         throw new Exception("Attachment not found.");
     }
 
-    public bool TryGetValue(out AttachmentStream stream)
+    public bool TryGetValue([NotNullWhen(true)] out AttachmentStream? stream)
     {
         if (Count == 0)
         {

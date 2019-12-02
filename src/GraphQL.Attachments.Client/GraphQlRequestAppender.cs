@@ -6,7 +6,7 @@ namespace GraphQL.Attachments
 {
     public static class GraphQlRequestAppender
     {
-        public static void AddQueryAndVariables(this MultipartFormDataContent content, string query, object variables=null, string operationName=null)
+        public static void AddQueryAndVariables(this MultipartFormDataContent content, string query, object? variables = null, string? operationName = null)
         {
             Guard.AgainstNull(nameof(content), content);
             content.Add(new StringContent(query), "query");
@@ -48,7 +48,8 @@ namespace GraphQL.Attachments
             var file = new StringContent(value);
             content.Add(file, name, name);
         }
-        internal static string ToJson(object target)
+
+        internal static string ToJson(object? target)
         {
             if (target == null)
             {

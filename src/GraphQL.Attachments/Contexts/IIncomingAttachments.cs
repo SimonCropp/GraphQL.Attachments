@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 
 namespace GraphQL.Attachments
 {
@@ -8,6 +9,6 @@ namespace GraphQL.Attachments
         IDisposable
     {
         AttachmentStream GetValue();
-        bool TryGetValue(out AttachmentStream func);
+        bool TryGetValue([NotNullWhen(true)] out AttachmentStream? func);
     }
 }

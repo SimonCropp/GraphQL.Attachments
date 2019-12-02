@@ -20,7 +20,7 @@ namespace GraphQL.Attachments
             return queryResult;
         }
 
-        public static async Task ProcessResponse(this HttpResponseMessage response, Action<Stream> resultAction, Action<Attachment> attachmentAction, CancellationToken cancellation = default)
+        public static async Task ProcessResponse(this HttpResponseMessage response, Action<Stream> resultAction, Action<Attachment>? attachmentAction, CancellationToken cancellation = default)
         {
             if (!response.IsMultipart())
             {
@@ -42,11 +42,11 @@ namespace GraphQL.Attachments
                 var stream = await content.ReadAsStreamAsync();
 
                 var attachment = new Attachment
-                {
-                    Name = name,
-                    Stream = stream,
-                    Headers = content.Headers,
-                };
+                (
+                    name: name,
+                    stream: stream,
+                    headers: content.Headers
+                );
                 attachmentAction(attachment);
             }
         }

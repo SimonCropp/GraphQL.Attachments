@@ -12,8 +12,8 @@ namespace GraphQL.Attachments
             Query = query;
         }
 
-        public Action<PostContext> Action { get; set; }
-        public object Variables { get; set; }
-        public string OperationName { get; set; }
+        public Action<PostContext>? Action { get; set; }
+        public object? Variables { get; set; }
+        public string? OperationName { get; set; }
     }
 }

@@ -20,7 +20,7 @@ namespace GraphQL.Attachments
             this.uri = uri;
         }
 
-        public Task ExecutePost(string query, Action<Stream> resultAction, Action<Attachment> attachmentAction = null, CancellationToken cancellation = default)
+        public Task ExecutePost(string query, Action<Stream> resultAction, Action<Attachment>? attachmentAction = null, CancellationToken cancellation = default)
         {
             return ExecutePost(new PostRequest(query), resultAction, attachmentAction, cancellation);
         }
@@ -41,7 +41,7 @@ namespace GraphQL.Attachments
             return queryResult;
         }
 
-        public async Task ExecutePost(PostRequest request, Action<Stream> resultAction, Action<Attachment> attachmentAction = null, CancellationToken cancellation = default)
+        public async Task ExecutePost(PostRequest request, Action<Stream> resultAction, Action<Attachment>? attachmentAction = null, CancellationToken cancellation = default)
         {
             Guard.AgainstNull(nameof(resultAction), resultAction);
             var content = new MultipartFormDataContent();
@@ -59,7 +59,7 @@ namespace GraphQL.Attachments
             await response.ProcessResponse(resultAction, attachmentAction, cancellation);
         }
 
-        public Task ExecuteGet(string query, Action<Stream> resultAction, Action<Attachment> attachmentAction = null, CancellationToken cancellation = default)
+        public Task ExecuteGet(string query, Action<Stream> resultAction, Action<Attachment>? attachmentAction = null, CancellationToken cancellation = default)
         {
             return ExecuteGet(new GetRequest(query), resultAction, attachmentAction, cancellation);
         }
@@ -78,7 +78,7 @@ namespace GraphQL.Attachments
             return queryResult;
         }
 
-        public async Task ExecuteGet(GetRequest request, Action<Stream> resultAction, Action<Attachment> attachmentAction = null, CancellationToken cancellation = default)
+        public async Task ExecuteGet(GetRequest request, Action<Stream> resultAction, Action<Attachment>? attachmentAction = null, CancellationToken cancellation = default)
         {
             var compressed = Compress.Query(request.Query);
             var variablesString = GraphQlRequestAppender.ToJson(request.Variables);

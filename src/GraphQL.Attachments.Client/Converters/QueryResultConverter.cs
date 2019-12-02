@@ -5,11 +5,12 @@ using Newtonsoft.Json.Linq;
 
 namespace GraphQL.Attachments
 {
-    public class QueryResultConverter : JsonConverter
+    public class QueryResultConverter :
+        JsonConverter
     {
-        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+        public override void WriteJson(JsonWriter writer, object? value, JsonSerializer serializer)
         {
-            var result = (QueryResult) value;
+            var result = (QueryResult) value!;
             writer.WriteStartObject();
             writer.WritePropertyName("ResultStream");
             var json = new StreamReader(result.ResultStream).ReadToEnd();
@@ -19,7 +20,7 @@ namespace GraphQL.Attachments
             writer.WriteEndObject();
         }
 
-        public override object ReadJson(JsonReader reader, Type type, object value, JsonSerializer serializer)
+        public override object ReadJson(JsonReader reader, Type type, object? value, JsonSerializer serializer)
         {
             throw new NotImplementedException();
         }

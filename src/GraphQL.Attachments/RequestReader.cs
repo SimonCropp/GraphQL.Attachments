@@ -12,12 +12,12 @@ namespace GraphQL.Attachments
     {
         static JsonSerializer serializer = JsonSerializer.CreateDefault();
 
-        public static void ReadGet(HttpRequest request, out string query, out Inputs inputs, out string operation)
+        public static void ReadGet(HttpRequest request, out string query, out Inputs inputs, out string? operation)
         {
             ReadParams(request.Query.TryGetValue, out query, out inputs, out operation);
         }
 
-        public static void ReadPost(HttpRequest request, out string query, out Inputs inputs, out IIncomingAttachments attachments, out string operation)
+        public static void ReadPost(HttpRequest request, out string query, out Inputs inputs, out IIncomingAttachments attachments, out string? operation)
         {
             if (request.HasFormContentType)
             {
@@ -31,9 +31,9 @@ namespace GraphQL.Attachments
 
         public class PostBody
         {
-            public string OperationName;
-            public string Query;
-            public JObject Variables;
+            public string OperationName = null!;
+            public string Query = null!;
+            public JObject Variables = null!;
         }
 
         static void ReadBody(HttpRequest request, out string query, out Inputs inputs, out string operation)
@@ -41,12 +41,12 @@ namespace GraphQL.Attachments
             using var streamReader = new StreamReader(request.Body);
             using var textReader = new JsonTextReader(streamReader);
             var postBody = serializer.Deserialize<PostBody>(textReader);
-            query = postBody.Query;
+            query = postBody!.Query;
             inputs = postBody.Variables.ToInputs();
             operation = postBody.OperationName;
         }
 
-        static void ReadForm(HttpRequest request, out string query, out Inputs inputs, out IIncomingAttachments attachments, out string operation)
+        static void ReadForm(HttpRequest request, out string query, out Inputs inputs, out IIncomingAttachments attachments, out string? operation)
         {
             var form = request.Form;
             ReadParams(form.TryGetValue, out query, out inputs, out operation);
@@ -59,7 +59,7 @@ namespace GraphQL.Attachments
 
         delegate bool TryGetValue(string key, out StringValues value);
 
-        static void ReadParams(TryGetValue tryGetValue, out string query, out Inputs inputs, out string operation)
+        static void ReadParams(TryGetValue tryGetValue, out string query, out Inputs inputs, out string? operation)
         {
             if (!tryGetValue("query", out var queryValues))
             {

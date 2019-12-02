@@ -13,8 +13,8 @@ namespace GraphQL.Attachments
             Query = query;
         }
 
-        public Action<HttpRequestHeaders> HeadersAction { get; set; }
-        public object Variables { get; set; }
-        public string OperationName { get; set; }
+        public Action<HttpRequestHeaders>? HeadersAction { get; set; }
+        public object? Variables { get; set; }
+        public string? OperationName { get; set; }
     }
 }
