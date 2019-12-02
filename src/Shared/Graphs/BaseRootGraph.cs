@@ -23,11 +23,9 @@ public abstract class BaseRootGraph : ObjectGraphType
                 var outgoingAttachments = context.OutgoingAttachments();
                 foreach (var incoming in incomingAttachments.Values)
                 {
-                    using (var memoryStream = new MemoryStream())
-                    {
-                        incoming.CopyTo(memoryStream);
-                        outgoingAttachments.AddBytes(incoming.Name, memoryStream.ToArray());
-                    }
+                    using var memoryStream = new MemoryStream();
+                    incoming.CopyTo(memoryStream);
+                    outgoingAttachments.AddBytes(incoming.Name, memoryStream.ToArray());
                 }
 
                 return new Result

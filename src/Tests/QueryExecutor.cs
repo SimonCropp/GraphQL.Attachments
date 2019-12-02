@@ -12,28 +12,26 @@ static class QueryExecutor
     public static async Task<AttachmentExecutionResult> ExecuteQuery(string queryString, ServiceCollection services, IIncomingAttachments incomingAttachments)
     {
         queryString = queryString.Replace("'", "\"");
-        using (var provider = services.BuildServiceProvider())
-        using (var schema = new Schema(new FuncDependencyResolver(provider.GetRequiredService)))
+        using var provider = services.BuildServiceProvider();
+        using var schema = new Schema(new FuncDependencyResolver(provider.GetRequiredService));
+        var options = new ExecutionOptions
         {
-            var options = new ExecutionOptions
-            {
-                Schema = schema,
-                Query = queryString
-            };
+            Schema = schema,
+            Query = queryString
+        };
 
-            var result = await executer.ExecuteWithAttachments(options,incomingAttachments);
-            var executionResult = result.ExecutionResult;
-            if (executionResult.Errors != null && executionResult.Errors.Any())
+        var result = await executer.ExecuteWithAttachments(options,incomingAttachments);
+        var executionResult = result.ExecutionResult;
+        if (executionResult.Errors != null && executionResult.Errors.Any())
+        {
+            if (executionResult.Errors.Count == 1)
             {
-                if (executionResult.Errors.Count == 1)
-                {
-                    throw executionResult.Errors.First();
-                }
-
-                throw new AggregateException(executionResult.Errors);
+                throw executionResult.Errors.First();
             }
 
-            return result;
+            throw new AggregateException(executionResult.Errors);
         }
+
+        return result;
     }
 }

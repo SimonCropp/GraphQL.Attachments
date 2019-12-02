@@ -38,14 +38,12 @@ namespace GraphQL.Attachments
 
         static void ReadBody(HttpRequest request, out string query, out Inputs inputs, out string operation)
         {
-            using (var streamReader = new StreamReader(request.Body))
-            using (var textReader = new JsonTextReader(streamReader))
-            {
-                var postBody = serializer.Deserialize<PostBody>(textReader);
-                query = postBody.Query;
-                inputs = postBody.Variables.ToInputs();
-                operation = postBody.OperationName;
-            }
+            using var streamReader = new StreamReader(request.Body);
+            using var textReader = new JsonTextReader(streamReader);
+            var postBody = serializer.Deserialize<PostBody>(textReader);
+            query = postBody.Query;
+            inputs = postBody.Variables.ToInputs();
+            operation = postBody.OperationName;
         }
 
         static void ReadForm(HttpRequest request, out string query, out Inputs inputs, out IIncomingAttachments attachments, out string operation)

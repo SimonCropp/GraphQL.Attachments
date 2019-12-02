@@ -70,10 +70,8 @@ namespace GraphQL.Attachments
 
         static async Task WriteResult(Stream stream, ExecutionResult result)
         {
-            using (var streamWriter = new StreamWriter(stream, Encoding.UTF8, 1024, true))
-            {
-                await streamWriter.WriteAsync(JsonConvert.SerializeObject(result));
-            }
+            using var streamWriter = new StreamWriter(stream, Encoding.UTF8, 1024, true);
+            await streamWriter.WriteAsync(JsonConvert.SerializeObject(result));
         }
     }
 }
