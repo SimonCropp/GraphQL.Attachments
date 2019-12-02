@@ -1,6 +1,7 @@
 ﻿using GraphQL.Types;
 
-public class InputArgumentGraph : InputObjectGraphType<InputArgument>
+public class InputArgumentGraph :
+    InputObjectGraphType<InputArgument>
 {
     public InputArgumentGraph()
     {

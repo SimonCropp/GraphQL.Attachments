@@ -9,7 +9,8 @@ using Microsoft.AspNetCore.Mvc;
 
 [Route("[controller]")]
 [ApiController]
-public class GraphQlController : ControllerBase
+public class GraphQlController :
+    ControllerBase
 {
     IDocumentExecuter executer;
     ISchema schema;

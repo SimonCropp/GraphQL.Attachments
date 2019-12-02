@@ -1,3 +1,4 @@
-﻿public class Mutation : BaseRootGraph
+﻿public class Mutation :
+    BaseRootGraph
 {
 }

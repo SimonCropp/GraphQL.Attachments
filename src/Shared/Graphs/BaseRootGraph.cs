@@ -2,7 +2,8 @@
 using GraphQL.Attachments;
 using GraphQL.Types;
 
-public abstract class BaseRootGraph : ObjectGraphType
+public abstract class BaseRootGraph :
+    ObjectGraphType
 {
     protected BaseRootGraph()
     {
