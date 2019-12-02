@@ -1,0 +1,10 @@
+{
+  ResultStream: {
+  "data": {
+    "noAttachment": {
+      "argument": "argumentValue"
+    }
+  }
+},
+  Attachments: {}
+}

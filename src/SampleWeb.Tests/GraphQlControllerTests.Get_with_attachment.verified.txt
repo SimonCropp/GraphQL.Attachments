@@ -1,0 +1,10 @@
+{
+  ResultStream: {
+  "data": {
+    "withAttachment": {
+      "argument": "argumentValue"
+    }
+  }
+},
+  Attachments: {}
+}
