@@ -62,7 +62,7 @@ namespace GraphQL.Attachments
                 httpContent.Dispose();
             }
 
-            foreach (var cleanup in outgoingAttachments.Inner.Select(x=>x.Value.Cleanup))
+            foreach (var cleanup in outgoingAttachments.Inner.Select(x => x.Value.Cleanup))
             {
                 cleanup?.Invoke();
             }
