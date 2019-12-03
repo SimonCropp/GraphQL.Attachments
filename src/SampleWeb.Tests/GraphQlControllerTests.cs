@@ -72,7 +72,7 @@ public class GraphQlControllerTests :
     argument
   }
 }";
-        var content = new MultipartFormDataContent();
+        using var content = new MultipartFormDataContent();
         content.AddQueryAndVariables(mutation);
         var response = await client.PostAsync("graphql", content);
         var queryResult = await response.ProcessResponse();
@@ -90,7 +90,7 @@ public class GraphQlControllerTests :
   }
 }";
 
-        var content = new MultipartFormDataContent();
+        using var content = new MultipartFormDataContent();
         content.AddQueryAndVariables(mutation);
         content.AddContent("key", "foo");
         var response = await client.PostAsync("graphql", content);

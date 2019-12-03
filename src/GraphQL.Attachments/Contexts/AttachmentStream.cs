@@ -56,6 +56,31 @@ namespace GraphQL.Attachments
             return inner.ReadByte();
         }
 
+        public override void CopyTo(Stream destination, int bufferSize)
+        {
+            inner.CopyTo(destination, bufferSize);
+        }
+
+        public override ValueTask WriteAsync(ReadOnlyMemory<byte> buffer, CancellationToken cancellation = default)
+        {
+            return inner.WriteAsync(buffer, cancellation);
+        }
+
+        public override void Write(ReadOnlySpan<byte> buffer)
+        {
+            inner.Write(buffer);
+        }
+
+        public override int Read(Span<byte> buffer)
+        {
+            return inner.Read(buffer);
+        }
+
+        public override ValueTask<int> ReadAsync(Memory<byte> buffer, CancellationToken cancellation = default)
+        {
+            return inner.ReadAsync(buffer, cancellation);
+        }
+
         public override long Seek(long offset, SeekOrigin origin)
         {
             return inner.Seek(offset, origin);
