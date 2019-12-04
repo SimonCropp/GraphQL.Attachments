@@ -28,7 +28,7 @@ namespace GraphQL.Attachments
         {
             Guard.AgainstNull(nameof(request), request);
             Guard.AgainstNull(nameof(request), request);
-            var content = new MultipartFormDataContent();
+            using var content = new MultipartFormDataContent();
             content.AddQueryAndVariables(request.Query, request.Variables, request.OperationName);
 
             if (request.Action != null)
@@ -40,8 +40,7 @@ namespace GraphQL.Attachments
 
             var response = await client.PostAsync(uri, content, cancellation);
             var result = await response.ProcessResponse(cancellation);
-            var queryResult = new QueryResult(result.Stream,result.Attachments);
-            return queryResult;
+            return new QueryResult(result.Stream,result.Attachments);
         }
 
         public Task<QueryResult> ExecuteGet(string query, CancellationToken cancellation = default)
@@ -57,7 +56,7 @@ namespace GraphQL.Attachments
             var variablesString = GraphQlRequestAppender.ToJson(request.Variables);
             var getUri = UriBuilder.GetUri(uri, variablesString, compressed, request.OperationName);
 
-            var getRequest = new HttpRequestMessage(HttpMethod.Get, getUri);
+            using var getRequest = new HttpRequestMessage(HttpMethod.Get, getUri);
             request.HeadersAction?.Invoke(getRequest.Headers);
             var response = await client.SendAsync(getRequest, cancellation);
             return await response.ProcessResponse(cancellation);
