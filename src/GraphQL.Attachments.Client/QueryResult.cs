@@ -8,26 +8,20 @@ namespace GraphQL.Attachments
     public class QueryResult :
         IAsyncDisposable
     {
-        public Stream ResultStream { get; set; } = null!;
-        public Dictionary<string, Attachment> Attachments { get; set; } = new Dictionary<string, Attachment>();
+        public Stream Stream { get; }
+        public IReadOnlyDictionary<string, Attachment> Attachments { get; }
 
-        public QueryResult(Stream resultStream, Dictionary<string, Attachment> attachments)
+        public QueryResult(Stream stream, IReadOnlyDictionary<string, Attachment> attachments)
         {
-            ResultStream = resultStream;
+            Guard.AgainstNull(nameof(stream), stream);
+            Guard.AgainstNull(nameof(attachments), attachments);
+            Stream = stream;
             Attachments = attachments;
-        }
-
-        public QueryResult()
-        {
-
         }
 
         public async ValueTask DisposeAsync()
         {
-            if (ResultStream != null)
-            {
-                await ResultStream.DisposeAsync();
-            }
+            await Stream.DisposeAsync();
 
             foreach (var attachment in Attachments.Values)
             {

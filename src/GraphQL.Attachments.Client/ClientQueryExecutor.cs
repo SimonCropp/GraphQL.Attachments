@@ -1,6 +1,4 @@
-﻿using System;
-using System.IO;
-using System.Net.Http;
+﻿using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -42,7 +40,7 @@ namespace GraphQL.Attachments
 
             var response = await client.PostAsync(uri, content, cancellation);
             var result = await response.ProcessResponse(cancellation);
-            var queryResult = new QueryResult(result.ResultStream,result.Attachments);
+            var queryResult = new QueryResult(result.Stream,result.Attachments);
             return queryResult;
         }
 
@@ -55,17 +53,6 @@ namespace GraphQL.Attachments
         public async Task<QueryResult> ExecuteGet(GetRequest request, CancellationToken cancellation = default)
         {
             Guard.AgainstNull(nameof(request), request);
-            var queryResult = new QueryResult();
-            await ExecuteGet(request,
-                resultAction: stream => queryResult.ResultStream = stream,
-                attachmentAction: attachment => queryResult.Attachments.Add(attachment.Name, attachment), cancellation);
-            return queryResult;
-        }
-
-        public async Task ExecuteGet(GetRequest request, Action<Stream> resultAction, Action<Attachment>? attachmentAction = null, CancellationToken cancellation = default)
-        {
-            Guard.AgainstNull(nameof(request), request);
-            Guard.AgainstNull(nameof(resultAction), resultAction);
             var compressed = Compress.Query(request.Query);
             var variablesString = GraphQlRequestAppender.ToJson(request.Variables);
             var getUri = UriBuilder.GetUri(uri, variablesString, compressed, request.OperationName);
@@ -73,7 +60,7 @@ namespace GraphQL.Attachments
             var getRequest = new HttpRequestMessage(HttpMethod.Get, getUri);
             request.HeadersAction?.Invoke(getRequest.Headers);
             var response = await client.SendAsync(getRequest, cancellation);
-            await response.ProcessResponse(resultAction, attachmentAction, cancellation);
+            return await response.ProcessResponse(cancellation);
         }
     }
 }

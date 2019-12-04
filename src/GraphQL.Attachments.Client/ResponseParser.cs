@@ -13,36 +13,21 @@ namespace GraphQL.Attachments
         public static async Task<QueryResult> ProcessResponse(this HttpResponseMessage response, CancellationToken cancellation = default)
         {
             Guard.AgainstNull(nameof(response), response);
-            var queryResult = new QueryResult();
-            await ProcessResponse(
-                response,
-                resultAction: stream => queryResult.ResultStream = stream,
-                attachmentAction: attachment => queryResult.Attachments.Add(attachment.Name, attachment),
-                cancellation);
-            return queryResult;
-        }
-
-        public static async Task ProcessResponse(this HttpResponseMessage response, Action<Stream> resultAction, Action<Attachment>? attachmentAction, CancellationToken cancellation = default)
-        {
             Guard.AgainstNull(nameof(response), response);
             if (!response.IsMultipart())
             {
-                resultAction(await response.Content.ReadAsStreamAsync());
-                return;
+                return new QueryResult(await response.Content.ReadAsStreamAsync(), new Dictionary<string, Attachment>());
             }
 
             var multipart = await response.Content.ReadAsMultipartAsync(cancellation);
-            await ProcessBody(multipart, resultAction);
+            var attachments = new Dictionary<string, Attachment>();
 
             await foreach (var attachment in ReadAttachments(multipart).WithCancellation(cancellation))
             {
-                if (attachmentAction == null)
-                {
-                    throw new Exception("Found an attachment but handler had no AttachmentAction.");
-                }
-
-                attachmentAction(attachment);
+                attachments.Add(attachment.Name,attachment);
             }
+
+            return new QueryResult(await ProcessBody(multipart), attachments);
         }
 
         static async IAsyncEnumerable<Attachment> ReadAttachments(MultipartMemoryStreamProvider multipart)
@@ -60,7 +45,7 @@ namespace GraphQL.Attachments
             }
         }
 
-        static async Task ProcessBody(MultipartStreamProvider multipart, Action<Stream> resultAction)
+        static Task<Stream> ProcessBody(MultipartStreamProvider multipart)
         {
             var first = multipart.Contents.FirstOrDefault();
             if (first == null)
@@ -74,8 +59,7 @@ namespace GraphQL.Attachments
                 throw new Exception("Expected the first part in the multipart response to be un-named.");
             }
 
-            var stream = await first.ReadAsStreamAsync();
-            resultAction(stream);
+            return first.ReadAsStreamAsync();
         }
     }
 }
