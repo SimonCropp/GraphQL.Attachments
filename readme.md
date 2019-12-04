@@ -112,8 +112,8 @@ When using Attachments the incoming request also requires the incoming form data
 [HttpPost]
 public Task Post(CancellationToken cancellation)
 {
-    RequestReader.ReadPost(Request, out var query, out var inputs, out var incomingAttachments, out var operation);
-    return Execute(query, operation, incomingAttachments, inputs, cancellation);
+    var (query, inputs, attachments, operation) = RequestReader.ReadPost(Request);
+    return Execute(query, operation, attachments, inputs, cancellation);
 }
 ```
 <sup>[snippet source](/src/SampleWeb/GraphQlController.cs#L24-L31) / [anchor](#snippet-controllerpost)</sup>
@@ -125,7 +125,7 @@ public Task Post(CancellationToken cancellation)
 [HttpGet]
 public Task Get(CancellationToken cancellation)
 {
-    RequestReader.ReadGet(Request, out var query, out var inputs, out var operation);
+    var (query, inputs, operation) = RequestReader.ReadGet(Request);
     return Execute(query, operation, null, inputs,cancellation);
 }
 ```

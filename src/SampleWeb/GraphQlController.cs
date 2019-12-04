@@ -25,8 +25,8 @@ public class GraphQlController :
     [HttpPost]
     public Task Post(CancellationToken cancellation)
     {
-        RequestReader.ReadPost(Request, out var query, out var inputs, out var incomingAttachments, out var operation);
-        return Execute(query, operation, incomingAttachments, inputs, cancellation);
+        var (query, inputs, attachments, operation) = RequestReader.ReadPost(Request);
+        return Execute(query, operation, attachments, inputs, cancellation);
     }
     #endregion
 
@@ -34,7 +34,7 @@ public class GraphQlController :
     [HttpGet]
     public Task Get(CancellationToken cancellation)
     {
-        RequestReader.ReadGet(Request, out var query, out var inputs, out var operation);
+        var (query, inputs, operation) = RequestReader.ReadGet(Request);
         return Execute(query, operation, null, inputs,cancellation);
     }
     #endregion

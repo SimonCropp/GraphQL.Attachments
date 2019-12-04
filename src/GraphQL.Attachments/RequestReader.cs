@@ -12,23 +12,22 @@ namespace GraphQL.Attachments
     {
         static JsonSerializer serializer = JsonSerializer.CreateDefault();
 
-        public static void ReadGet(HttpRequest request, out string query, out Inputs inputs, out string? operation)
+        public static (string query, Inputs inputs, string? operation) ReadGet(HttpRequest request)
         {
             Guard.AgainstNull(nameof(request), request);
-            ReadParams(request.Query.TryGetValue, out query, out inputs, out operation);
+            return ReadParams(request.Query.TryGetValue);
         }
 
-        public static void ReadPost(HttpRequest request, out string query, out Inputs inputs, out IIncomingAttachments attachments, out string? operation)
+        public static (string query, Inputs inputs, IIncomingAttachments attachments, string? operation) ReadPost(HttpRequest request)
         {
             Guard.AgainstNull(nameof(request), request);
             if (request.HasFormContentType)
             {
-                ReadForm(request, out query, out inputs, out attachments, out operation);
-                return;
+                return ReadForm(request);
             }
 
-            attachments = new IncomingAttachments();
-            ReadBody(request, out query, out inputs, out operation);
+            var (query, inputs, operation) = ReadBody(request);
+            return (query, inputs, new IncomingAttachments(), operation);
         }
 
         public class PostBody
@@ -38,30 +37,28 @@ namespace GraphQL.Attachments
             public JObject Variables = null!;
         }
 
-        static void ReadBody(HttpRequest request, out string query, out Inputs inputs, out string operation)
+        static (string query, Inputs inputs, string operation) ReadBody(HttpRequest request)
         {
             using var streamReader = new StreamReader(request.Body);
             using var textReader = new JsonTextReader(streamReader);
             var postBody = serializer.Deserialize<PostBody>(textReader);
-            query = postBody!.Query;
-            inputs = postBody.Variables.ToInputs();
-            operation = postBody.OperationName;
+            return (postBody!.Query, postBody.Variables.ToInputs(), postBody.OperationName);
         }
 
-        static void ReadForm(HttpRequest request, out string query, out Inputs inputs, out IIncomingAttachments attachments, out string? operation)
+        static (string query, Inputs inputs, IIncomingAttachments attachments, string? operation) ReadForm(HttpRequest request)
         {
             var form = request.Form;
-            ReadParams(form.TryGetValue, out query, out inputs, out operation);
+            var (query, inputs, operation) = ReadParams(form.TryGetValue);
 
             var attachmentStreams = form.Files.ToDictionary(
                 x => x.FileName,
                 x => new AttachmentStream(x.FileName, x.OpenReadStream(), x.Length, x.Headers));
-            attachments = new IncomingAttachments(attachmentStreams);
+            return (query, inputs, new IncomingAttachments(attachmentStreams), operation);
         }
 
         delegate bool TryGetValue(string key, out StringValues value);
 
-        static void ReadParams(TryGetValue tryGetValue, out string query, out Inputs inputs, out string? operation)
+        static (string query, Inputs inputs, string? operation) ReadParams(TryGetValue tryGetValue)
         {
             if (!tryGetValue("query", out var queryValues))
             {
@@ -73,11 +70,13 @@ namespace GraphQL.Attachments
                 throw new Exception("Expected 'query' to have a single value.");
             }
 
-            query = queryValues.ToString();
+            var operation = ReadOperation(tryGetValue);
 
-            inputs = GetInputs(tryGetValue);
+            return (queryValues.ToString(), GetInputs(tryGetValue), operation);
+        }
 
-            operation = null;
+        static string? ReadOperation(TryGetValue tryGetValue)
+        {
             if (tryGetValue("operation", out var operationValues))
             {
                 if (operationValues.Count != 1)
@@ -85,8 +84,10 @@ namespace GraphQL.Attachments
                     throw new Exception("Expected 'operation' to have a single value.");
                 }
 
-                operation = operationValues.ToString();
+                return operationValues.ToString();
             }
+
+            return null;
         }
 
         static Inputs GetInputs(TryGetValue tryGetValue)
