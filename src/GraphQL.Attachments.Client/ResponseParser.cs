@@ -45,13 +45,13 @@ namespace GraphQL.Attachments
             }
         }
 
-        private static async IAsyncEnumerable<Attachment> ReadAttachments(MultipartMemoryStreamProvider multipart)
+        static async IAsyncEnumerable<Attachment> ReadAttachments(MultipartMemoryStreamProvider multipart)
         {
             foreach (var content in multipart.Contents.Skip(1))
             {
                 var name = content.Headers.ContentDisposition.Name;
                 var stream = await content.ReadAsStreamAsync();
-                 yield return new Attachment
+                yield return new Attachment
                 (
                     name: name,
                     stream: stream,
