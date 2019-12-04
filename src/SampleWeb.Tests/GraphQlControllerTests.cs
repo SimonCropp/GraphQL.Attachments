@@ -98,6 +98,27 @@ public class GraphQlControllerTests :
         await Verify(queryResult);
     }
 
+
+    [Fact]
+    public async Task Post_with_multiple_attachment()
+    {
+        var mutation = @"mutation
+{
+  withAttachment (argument: ""argumentValue"")
+  {
+    argument
+  }
+}";
+
+        using var content = new MultipartFormDataContent();
+        content.AddQueryAndVariables(mutation);
+        content.AddContent("key1", "foo1");
+        content.AddContent("key2", "foo2");
+        var response = await client.PostAsync("graphql", content);
+        var queryResult = await response.ProcessResponse();
+        await Verify(queryResult);
+    }
+
     static TestServer GetTestServer()
     {
         var hostBuilder = new WebHostBuilder();
