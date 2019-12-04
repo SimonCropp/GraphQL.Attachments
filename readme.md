@@ -203,8 +203,6 @@ Creating and posting a multipart form can be done using a combination of [Multip
 <!-- snippet: ClientQueryExecutor.cs -->
 <a id='snippet-ClientQueryExecutor.cs'/></a>
 ```cs
-using System;
-using System.IO;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
@@ -225,13 +223,6 @@ namespace GraphQL.Attachments
             this.uri = uri;
         }
 
-        public Task ExecutePost(string query, Action<Stream> resultAction, Action<Attachment>? attachmentAction = null, CancellationToken cancellation = default)
-        {
-            Guard.AgainstNullWhiteSpace(nameof(query), query);
-            Guard.AgainstNull(nameof(resultAction), resultAction);
-            return ExecutePost(new PostRequest(query), resultAction, attachmentAction, cancellation);
-        }
-
         public Task<QueryResult> ExecutePost(string query, CancellationToken cancellation = default)
         {
             Guard.AgainstNullWhiteSpace(nameof(query), query);
@@ -241,20 +232,8 @@ namespace GraphQL.Attachments
         public async Task<QueryResult> ExecutePost(PostRequest request, CancellationToken cancellation = default)
         {
             Guard.AgainstNull(nameof(request), request);
-            var queryResult = new QueryResult();
-            await ExecutePost(
-                request,
-                resultAction: stream => queryResult.ResultStream = stream,
-                attachmentAction: attachment => queryResult.Attachments.Add(attachment.Name, attachment),
-                cancellation);
-            return queryResult;
-        }
-
-        public async Task ExecutePost(PostRequest request, Action<Stream> resultAction, Action<Attachment>? attachmentAction = null, CancellationToken cancellation = default)
-        {
             Guard.AgainstNull(nameof(request), request);
-            Guard.AgainstNull(nameof(resultAction), resultAction);
-            var content = new MultipartFormDataContent();
+            using var content = new MultipartFormDataContent();
             content.AddQueryAndVariables(request.Query, request.Variables, request.OperationName);
 
             if (request.Action != null)
@@ -265,15 +244,8 @@ namespace GraphQL.Attachments
             }
 
             var response = await client.PostAsync(uri, content, cancellation);
-
-            await response.ProcessResponse(resultAction, attachmentAction, cancellation);
-        }
-
-        public Task ExecuteGet(string query, Action<Stream> resultAction, Action<Attachment>? attachmentAction = null, CancellationToken cancellation = default)
-        {
-            Guard.AgainstNullWhiteSpace(nameof(query), query);
-            Guard.AgainstNull(nameof(resultAction), resultAction);
-            return ExecuteGet(new GetRequest(query), resultAction, attachmentAction, cancellation);
+            var result = await response.ProcessResponse(cancellation);
+            return new QueryResult(result.Stream,result.Attachments);
         }
 
         public Task<QueryResult> ExecuteGet(string query, CancellationToken cancellation = default)
@@ -285,30 +257,19 @@ namespace GraphQL.Attachments
         public async Task<QueryResult> ExecuteGet(GetRequest request, CancellationToken cancellation = default)
         {
             Guard.AgainstNull(nameof(request), request);
-            var queryResult = new QueryResult();
-            await ExecuteGet(request,
-                resultAction: stream => queryResult.ResultStream = stream,
-                attachmentAction: attachment => queryResult.Attachments.Add(attachment.Name, attachment), cancellation);
-            return queryResult;
-        }
-
-        public async Task ExecuteGet(GetRequest request, Action<Stream> resultAction, Action<Attachment>? attachmentAction = null, CancellationToken cancellation = default)
-        {
-            Guard.AgainstNull(nameof(request), request);
-            Guard.AgainstNull(nameof(resultAction), resultAction);
             var compressed = Compress.Query(request.Query);
             var variablesString = GraphQlRequestAppender.ToJson(request.Variables);
             var getUri = UriBuilder.GetUri(uri, variablesString, compressed, request.OperationName);
 
-            var getRequest = new HttpRequestMessage(HttpMethod.Get, getUri);
+            using var getRequest = new HttpRequestMessage(HttpMethod.Get, getUri);
             request.HeadersAction?.Invoke(getRequest.Headers);
             var response = await client.SendAsync(getRequest, cancellation);
-            await response.ProcessResponse(resultAction, attachmentAction, cancellation);
+            return await response.ProcessResponse(cancellation);
         }
     }
 }
 ```
-<sup>[snippet source](/src/GraphQL.Attachments.Client/ClientQueryExecutor.cs#L1-L104) / [anchor](#snippet-ClientQueryExecutor.cs)</sup>
+<sup>[snippet source](/src/GraphQL.Attachments.Client/ClientQueryExecutor.cs#L1-L65) / [anchor](#snippet-ClientQueryExecutor.cs)</sup>
 <!-- endsnippet -->
 
 This can be useful when performing [Integration testing in ASP.NET Core](https://docs.microsoft.com/en-us/aspnet/core/testing/integration-testing).
