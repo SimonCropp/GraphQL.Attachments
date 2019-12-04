@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
@@ -33,23 +34,29 @@ namespace GraphQL.Attachments
             var multipart = await response.Content.ReadAsMultipartAsync(cancellation);
             await ProcessBody(multipart, resultAction);
 
-            foreach (var content in multipart.Contents.Skip(1))
+            await foreach (var attachment in ReadAttachments(multipart).WithCancellation(cancellation))
             {
                 if (attachmentAction == null)
                 {
                     throw new Exception("Found an attachment but handler had no AttachmentAction.");
                 }
 
+                attachmentAction(attachment);
+            }
+        }
+
+        private static async IAsyncEnumerable<Attachment> ReadAttachments(MultipartMemoryStreamProvider multipart)
+        {
+            foreach (var content in multipart.Contents.Skip(1))
+            {
                 var name = content.Headers.ContentDisposition.Name;
                 var stream = await content.ReadAsStreamAsync();
-
-                var attachment = new Attachment
+                 yield return new Attachment
                 (
                     name: name,
                     stream: stream,
                     headers: content.Headers
                 );
-                attachmentAction(attachment);
             }
         }
 
