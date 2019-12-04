@@ -20,13 +20,6 @@ namespace GraphQL.Attachments
             this.uri = uri;
         }
 
-        public Task ExecutePost(string query, Action<Stream> resultAction, Action<Attachment>? attachmentAction = null, CancellationToken cancellation = default)
-        {
-            Guard.AgainstNullWhiteSpace(nameof(query), query);
-            Guard.AgainstNull(nameof(resultAction), resultAction);
-            return ExecutePost(new PostRequest(query), resultAction, attachmentAction, cancellation);
-        }
-
         public Task<QueryResult> ExecutePost(string query, CancellationToken cancellation = default)
         {
             Guard.AgainstNullWhiteSpace(nameof(query), query);
@@ -36,19 +29,7 @@ namespace GraphQL.Attachments
         public async Task<QueryResult> ExecutePost(PostRequest request, CancellationToken cancellation = default)
         {
             Guard.AgainstNull(nameof(request), request);
-            var queryResult = new QueryResult();
-            await ExecutePost(
-                request,
-                resultAction: stream => queryResult.ResultStream = stream,
-                attachmentAction: attachment => queryResult.Attachments.Add(attachment.Name, attachment),
-                cancellation);
-            return queryResult;
-        }
-
-        public async Task ExecutePost(PostRequest request, Action<Stream> resultAction, Action<Attachment>? attachmentAction = null, CancellationToken cancellation = default)
-        {
             Guard.AgainstNull(nameof(request), request);
-            Guard.AgainstNull(nameof(resultAction), resultAction);
             var content = new MultipartFormDataContent();
             content.AddQueryAndVariables(request.Query, request.Variables, request.OperationName);
 
@@ -60,15 +41,9 @@ namespace GraphQL.Attachments
             }
 
             var response = await client.PostAsync(uri, content, cancellation);
-
-            await response.ProcessResponse(resultAction, attachmentAction, cancellation);
-        }
-
-        public Task ExecuteGet(string query, Action<Stream> resultAction, Action<Attachment>? attachmentAction = null, CancellationToken cancellation = default)
-        {
-            Guard.AgainstNullWhiteSpace(nameof(query), query);
-            Guard.AgainstNull(nameof(resultAction), resultAction);
-            return ExecuteGet(new GetRequest(query), resultAction, attachmentAction, cancellation);
+            var result = await response.ProcessResponse(cancellation);
+            var queryResult = new QueryResult(result.ResultStream,result.Attachments);
+            return queryResult;
         }
 
         public Task<QueryResult> ExecuteGet(string query, CancellationToken cancellation = default)
