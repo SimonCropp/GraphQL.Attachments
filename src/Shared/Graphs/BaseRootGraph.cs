@@ -34,11 +34,15 @@ public abstract class BaseRootGraph :
             {
                 var incomingAttachments = context.IncomingAttachments();
                 var outgoingAttachments = context.OutgoingAttachments();
+
                 foreach (var incoming in incomingAttachments.Values)
                 {
-                    using var memoryStream = new MemoryStream();
+                    // For sample purpose echo the incoming request
+                    // stream to the outgoing response stream
+                    var memoryStream = new MemoryStream();
                     incoming.CopyTo(memoryStream);
-                    outgoingAttachments.AddBytes(incoming.Name, memoryStream.ToArray());
+                    memoryStream.Position = 0;
+                    outgoingAttachments.AddStream(incoming.Name, memoryStream);
                 }
 
                 return new Result
