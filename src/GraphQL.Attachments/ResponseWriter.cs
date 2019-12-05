@@ -10,64 +10,83 @@ using Newtonsoft.Json;
 
 namespace GraphQL.Attachments
 {
+    /// <summary>
+    /// Handles writing a <see cref="AttachmentExecutionResult"/> to a <see cref="HttpResponse"/>.
+    /// </summary>
     public static class ResponseWriter
     {
-        public static async Task WriteResult(HttpResponse httpResponse, AttachmentExecutionResult attachmentExecutionResult)
+        /// <summary>
+        /// Writes <paramref name="result"/> to <paramref name="response"/>.
+        /// </summary>
+        public static async Task WriteResult(HttpResponse response, AttachmentExecutionResult result)
         {
-            Guard.AgainstNull(nameof(httpResponse), httpResponse);
-            Guard.AgainstNull(nameof(attachmentExecutionResult), attachmentExecutionResult);
-            var result = attachmentExecutionResult.ExecutionResult;
-            var outgoingAttachments = (OutgoingAttachments) attachmentExecutionResult.Attachments;
-            var responseBody = httpResponse.Body;
-            if (result.Errors?.Count > 0)
+            Guard.AgainstNull(nameof(response), response);
+            Guard.AgainstNull(nameof(result), result);
+            var executionResult = result.ExecutionResult;
+            var outgoingAttachments = (OutgoingAttachments) result.Attachments;
+            var body = response.Body;
+            if (executionResult.Errors?.Count > 0)
             {
-                httpResponse.StatusCode = (int) HttpStatusCode.BadRequest;
-                await WriteResult(responseBody, result);
+                response.StatusCode = (int) HttpStatusCode.BadRequest;
+                await WriteResult(body, executionResult);
                 return;
             }
 
             if (!outgoingAttachments.HasPendingAttachments)
             {
-                await WriteResult(responseBody, result);
+                await WriteResult(body, executionResult);
                 return;
             }
 
+            await WriteMultipart(response, executionResult, outgoingAttachments);
+        }
+
+        static async Task WriteMultipart(HttpResponse response, ExecutionResult result, OutgoingAttachments attachments)
+        {
             var httpContents = new List<HttpContent>();
-            using (var multipartContent = new MultipartFormDataContent())
+            try
             {
+                using var multipart = new MultipartFormDataContent();
                 var serializedResult = JsonConvert.SerializeObject(result);
-                multipartContent.Add(new StringContent(serializedResult));
+                multipart.Add(new StringContent(serializedResult));
 
-                foreach (var outgoingAttachment in outgoingAttachments.Inner)
+                foreach (var attachment in attachments.Inner)
                 {
-                    var outgoing = outgoingAttachment.Value;
-                    var httpContent = await outgoing.ContentBuilder();
-                    httpContents.Add(httpContent);
-                    if (outgoing.Headers != null)
-                    {
-                        foreach (var header in outgoing.Headers)
-                        {
-                            httpContent.Headers.Add(header.Key, header.Value);
-                        }
-                    }
-
-                    multipartContent.Add(httpContent, outgoingAttachment.Key, outgoingAttachment.Key);
+                    httpContents.Add(await AddAttachment(attachment, multipart));
                 }
 
-                httpResponse.ContentLength = multipartContent.Headers.ContentLength;
-                httpResponse.ContentType = multipartContent.Headers.ContentType.ToString();
-                await multipartContent.CopyToAsync(responseBody);
+                response.ContentLength = multipart.Headers.ContentLength;
+                response.ContentType = multipart.Headers.ContentType.ToString();
+                await multipart.CopyToAsync(response.Body);
+            }
+            finally
+            {
+                foreach (var httpContent in httpContents)
+                {
+                    httpContent.Dispose();
+                }
+
+                foreach (var cleanup in attachments.Inner.Select(x => x.Value.Cleanup))
+                {
+                    cleanup?.Invoke();
+                }
+            }
+        }
+
+        static async Task<HttpContent> AddAttachment(KeyValuePair<string, Outgoing> attachment, MultipartFormDataContent multipartContent)
+        {
+            var outgoing = attachment.Value;
+            var httpContent = await outgoing.ContentBuilder();
+            if (outgoing.Headers != null)
+            {
+                foreach (var (key, value) in outgoing.Headers)
+                {
+                    httpContent.Headers.Add(key, value);
+                }
             }
 
-            foreach (var httpContent in httpContents)
-            {
-                httpContent.Dispose();
-            }
-
-            foreach (var cleanup in outgoingAttachments.Inner.Select(x => x.Value.Cleanup))
-            {
-                cleanup?.Invoke();
-            }
+            multipartContent.Add(httpContent, attachment.Key, attachment.Key);
+            return httpContent;
         }
 
         static async Task WriteResult(Stream stream, ExecutionResult result)
