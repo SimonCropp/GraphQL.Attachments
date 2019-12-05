@@ -6,14 +6,14 @@ namespace GraphQL.Attachments
 {
     public static class GraphQlRequestAppender
     {
-        public static void AddQueryAndVariables(this MultipartFormDataContent content, string query, object? variables = null, string? operationName = null)
+        public static void AddQueryAndVariables(this MultipartFormDataContent content, string query, object? variables = null, string? operation = null)
         {
             Guard.AgainstNull(nameof(content), content);
             content.Add(new StringContent(query), "query");
 
-            if (operationName != null)
+            if (operation != null)
             {
-                content.Add(new StringContent(operationName), "operationName");
+                content.Add(new StringContent(operation), "operationName");
             }
 
             if (variables != null)

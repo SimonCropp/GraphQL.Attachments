@@ -43,12 +43,12 @@ mutation
     static Task<AttachmentExecutionResult> RunQuery(string queryString)
     {
         var incomingAttachments = new IncomingAttachments();
-        var memoryStream = BuildStream();
+        var stream = BuildStream();
         var metadata = new HeaderDictionary
         {
             {"header1", "headerValue"}
         };
-        incomingAttachments.Add("key", new AttachmentStream("key", memoryStream, 3, metadata));
+        incomingAttachments.Add("key", new AttachmentStream("key", stream, 3, metadata));
         var services = new ServiceCollection();
 
         TestServices.AddGraphQlTestTypes(services);

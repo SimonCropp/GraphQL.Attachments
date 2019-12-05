@@ -2,15 +2,15 @@
 {
     public static class UriBuilder
     {
-        public static string GetUri(string root, string? variablesString, string compressed, string? operationName)
+        public static string GetUri(string root, string? variables, string compressed, string? operationName)
         {
             Guard.AgainstNullWhiteSpace(nameof(root), root);
             Guard.AgainstNullWhiteSpace(nameof(compressed), compressed);
             var getUri = $"{root}?query={compressed}";
 
-            if (variablesString != null)
+            if (variables != null)
             {
-                getUri += $"&variables={variablesString}";
+                getUri += $"&variables={variables}";
             }
 
             if (operationName != null)

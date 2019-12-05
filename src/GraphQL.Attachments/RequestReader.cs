@@ -50,10 +50,10 @@ namespace GraphQL.Attachments
             var form = request.Form;
             var (query, inputs, operation) = ReadParams(form.TryGetValue);
 
-            var attachmentStreams = form.Files.ToDictionary(
+            var streams = form.Files.ToDictionary(
                 x => x.FileName,
                 x => new AttachmentStream(x.FileName, x.OpenReadStream(), x.Length, x.Headers));
-            return (query, inputs, new IncomingAttachments(attachmentStreams), operation);
+            return (query, inputs, new IncomingAttachments(streams), operation);
         }
 
         delegate bool TryGetValue(string key, out StringValues value);
@@ -77,32 +77,32 @@ namespace GraphQL.Attachments
 
         static string? ReadOperation(TryGetValue tryGetValue)
         {
-            if (tryGetValue("operation", out var operationValues))
+            if (!tryGetValue("operation", out var operationValues))
             {
-                if (operationValues.Count != 1)
-                {
-                    throw new Exception("Expected 'operation' to have a single value.");
-                }
+                return null;
+            }
 
+            if (operationValues.Count == 1)
+            {
                 return operationValues.ToString();
             }
 
-            return null;
+            throw new Exception("Expected 'operation' to have a single value.");
         }
 
         static Inputs GetInputs(TryGetValue tryGetValue)
         {
-            if (!tryGetValue("variables", out var variablesValues))
+            if (!tryGetValue("variables", out var values))
             {
                 return new Inputs();
             }
 
-            if (variablesValues.Count != 1)
+            if (values.Count != 1)
             {
                 throw new Exception("Expected 'variables' to have a single value.");
             }
 
-            var json = variablesValues.ToString();
+            var json = values.ToString();
             if (json.Length > 0)
             {
                 var variables = JObject.Parse(json);

@@ -23,7 +23,7 @@ namespace GraphQL.Attachments
             Guard.AgainstNull(nameof(response), response);
             Guard.AgainstNull(nameof(result), result);
             var executionResult = result.ExecutionResult;
-            var outgoingAttachments = (OutgoingAttachments) result.Attachments;
+            var attachments = (OutgoingAttachments) result.Attachments;
             var body = response.Body;
             if (executionResult.Errors?.Count > 0)
             {
@@ -32,13 +32,13 @@ namespace GraphQL.Attachments
                 return;
             }
 
-            if (!outgoingAttachments.HasPendingAttachments)
+            if (!attachments.HasPendingAttachments)
             {
                 await WriteResult(body, executionResult);
                 return;
             }
 
-            await WriteMultipart(response, executionResult, outgoingAttachments);
+            await WriteMultipart(response, executionResult, attachments);
         }
 
         static async Task WriteMultipart(HttpResponse response, ExecutionResult result, OutgoingAttachments attachments)
@@ -73,7 +73,7 @@ namespace GraphQL.Attachments
             }
         }
 
-        static async Task<HttpContent> AddAttachment(KeyValuePair<string, Outgoing> attachment, MultipartFormDataContent multipartContent)
+        static async Task<HttpContent> AddAttachment(KeyValuePair<string, Outgoing> attachment, MultipartFormDataContent multipart)
         {
             var outgoing = attachment.Value;
             var httpContent = await outgoing.ContentBuilder();
@@ -85,7 +85,7 @@ namespace GraphQL.Attachments
                 }
             }
 
-            multipartContent.Add(httpContent, attachment.Key, attachment.Key);
+            multipart.Add(httpContent, attachment.Key, attachment.Key);
             return httpContent;
         }
 

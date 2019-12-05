@@ -9,29 +9,29 @@ static class QueryExecutor
 {
     static DocumentExecuter executer = new DocumentExecuter();
 
-    public static async Task<AttachmentExecutionResult> ExecuteQuery(string queryString, ServiceCollection services, IIncomingAttachments incomingAttachments)
+    public static async Task<AttachmentExecutionResult> ExecuteQuery(string query, ServiceCollection services, IIncomingAttachments incomingAttachments)
     {
-        queryString = queryString.Replace("'", "\"");
+        query = query.Replace("'", "\"");
         await using var provider = services.BuildServiceProvider();
         using var schema = new Schema(new FuncDependencyResolver(provider.GetRequiredService));
         var options = new ExecutionOptions
         {
             Schema = schema,
-            Query = queryString
+            Query = query
         };
 
-        var result = await executer.ExecuteWithAttachments(options,incomingAttachments);
+        var result = await executer.ExecuteWithAttachments(options, incomingAttachments);
         var executionResult = result.ExecutionResult;
-        if (executionResult.Errors != null && executionResult.Errors.Any())
+        if (executionResult.Errors == null || !executionResult.Errors.Any())
         {
-            if (executionResult.Errors.Count == 1)
-            {
-                throw executionResult.Errors.First();
-            }
-
-            throw new AggregateException(executionResult.Errors);
+            return result;
         }
 
-        return result;
+        if (executionResult.Errors.Count == 1)
+        {
+            throw executionResult.Errors.First();
+        }
+
+        throw new AggregateException(executionResult.Errors);
     }
 }
