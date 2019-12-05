@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Primitives;
 using Newtonsoft.Json;
@@ -8,46 +9,56 @@ using Newtonsoft.Json.Linq;
 
 namespace GraphQL.Attachments
 {
+    /// <summary>
+    /// Handles parsing a <see cref="HttpRequest"/> into the corresponding query, <see cref="Inputs"/>, operation, and <see cref="IIncomingAttachments"/>.
+    /// </summary>
     public static class RequestReader
     {
         static JsonSerializer serializer = JsonSerializer.CreateDefault();
 
+        /// <summary>
+        /// Parse a <see cref="HttpRequest"/> Get into the corresponding query, <see cref="Inputs"/>, and operation.
+        /// </summary>
         public static (string query, Inputs inputs, string? operation) ReadGet(HttpRequest request)
         {
             Guard.AgainstNull(nameof(request), request);
             return ReadParams(request.Query.TryGetValue);
         }
 
-        public static (string query, Inputs inputs, IIncomingAttachments attachments, string? operation) ReadPost(HttpRequest request)
+        /// <summary>
+        /// Parse a <see cref="HttpRequest"/> Post into the corresponding query, <see cref="Inputs"/>, operation, and <see cref="IIncomingAttachments"/>.
+        /// </summary>
+        public static async Task<(string query, Inputs inputs, IIncomingAttachments attachments, string? operation)> ReadPost(HttpRequest request)
         {
             Guard.AgainstNull(nameof(request), request);
             if (request.HasFormContentType)
             {
-                return ReadForm(request);
+                return await ReadForm(request);
             }
 
-            var (query, inputs, operation) = ReadBody(request);
+            var (query, inputs, operation) = await ReadBody(request);
             return (query, inputs, new IncomingAttachments(), operation);
         }
 
-        public class PostBody
+        class PostBody
         {
             public string OperationName = null!;
             public string Query = null!;
             public JObject Variables = null!;
         }
 
-        static (string query, Inputs inputs, string operation) ReadBody(HttpRequest request)
+        static async Task<(string query, Inputs inputs, string operation)> ReadBody(HttpRequest request)
         {
             using var streamReader = new StreamReader(request.Body);
-            using var textReader = new JsonTextReader(streamReader);
-            var postBody = serializer.Deserialize<PostBody>(textReader);
+            using var textReader = new StringReader(await streamReader.ReadToEndAsync());
+            using var reader = new JsonTextReader(textReader);
+            var postBody = serializer.Deserialize<PostBody>(reader);
             return (postBody!.Query, postBody.Variables.ToInputs(), postBody.OperationName);
         }
 
-        static (string query, Inputs inputs, IIncomingAttachments attachments, string? operation) ReadForm(HttpRequest request)
+        static async Task<(string query, Inputs inputs, IIncomingAttachments attachments, string? operation)> ReadForm(HttpRequest request)
         {
-            var form = request.Form;
+            var form = await request.ReadFormAsync();
             var (query, inputs, operation) = ReadParams(form.TryGetValue);
 
             var streams = form.Files.ToDictionary(

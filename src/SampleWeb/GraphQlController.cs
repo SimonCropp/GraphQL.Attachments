@@ -23,10 +23,10 @@ public class GraphQlController :
 
     #region ControllerPost
     [HttpPost]
-    public Task Post(CancellationToken cancellation)
+    public async Task Post(CancellationToken cancellation)
     {
-        var (query, inputs, attachments, operation) = RequestReader.ReadPost(Request);
-        return Execute(query, operation, attachments, inputs, cancellation);
+        var (query, inputs, attachments, operation) = await RequestReader.ReadPost(Request);
+        await Execute(query, operation, attachments, inputs, cancellation);
     }
     #endregion
 

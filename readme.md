@@ -110,10 +110,10 @@ When using Attachments the incoming request also requires the incoming form data
 <a id='snippet-controllerpost'/></a>
 ```cs
 [HttpPost]
-public Task Post(CancellationToken cancellation)
+public async Task Post(CancellationToken cancellation)
 {
-    var (query, inputs, attachments, operation) = RequestReader.ReadPost(Request);
-    return Execute(query, operation, attachments, inputs, cancellation);
+    var (query, inputs, attachments, operation) = await RequestReader.ReadPost(Request);
+    await Execute(query, operation, attachments, inputs, cancellation);
 }
 ```
 <sup>[snippet source](/src/SampleWeb/GraphQlController.cs#L24-L31) / [anchor](#snippet-controllerpost)</sup>
