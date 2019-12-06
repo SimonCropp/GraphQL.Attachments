@@ -18,7 +18,7 @@ namespace GraphQL.Attachments
         /// <summary>
         /// Writes <paramref name="result"/> to <paramref name="response"/>.
         /// </summary>
-        public static async Task WriteResult(HttpResponse response, AttachmentExecutionResult result)
+        public static Task WriteResult(HttpResponse response, AttachmentExecutionResult result)
         {
             Guard.AgainstNull(nameof(response), response);
             Guard.AgainstNull(nameof(result), result);
@@ -28,17 +28,15 @@ namespace GraphQL.Attachments
             if (executionResult.Errors?.Count > 0)
             {
                 response.StatusCode = (int) HttpStatusCode.BadRequest;
-                await WriteResult(body, executionResult);
-                return;
+                return WriteStream(body, executionResult);
             }
 
             if (!attachments.HasPendingAttachments)
             {
-                await WriteResult(body, executionResult);
-                return;
+                return WriteStream(body, executionResult);
             }
 
-            await WriteMultipart(response, executionResult, attachments);
+            return WriteMultipart(response, executionResult, attachments);
         }
 
         static async Task WriteMultipart(HttpResponse response, ExecutionResult result, OutgoingAttachments attachments)
@@ -89,7 +87,7 @@ namespace GraphQL.Attachments
             return httpContent;
         }
 
-        static async Task WriteResult(Stream stream, ExecutionResult result)
+        static async Task WriteStream(Stream stream, ExecutionResult result)
         {
             await using var streamWriter = new StreamWriter(stream, Encoding.UTF8, 1024, true);
             await streamWriter.WriteAsync(JsonConvert.SerializeObject(result));
