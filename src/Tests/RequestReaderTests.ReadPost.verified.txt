@@ -1,0 +1,27 @@
+{
+  attachments: {
+    attachment1.txt: {
+      Name: 'attachment1.txt',
+      Metadata: {
+        file1Header: [
+          'file1HeaderValue'
+        ]
+      },
+      Value: 'Attachment1 Text'
+    },
+    attachment2.txt: {
+      Name: 'attachment2.txt',
+      Metadata: {
+        file2Header: [
+          'file2HeaderValue'
+        ]
+      },
+      Value: 'Attachment2 Text'
+    }
+  },
+  inputs: {
+    key: 'value'
+  },
+  operation: 'theOperation',
+  query: 'theQuery'
+}

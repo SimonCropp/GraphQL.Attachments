@@ -40,7 +40,7 @@ namespace GraphQL.Attachments
             return (query, inputs, new IncomingAttachments(), operation);
         }
 
-        class PostBody
+       internal class PostBody
         {
             public string OperationName = null!;
             public string Query = null!;
@@ -50,7 +50,8 @@ namespace GraphQL.Attachments
         static async Task<(string query, Inputs inputs, string operation)> ReadBody(HttpRequest request)
         {
             using var streamReader = new StreamReader(request.Body);
-            using var textReader = new StringReader(await streamReader.ReadToEndAsync());
+            var content = await streamReader.ReadToEndAsync();
+            using var textReader = new StringReader(content);
             using var reader = new JsonTextReader(textReader);
             var postBody = serializer.Deserialize<PostBody>(reader);
             return (postBody!.Query, postBody.Variables.ToInputs(), postBody.OperationName);
