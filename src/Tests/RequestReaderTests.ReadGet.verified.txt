@@ -1,0 +1,7 @@
+{
+  inputs: {
+    key: 'value'
+  },
+  operation: 'theOperation',
+  query: 'theQuery'
+}

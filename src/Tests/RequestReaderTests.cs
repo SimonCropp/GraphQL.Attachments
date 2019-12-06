@@ -39,6 +39,65 @@ public class RequestReaderTests :
             result.query
         });
     }
+
+    [Fact]
+    public async Task ReadGetMinimal()
+    {
+        var mockHttpRequest = new MockHttpRequest
+        {
+            Query = new QueryCollection(
+                new Dictionary<string, StringValues>
+                {
+                    {
+                        "query",
+                        new StringValues("theQuery")
+                    }
+                })
+        };
+        var result = RequestReader.ReadGet(mockHttpRequest);
+        await Verify(new
+        {
+            result.inputs,
+            result.operation,
+            result.query
+        });
+    }
+
+    [Fact]
+    public async Task ReadGet()
+    {
+        var mockHttpRequest = new MockHttpRequest
+        {
+            Query = new QueryCollection(
+                new Dictionary<string, StringValues>
+                {
+                    {
+                        "query",
+                        new StringValues("theQuery")
+                    },
+                    {
+                        "operation",
+                        new StringValues("theOperation")
+                    },
+                    {
+                        "variables",
+                        new StringValues(JsonConvert.SerializeObject(
+                            new Inputs(new Dictionary<string, object>
+                            {
+                                {"key", "value"}
+                            })))
+                    }
+                })
+        };
+        var result = RequestReader.ReadGet(mockHttpRequest);
+        await Verify(new
+        {
+            result.inputs,
+            result.operation,
+            result.query
+        });
+    }
+
     [Fact]
     public async Task ReadPost()
     {
@@ -72,14 +131,14 @@ public class RequestReaderTests :
                     {
                         Headers = new HeaderDictionary
                         {
-                            {"file1Header","file1HeaderValue"}
+                            {"file1Header", "file1HeaderValue"}
                         }
                     },
                     new FormFile(new MemoryStream(attachment2Bytes), 0, attachment2Bytes.Length, "attachment2", "attachment2.txt")
                     {
                         Headers = new HeaderDictionary
                         {
-                            {"file2Header","file2HeaderValue"}
+                            {"file2Header", "file2HeaderValue"}
                         }
                     },
                 }),
@@ -92,22 +151,6 @@ public class RequestReaderTests :
             result.operation,
             result.query
         });
-    }
-
-    static MemoryStream BuildBody(RequestReader.PostBody body)
-    {
-        var serializeObject = JsonConvert.SerializeObject(body);
-        return BuildStream(serializeObject);
-    }
-
-    static MemoryStream BuildStream(string value)
-    {
-        var stream = new MemoryStream();
-        var writer = new StreamWriter(stream);
-        writer.Write(value);
-        writer.Flush();
-        stream.Position = 0;
-        return stream;
     }
 
     public RequestReaderTests(ITestOutputHelper output) :
