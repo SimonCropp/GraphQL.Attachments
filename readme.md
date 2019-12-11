@@ -200,8 +200,8 @@ function PostMutation() {
 
 Creating and posting a multipart form can be done using a combination of [MultipartFormDataContent](https://msdn.microsoft.com/en-us/library/system.net.http.multipartformdatacontent.aspx) and [HttpClient.PostAsync](https://msdn.microsoft.com/en-us/library/system.net.http.httpclient.postasync.aspx). To simplify this action the `ClientQueryExecutor` class can be used:
 
-<!-- snippet: ClientQueryExecutor.cs -->
-<a id='snippet-ClientQueryExecutor.cs'/></a>
+<!-- snippet: QueryExecutor.cs -->
+<a id='snippet-QueryExecutor.cs'/></a>
 ```cs
 using System.Net.Http;
 using System.Threading;
@@ -209,12 +209,12 @@ using System.Threading.Tasks;
 
 namespace GraphQL.Attachments
 {
-    public class ClientQueryExecutor
+    public class QueryExecutor
     {
         HttpClient client;
         string uri;
 
-        public ClientQueryExecutor(HttpClient client, string uri = "graphql")
+        public QueryExecutor(HttpClient client, string uri = "graphql")
         {
             Guard.AgainstNull(nameof(client), client);
             Guard.AgainstNullWhiteSpace(nameof(uri), uri);
@@ -243,9 +243,9 @@ namespace GraphQL.Attachments
                 postContext.HeadersAction?.Invoke(content.Headers);
             }
 
-            var response = await client.PostAsync(uri, content, cancellation);
+            using var response = await client.PostAsync(uri, content, cancellation);
             var result = await response.ProcessResponse(cancellation);
-            return new QueryResult(result.Stream,result.Attachments);
+            return new QueryResult(result.Stream, result.Attachments);
         }
 
         public Task<QueryResult> ExecuteGet(string query, CancellationToken cancellation = default)
@@ -258,18 +258,18 @@ namespace GraphQL.Attachments
         {
             Guard.AgainstNull(nameof(request), request);
             var compressed = Compress.Query(request.Query);
-            var variablesString = GraphQlRequestAppender.ToJson(request.Variables);
+            var variablesString = RequestAppender.ToJson(request.Variables);
             var getUri = UriBuilder.GetUri(uri, variablesString, compressed, request.OperationName);
 
             using var getRequest = new HttpRequestMessage(HttpMethod.Get, getUri);
             request.HeadersAction?.Invoke(getRequest.Headers);
-            var response = await client.SendAsync(getRequest, cancellation);
+            using var response = await client.SendAsync(getRequest, cancellation);
             return await response.ProcessResponse(cancellation);
         }
     }
 }
 ```
-<sup><a href='/src/GraphQL.Attachments.Client/ClientQueryExecutor.cs#L1-L65' title='File snippet `ClientQueryExecutor.cs` was extracted from'>snippet source</a> | <a href='#snippet-ClientQueryExecutor.cs' title='Navigate to start of snippet `ClientQueryExecutor.cs`'>anchor</a></sup>
+<sup><a href='/src/GraphQL.Attachments.Client/QueryExecutor.cs#L1-L65' title='File snippet `QueryExecutor.cs` was extracted from'>snippet source</a> | <a href='#snippet-QueryExecutor.cs' title='Navigate to start of snippet `QueryExecutor.cs`'>anchor</a></sup>
 <!-- endsnippet -->
 
 This can be useful when performing [Integration testing in ASP.NET Core](https://docs.microsoft.com/en-us/aspnet/core/testing/integration-testing).
