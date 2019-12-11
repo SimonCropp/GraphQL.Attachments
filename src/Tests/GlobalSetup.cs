@@ -1,5 +1,5 @@
 ﻿using GraphQL.Attachments;
-using VerifyXunit;
+using Verify;
 using Xunit;
 
 [GlobalSetUp]
