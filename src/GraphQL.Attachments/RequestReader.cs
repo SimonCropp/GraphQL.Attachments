@@ -1,10 +1,9 @@
 ﻿using System;
-using System.IO;
 using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Primitives;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace GraphQL.Attachments
@@ -14,8 +13,6 @@ namespace GraphQL.Attachments
     /// </summary>
     public static class RequestReader
     {
-        static JsonSerializer serializer = JsonSerializer.CreateDefault();
-
         /// <summary>
         /// Parse a <see cref="HttpRequest"/> Get into the corresponding query, <see cref="Inputs"/>, and operation.
         /// </summary>
@@ -49,11 +46,7 @@ namespace GraphQL.Attachments
 
         static async Task<(string query, Inputs inputs, string operation)> ReadBody(HttpRequest request)
         {
-            using var streamReader = new StreamReader(request.Body);
-            var content = await streamReader.ReadToEndAsync();
-            using var textReader = new StringReader(content);
-            using var reader = new JsonTextReader(textReader);
-            var postBody = serializer.Deserialize<PostBody>(reader);
+            var postBody = await JsonSerializer.DeserializeAsync<PostBody>(request.Body);
             return (postBody!.Query, postBody.Variables.ToInputs(), postBody.OperationName);
         }
 
@@ -121,7 +114,6 @@ namespace GraphQL.Attachments
             }
             var variables = JObject.Parse(json);
             return variables.ToInputs();
-
         }
     }
 }
