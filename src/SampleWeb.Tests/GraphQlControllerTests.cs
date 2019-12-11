@@ -11,7 +11,7 @@ using Xunit.Abstractions;
 public class GraphQlControllerTests :
     VerifyBase
 {
-    static ClientQueryExecutor queryExecutor;
+    static QueryExecutor queryExecutor;
     static TestServer server;
     static HttpClient client;
 
@@ -19,7 +19,7 @@ public class GraphQlControllerTests :
     {
         server = GetTestServer();
         client = server.CreateClient();
-        queryExecutor = new ClientQueryExecutor(client);
+        queryExecutor = new QueryExecutor(client);
     }
 
     public GraphQlControllerTests(ITestOutputHelper output) :

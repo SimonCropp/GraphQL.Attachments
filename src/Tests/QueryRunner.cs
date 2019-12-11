@@ -5,7 +5,7 @@ using GraphQL;
 using GraphQL.Attachments;
 using Microsoft.Extensions.DependencyInjection;
 
-static class QueryExecutor
+static class QueryRunner
 {
     static DocumentExecuter executer = new DocumentExecuter();
 

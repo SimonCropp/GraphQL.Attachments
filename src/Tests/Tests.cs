@@ -53,7 +53,7 @@ mutation
 
         TestServices.AddGraphQlTestTypes(services);
 
-        return QueryExecutor.ExecuteQuery(queryString, services, incomingAttachments);
+        return QueryRunner.ExecuteQuery(queryString, services, incomingAttachments);
     }
 
     static MemoryStream BuildStream()

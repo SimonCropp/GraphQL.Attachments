@@ -4,12 +4,12 @@ using System.Threading.Tasks;
 
 namespace GraphQL.Attachments
 {
-    public class ClientQueryExecutor
+    public class QueryExecutor
     {
         HttpClient client;
         string uri;
 
-        public ClientQueryExecutor(HttpClient client, string uri = "graphql")
+        public QueryExecutor(HttpClient client, string uri = "graphql")
         {
             Guard.AgainstNull(nameof(client), client);
             Guard.AgainstNullWhiteSpace(nameof(uri), uri);
@@ -53,7 +53,7 @@ namespace GraphQL.Attachments
         {
             Guard.AgainstNull(nameof(request), request);
             var compressed = Compress.Query(request.Query);
-            var variablesString = GraphQlRequestAppender.ToJson(request.Variables);
+            var variablesString = RequestAppender.ToJson(request.Variables);
             var getUri = UriBuilder.GetUri(uri, variablesString, compressed, request.OperationName);
 
             using var getRequest = new HttpRequestMessage(HttpMethod.Get, getUri);

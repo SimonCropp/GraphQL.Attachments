@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 
 namespace GraphQL.Attachments
 {
-    public static class GraphQlRequestAppender
+    public static class RequestAppender
     {
         public static void AddQueryAndVariables(this MultipartFormDataContent content, string query, object? variables = null, string? operation = null)
         {
