@@ -68,7 +68,7 @@ Field<ResultGraph>(
         };
     });
 ```
-<sup>[snippet source](/src/Shared/Graphs/BaseRootGraph.cs#L24-L54) / [anchor](#snippet-usageingraphs)</sup>
+<sup><a href='/src/Shared/Graphs/BaseRootGraph.cs#L24-L54' title='File snippet `usageingraphs` was extracted from'>snippet source</a> | <a href='#snippet-usageingraphs' title='Navigate to start of snippet `usageingraphs`'>anchor</a></sup>
 <!-- endsnippet -->
 
 
@@ -116,7 +116,7 @@ public async Task Post(CancellationToken cancellation)
     await Execute(query, operation, attachments, inputs, cancellation);
 }
 ```
-<sup>[snippet source](/src/SampleWeb/GraphQlController.cs#L24-L31) / [anchor](#snippet-controllerpost)</sup>
+<sup><a href='/src/SampleWeb/GraphQlController.cs#L24-L31' title='File snippet `controllerpost` was extracted from'>snippet source</a> | <a href='#snippet-controllerpost' title='Navigate to start of snippet `controllerpost`'>anchor</a></sup>
 <!-- endsnippet -->
 
 <!-- snippet: ControllerGet -->
@@ -129,7 +129,7 @@ public Task Get(CancellationToken cancellation)
     return Execute(query, operation, null, inputs,cancellation);
 }
 ```
-<sup>[snippet source](/src/SampleWeb/GraphQlController.cs#L33-L40) / [anchor](#snippet-controllerget)</sup>
+<sup><a href='/src/SampleWeb/GraphQlController.cs#L33-L40' title='File snippet `controllerget` was extracted from'>snippet source</a> | <a href='#snippet-controllerget' title='Navigate to start of snippet `controllerget`'>anchor</a></sup>
 <!-- endsnippet -->
 
 
@@ -142,7 +142,7 @@ To expose the attachments to the queries, the attachment context needs to be add
 ```cs
 var result = await executer.ExecuteWithAttachments(executionOptions, incomingAttachments);
 ```
-<sup>[snippet source](/src/SampleWeb/GraphQlController.cs#L58-L60) / [anchor](#snippet-executewithattachments)</sup>
+<sup><a href='/src/SampleWeb/GraphQlController.cs#L58-L60' title='File snippet `executewithattachments` was extracted from'>snippet source</a> | <a href='#snippet-executewithattachments' title='Navigate to start of snippet `executewithattachments`'>anchor</a></sup>
 <!-- endsnippet -->
 
 
@@ -155,7 +155,7 @@ As with RequestReader for the incoming data, the outgoing data needs to be writt
 ```cs
 await ResponseWriter.WriteResult(Response, result);
 ```
-<sup>[snippet source](/src/SampleWeb/GraphQlController.cs#L61-L63) / [anchor](#snippet-responsewriter)</sup>
+<sup><a href='/src/SampleWeb/GraphQlController.cs#L61-L63' title='File snippet `responsewriter` was extracted from'>snippet source</a> | <a href='#snippet-responsewriter' title='Navigate to start of snippet `responsewriter`'>anchor</a></sup>
 <!-- endsnippet -->
 
 
@@ -192,7 +192,7 @@ function PostMutation() {
         });
 }
 ```
-<sup>[snippet source](/src/SampleWeb/test.html#L5-L26) / [anchor](#snippet-postmutation)</sup>
+<sup><a href='/src/SampleWeb/test.html#L5-L26' title='File snippet `postmutation` was extracted from'>snippet source</a> | <a href='#snippet-postmutation' title='Navigate to start of snippet `postmutation`'>anchor</a></sup>
 <!-- endsnippet -->
 
 
@@ -269,7 +269,7 @@ namespace GraphQL.Attachments
     }
 }
 ```
-<sup>[snippet source](/src/GraphQL.Attachments.Client/ClientQueryExecutor.cs#L1-L65) / [anchor](#snippet-ClientQueryExecutor.cs)</sup>
+<sup><a href='/src/GraphQL.Attachments.Client/ClientQueryExecutor.cs#L1-L65' title='File snippet `ClientQueryExecutor.cs` was extracted from'>snippet source</a> | <a href='#snippet-ClientQueryExecutor.cs' title='Navigate to start of snippet `ClientQueryExecutor.cs`'>anchor</a></sup>
 <!-- endsnippet -->
 
 This can be useful when performing [Integration testing in ASP.NET Core](https://docs.microsoft.com/en-us/aspnet/core/testing/integration-testing).
