@@ -40,7 +40,7 @@ namespace GraphQL.Attachments
             return (query, inputs, new IncomingAttachments(), operation);
         }
 
-       internal class PostBody
+        internal class PostBody
         {
             public string OperationName = null!;
             public string Query = null!;
@@ -115,13 +115,13 @@ namespace GraphQL.Attachments
             }
 
             var json = values.ToString();
-            if (json.Length > 0)
+            if (json.Length == 0)
             {
-                var variables = JObject.Parse(json);
-                return variables.ToInputs();
+                return new Inputs();
             }
+            var variables = JObject.Parse(json);
+            return variables.ToInputs();
 
-            return new Inputs();
         }
     }
 }
