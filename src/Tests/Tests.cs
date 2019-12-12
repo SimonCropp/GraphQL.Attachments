@@ -22,8 +22,7 @@ mutation
     argument
   }
 }";
-        var result = await RunQuery(mutation);
-        await Verify(result);
+        await Verify(RunQuery(mutation));
     }
 
     [Fact]
@@ -36,8 +35,7 @@ mutation
     argument
   }
 }";
-        var result = await RunQuery(queryString);
-        await Verify(result);
+        await Verify(RunQuery(queryString));
     }
 
     static Task<AttachmentExecutionResult> RunQuery(string queryString)

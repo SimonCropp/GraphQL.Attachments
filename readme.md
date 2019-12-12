@@ -243,9 +243,9 @@ namespace GraphQL.Attachments
                 postContext.HeadersAction?.Invoke(content.Headers);
             }
 
-            using var response = await client.PostAsync(uri, content, cancellation);
+            var response = await client.PostAsync(uri, content, cancellation);
             var result = await response.ProcessResponse(cancellation);
-            return new QueryResult(result.Stream, result.Attachments);
+            return new QueryResult(result.Stream,result.Attachments);
         }
 
         public Task<QueryResult> ExecuteGet(string query, CancellationToken cancellation = default)
@@ -263,7 +263,7 @@ namespace GraphQL.Attachments
 
             using var getRequest = new HttpRequestMessage(HttpMethod.Get, getUri);
             request.HeadersAction?.Invoke(getRequest.Headers);
-            using var response = await client.SendAsync(getRequest, cancellation);
+            var response = await client.SendAsync(getRequest, cancellation);
             return await response.ProcessResponse(cancellation);
         }
     }

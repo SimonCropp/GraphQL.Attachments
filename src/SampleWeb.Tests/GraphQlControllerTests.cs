@@ -11,7 +11,7 @@ using Xunit.Abstractions;
 public class GraphQlControllerTests :
     VerifyBase
 {
-    static QueryExecutor queryExecutor;
+    static QueryExecutor executor;
     static TestServer server;
     static HttpClient client;
 
@@ -19,7 +19,7 @@ public class GraphQlControllerTests :
     {
         server = GetTestServer();
         client = server.CreateClient();
-        queryExecutor = new QueryExecutor(client);
+        executor = new QueryExecutor(client);
     }
 
     public GraphQlControllerTests(ITestOutputHelper output) :
@@ -28,14 +28,13 @@ public class GraphQlControllerTests :
     }
 
     [Fact]
-    public async Task GetIntrospection()
+    public Task GetIntrospection()
     {
-        await using var result = await queryExecutor.ExecuteGet(SchemaIntrospection.IntrospectionQuery);
-        await Verify(result);
+        return Verify(executor.ExecuteGet(SchemaIntrospection.IntrospectionQuery));
     }
 
     [Fact]
-    public async Task Get()
+    public Task Get()
     {
         var query = @"
 {
@@ -44,12 +43,11 @@ public class GraphQlControllerTests :
     argument
   }
 }";
-        await using var result = await queryExecutor.ExecuteGet(query);
-        await Verify(result);
+        return Verify(executor.ExecuteGet(query));
     }
 
     [Fact]
-    public async Task Get_with_attachment()
+    public Task Get_with_attachment()
     {
         var query = @"
 {
@@ -58,8 +56,7 @@ public class GraphQlControllerTests :
     argument
   }
 }";
-        await using var result = await queryExecutor.ExecuteGet(query);
-        await Verify(result);
+        return Verify(executor.ExecuteGet(query));
     }
 
     [Fact]
@@ -75,8 +72,7 @@ public class GraphQlControllerTests :
         using var content = new MultipartFormDataContent();
         content.AddQueryAndVariables(mutation);
         using var response = await client.PostAsync("graphql", content);
-        await using var queryResult = await response.ProcessResponse();
-        await Verify(queryResult);
+        await Verify(response.ProcessResponse());
     }
 
     [Fact]
@@ -94,8 +90,7 @@ public class GraphQlControllerTests :
         content.AddQueryAndVariables(mutation);
         content.AddContent("key", "foo");
         using var response = await client.PostAsync("graphql", content);
-        await using var queryResult = await response.ProcessResponse();
-        await Verify(queryResult);
+        await Verify(response.ProcessResponse());
     }
 
 
@@ -115,8 +110,7 @@ public class GraphQlControllerTests :
         content.AddContent("key1", "foo1");
         content.AddContent("key2", "foo2");
         using var response = await client.PostAsync("graphql", content);
-        await using var queryResult = await response.ProcessResponse();
-        await Verify(queryResult);
+        await Verify(response.ProcessResponse());
     }
 
     static TestServer GetTestServer()
