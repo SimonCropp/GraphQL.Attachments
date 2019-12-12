@@ -93,7 +93,6 @@ public class GraphQlControllerTests :
         await Verify(response.ProcessResponse());
     }
 
-
     [Fact]
     public async Task Post_with_multiple_attachment()
     {
