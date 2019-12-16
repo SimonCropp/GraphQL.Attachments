@@ -1,0 +1,4 @@
+{
+  query: '{\n  noAttachment\n  {\n    argument\n  }\n}',
+  operation: 'theOperation'
+}

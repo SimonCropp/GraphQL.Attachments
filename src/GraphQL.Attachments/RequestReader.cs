@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -33,21 +34,21 @@ namespace GraphQL.Attachments
                 return await ReadForm(request);
             }
 
-            var (query, inputs, operation) = await ReadBody(request);
+            var (query, inputs, operation) = await ReadBody(request.Body);
             return (query, inputs, new IncomingAttachments(), operation);
         }
 
         internal class PostBody
         {
-            public string OperationName = null!;
-            public string Query = null!;
-            public JObject Variables = null!;
+            public string operationName { get; set; } = null!;
+            public string query { get; set; } = null!;
+            public JObject variables { get; set; } = null!;
         }
 
-        static async Task<(string query, Inputs inputs, string operation)> ReadBody(HttpRequest request)
+        internal static async Task<(string query, Inputs inputs, string operation)> ReadBody(Stream stream)
         {
-            var postBody = await JsonSerializer.DeserializeAsync<PostBody>(request.Body);
-            return (postBody!.Query, postBody.Variables.ToInputs(), postBody.OperationName);
+            var postBody = await JsonSerializer.DeserializeAsync<PostBody>(stream);
+            return (postBody!.query, postBody.variables.ToInputs(), postBody.operationName);
         }
 
         static async Task<(string query, Inputs inputs, IIncomingAttachments attachments, string? operation)> ReadForm(HttpRequest request)
