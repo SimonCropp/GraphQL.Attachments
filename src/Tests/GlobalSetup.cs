@@ -7,7 +7,7 @@ public static class GlobalSetup
 {
     public static void Setup()
     {
-        Global.ModifySerialization(settings =>
+        SharedVerifySettings.ModifySerialization(settings =>
         {
             settings.AddExtraSettings(serializerSettings =>
             {
