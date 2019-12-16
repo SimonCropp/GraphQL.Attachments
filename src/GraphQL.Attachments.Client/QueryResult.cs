@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 
 namespace GraphQL.Attachments
@@ -10,13 +11,15 @@ namespace GraphQL.Attachments
     {
         public Stream Stream { get; }
         public IReadOnlyDictionary<string, Attachment> Attachments { get; }
+        public HttpContentHeaders ContentHeaders { get; }
 
-        public QueryResult(Stream stream, IReadOnlyDictionary<string, Attachment> attachments)
+        public QueryResult(Stream stream, IReadOnlyDictionary<string, Attachment> attachments, HttpContentHeaders contentHeaders)
         {
             Guard.AgainstNull(nameof(stream), stream);
             Guard.AgainstNull(nameof(attachments), attachments);
             Stream = stream;
             Attachments = attachments;
+            ContentHeaders= contentHeaders;
         }
 
         public async ValueTask DisposeAsync()

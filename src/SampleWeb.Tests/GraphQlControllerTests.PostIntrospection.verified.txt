@@ -1191,5 +1191,13 @@
     }
   }
 },
+  ContentHeaders: [
+    {
+      Key: 'Content-Type',
+      Value: [
+        'application/json'
+      ]
+    }
+  ],
   Attachments: {}
 }

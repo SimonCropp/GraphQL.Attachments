@@ -245,7 +245,7 @@ namespace GraphQL.Attachments
 
             var response = await client.PostAsync(uri, content, cancellation);
             var result = await response.ProcessResponse(cancellation);
-            return new QueryResult(result.Stream,result.Attachments);
+            return new QueryResult(result.Stream, result.Attachments, response.Content.Headers);
         }
 
         public Task<QueryResult> ExecuteGet(string query, CancellationToken cancellation = default)

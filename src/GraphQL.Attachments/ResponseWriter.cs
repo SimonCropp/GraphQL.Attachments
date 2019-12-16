@@ -1,12 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.AspNetCore.Http;
+using Newtonsoft.Json;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Newtonsoft.Json;
 
 namespace GraphQL.Attachments
 {
@@ -24,16 +24,15 @@ namespace GraphQL.Attachments
             Guard.AgainstNull(nameof(result), result);
             var executionResult = result.ExecutionResult;
             var attachments = (OutgoingAttachments) result.Attachments;
-            var body = response.Body;
             if (executionResult.Errors?.Count > 0)
             {
                 response.StatusCode = (int) HttpStatusCode.BadRequest;
-                return WriteStream(body, executionResult);
+                return WriteStream(executionResult, response);
             }
 
             if (!attachments.HasPendingAttachments)
             {
-                return WriteStream(body, executionResult);
+                return WriteStream(executionResult, response);
             }
 
             return WriteMultipart(response, executionResult, attachments);
@@ -87,9 +86,10 @@ namespace GraphQL.Attachments
             return httpContent;
         }
 
-        static async Task WriteStream(Stream stream, ExecutionResult result)
+        static async Task WriteStream(ExecutionResult result, HttpResponse response)
         {
-            await using var streamWriter = new StreamWriter(stream, Encoding.UTF8, 1024, true);
+            response.Headers.Add("Content-Type", "application/json");
+            await using var streamWriter = new StreamWriter(response.Body, Encoding.UTF8, 1024, true);
             await streamWriter.WriteAsync(JsonConvert.SerializeObject(result));
         }
     }

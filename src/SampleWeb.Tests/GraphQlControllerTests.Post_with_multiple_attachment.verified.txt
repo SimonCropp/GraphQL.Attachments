@@ -6,6 +6,20 @@
     }
   }
 },
+  ContentHeaders: [
+    {
+      Key: 'Content-Length',
+      Value: [
+        '473'
+      ]
+    },
+    {
+      Key: 'Content-Type',
+      Value: [
+        'multipart/form-data; boundary="6e06b00c-e066-4c07-ad79-7335d505b9e2"'
+      ]
+    }
+  ],
   Attachments: {
     key1: {
       Name: 'key1',
