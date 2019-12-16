@@ -7,6 +7,7 @@ public static class GlobalSetup
 {
     public static void Setup()
     {
+        SharedVerifySettings.AddScrubber(x => x.RemoveLineSuffix("boundary="));
         SharedVerifySettings.ModifySerialization(settings =>
         {
             settings.AddExtraSettings(serializerSettings =>
