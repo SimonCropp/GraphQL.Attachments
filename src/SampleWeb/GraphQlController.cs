@@ -22,24 +22,32 @@ public class GraphQlController :
     }
 
     #region ControllerPost
+
     [HttpPost]
     public async Task Post(CancellationToken cancellation)
     {
         var (query, inputs, attachments, operation) = await RequestReader.ReadPost(Request);
         await Execute(query, operation, attachments, inputs, cancellation);
     }
+
     #endregion
 
     #region ControllerGet
+
     [HttpGet]
     public Task Get(CancellationToken cancellation)
     {
         var (query, inputs, operation) = RequestReader.ReadGet(Request);
-        return Execute(query, operation, null, inputs,cancellation);
+        return Execute(query, operation, null, inputs, cancellation);
     }
+
     #endregion
 
-    async Task Execute(string query, string operation, IIncomingAttachments incomingAttachments, Inputs inputs, CancellationToken cancellation)
+    async Task Execute(
+        string query, string operation,
+        IIncomingAttachments incomingAttachments,
+        Inputs inputs,
+        CancellationToken cancellation)
     {
         var executionOptions = new ExecutionOptions
         {
@@ -56,10 +64,15 @@ public class GraphQlController :
         };
 
         #region ExecuteWithAttachments
+
         var result = await executer.ExecuteWithAttachments(executionOptions, incomingAttachments);
+
         #endregion
+
         #region ResponseWriter
+
         await ResponseWriter.WriteResult(Response, result);
+
         #endregion
     }
 }
