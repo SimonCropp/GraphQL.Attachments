@@ -116,7 +116,7 @@ public async Task Post(CancellationToken cancellation)
     await Execute(query, operation, attachments, inputs, cancellation);
 }
 ```
-<sup><a href='/src/SampleWeb/GraphQlController.cs#L24-L31' title='File snippet `controllerpost` was extracted from'>snippet source</a> | <a href='#snippet-controllerpost' title='Navigate to start of snippet `controllerpost`'>anchor</a></sup>
+<sup><a href='/src/SampleWeb/GraphQlController.cs#L24-L33' title='File snippet `controllerpost` was extracted from'>snippet source</a> | <a href='#snippet-controllerpost' title='Navigate to start of snippet `controllerpost`'>anchor</a></sup>
 <!-- endsnippet -->
 
 <!-- snippet: ControllerGet -->
@@ -126,10 +126,10 @@ public async Task Post(CancellationToken cancellation)
 public Task Get(CancellationToken cancellation)
 {
     var (query, inputs, operation) = RequestReader.ReadGet(Request);
-    return Execute(query, operation, null, inputs,cancellation);
+    return Execute(query, operation, null, inputs, cancellation);
 }
 ```
-<sup><a href='/src/SampleWeb/GraphQlController.cs#L33-L40' title='File snippet `controllerget` was extracted from'>snippet source</a> | <a href='#snippet-controllerget' title='Navigate to start of snippet `controllerget`'>anchor</a></sup>
+<sup><a href='/src/SampleWeb/GraphQlController.cs#L35-L44' title='File snippet `controllerget` was extracted from'>snippet source</a> | <a href='#snippet-controllerget' title='Navigate to start of snippet `controllerget`'>anchor</a></sup>
 <!-- endsnippet -->
 
 
@@ -142,7 +142,7 @@ To expose the attachments to the queries, the attachment context needs to be add
 ```cs
 var result = await executer.ExecuteWithAttachments(executionOptions, incomingAttachments);
 ```
-<sup><a href='/src/SampleWeb/GraphQlController.cs#L58-L60' title='File snippet `executewithattachments` was extracted from'>snippet source</a> | <a href='#snippet-executewithattachments' title='Navigate to start of snippet `executewithattachments`'>anchor</a></sup>
+<sup><a href='/src/SampleWeb/GraphQlController.cs#L66-L70' title='File snippet `executewithattachments` was extracted from'>snippet source</a> | <a href='#snippet-executewithattachments' title='Navigate to start of snippet `executewithattachments`'>anchor</a></sup>
 <!-- endsnippet -->
 
 
@@ -155,7 +155,7 @@ As with RequestReader for the incoming data, the outgoing data needs to be writt
 ```cs
 await ResponseWriter.WriteResult(Response, result);
 ```
-<sup><a href='/src/SampleWeb/GraphQlController.cs#L61-L63' title='File snippet `responsewriter` was extracted from'>snippet source</a> | <a href='#snippet-responsewriter' title='Navigate to start of snippet `responsewriter`'>anchor</a></sup>
+<sup><a href='/src/SampleWeb/GraphQlController.cs#L72-L76' title='File snippet `responsewriter` was extracted from'>snippet source</a> | <a href='#snippet-responsewriter' title='Navigate to start of snippet `responsewriter`'>anchor</a></sup>
 <!-- endsnippet -->
 
 
