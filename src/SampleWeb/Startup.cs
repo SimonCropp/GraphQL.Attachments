@@ -1,5 +1,4 @@
-﻿using GraphiQl;
-using GraphQL;
+﻿using GraphQL;
 using GraphQL.Types;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
@@ -23,7 +22,6 @@ public class Startup
     public void Configure(IApplicationBuilder builder)
     {
         builder.UseStaticFiles();
-        builder.UseGraphiQl();
         builder.UseMvc();
     }
 }
