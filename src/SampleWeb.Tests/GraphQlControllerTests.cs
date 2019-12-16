@@ -34,6 +34,12 @@ public class GraphQlControllerTests :
     }
 
     [Fact]
+    public Task PostIntrospection()
+    {
+        return Verify(executor.ExecutePost(SchemaIntrospection.IntrospectionQuery));
+    }
+
+    [Fact]
     public Task Get()
     {
         var query = @"
