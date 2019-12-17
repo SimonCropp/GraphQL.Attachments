@@ -18,11 +18,7 @@ public class RequestReaderTests :
     [Fact]
     public async Task Parsing()
     {
-        var stream = new MemoryStream();
-        var writer = new StreamWriter(stream);
-        writer.Write("{\"query\":\"{\\n  noAttachment\\n  {\\n    argument\\n  }\\n}\",\"variables\":null,\"operationName\":\"theOperation\"}");
-        writer.Flush();
-        stream.Position = 0;
+        await using var stream = new MemoryStream(Encoding.UTF8.GetBytes("{\"query\":\"{\\n  noAttachment\\n  {\\n    argument\\n  }\\n}\",\"variables\":null,\"operationName\":\"theOperation\"}")) {Position = 0};
         var (query, inputs, operation) = await RequestReader.ReadBody(stream);
         await Verify(new
         {
