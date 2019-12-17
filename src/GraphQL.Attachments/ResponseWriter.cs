@@ -30,12 +30,11 @@ namespace GraphQL.Attachments
                 return WriteStream(executionResult, response);
             }
 
-            if (!attachments.HasPendingAttachments)
+            if (attachments.HasPendingAttachments)
             {
-                return WriteStream(executionResult, response);
+                return WriteMultipart(response, executionResult, attachments);
             }
-
-            return WriteMultipart(response, executionResult, attachments);
+            return WriteStream(executionResult, response);
         }
 
         static async Task WriteMultipart(HttpResponse response, ExecutionResult result, OutgoingAttachments attachments)
