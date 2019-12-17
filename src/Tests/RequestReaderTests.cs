@@ -16,9 +16,14 @@ public class RequestReaderTests :
     VerifyBase
 {
     [Fact]
-    public async Task Parsing()
+    public Task Parsing()
     {
-        await using var stream = new MemoryStream(Encoding.UTF8.GetBytes("{\"query\":\"{\\n  noAttachment\\n  {\\n    argument\\n  }\\n}\",\"variables\":null,\"operationName\":\"theOperation\"}")) {Position = 0};
+        return Parse("{\"query\":\"{\\n  noAttachment\\n  {\\n    argument\\n  }\\n}\",\"variables\":null,\"operationName\":\"theOperation\"}");
+    }
+
+    async Task Parse(string chars)
+    {
+        await using var stream = new MemoryStream(Encoding.UTF8.GetBytes(chars)) {Position = 0};
         var (query, inputs, operation) = await RequestReader.ReadBody(stream);
         await Verify(new
         {
