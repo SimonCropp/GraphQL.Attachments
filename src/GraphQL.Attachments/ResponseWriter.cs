@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace GraphQL.Attachments
@@ -16,7 +17,7 @@ namespace GraphQL.Attachments
         /// <summary>
         /// Writes <paramref name="result"/> to <paramref name="response"/>.
         /// </summary>
-        public static Task WriteResult(HttpResponse response, AttachmentExecutionResult result)
+        public static Task WriteResult(HttpResponse response, AttachmentExecutionResult result, CancellationToken cancellation)
         {
             Guard.AgainstNull(nameof(response), response);
             Guard.AgainstNull(nameof(result), result);
@@ -25,17 +26,21 @@ namespace GraphQL.Attachments
             if (executionResult.Errors?.Count > 0)
             {
                 response.StatusCode = (int) HttpStatusCode.BadRequest;
-                return WriteStream(executionResult, response);
+                return WriteStream(executionResult, response, cancellation);
             }
 
             if (attachments.HasPendingAttachments)
             {
-                return WriteMultipart(response, executionResult, attachments);
+                return WriteMultipart(response, executionResult, attachments, cancellation);
             }
-            return WriteStream(executionResult, response);
+            return WriteStream(executionResult, response, cancellation);
         }
 
-        static async Task WriteMultipart(HttpResponse response, ExecutionResult result, OutgoingAttachments attachments)
+        static async Task WriteMultipart(
+            HttpResponse response,
+            ExecutionResult result,
+            OutgoingAttachments attachments,
+            CancellationToken cancellation)
         {
             var httpContents = new List<HttpContent>();
             try
@@ -46,7 +51,7 @@ namespace GraphQL.Attachments
 
                 foreach (var attachment in attachments.Inner)
                 {
-                    httpContents.Add(await AddAttachment(attachment, multipart));
+                    httpContents.Add(await AddAttachment(attachment, multipart, cancellation));
                 }
 
                 response.ContentLength = multipart.Headers.ContentLength;
@@ -67,10 +72,13 @@ namespace GraphQL.Attachments
             }
         }
 
-        static async Task<HttpContent> AddAttachment(KeyValuePair<string, Outgoing> attachment, MultipartFormDataContent multipart)
+        static async Task<HttpContent> AddAttachment(
+            KeyValuePair<string, Outgoing> attachment,
+            MultipartFormDataContent multipart,
+            CancellationToken cancellation)
         {
             var outgoing = attachment.Value;
-            var httpContent = await outgoing.ContentBuilder();
+            var httpContent = await outgoing.ContentBuilder(cancellation);
             if (outgoing.Headers != null)
             {
                 foreach (var (key, value) in outgoing.Headers)
@@ -83,11 +91,11 @@ namespace GraphQL.Attachments
             return httpContent;
         }
 
-        static Task WriteStream(ExecutionResult result, HttpResponse response)
+        static Task WriteStream(ExecutionResult result, HttpResponse response, CancellationToken cancellation)
         {
             response.Headers.Add("Content-Type", "application/json");
             var serializeObject = JsonConvert.SerializeObject(result);
-            return response.WriteAsync(serializeObject);
+            return response.WriteAsync(serializeObject, cancellation);
         }
     }
 }

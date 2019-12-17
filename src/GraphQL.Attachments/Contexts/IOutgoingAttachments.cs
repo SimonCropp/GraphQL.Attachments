@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Net.Http.Headers;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace GraphQL.Attachments
@@ -24,7 +25,7 @@ namespace GraphQL.Attachments
         /// <summary>
         /// Add an attachment with <paramref name="name"/> to the current outgoing pipeline.
         /// </summary>
-        void AddStream<T>(string name, Func<Task<T>> streamFactory, Action? cleanup = null, HttpContentHeaders? headers = null)
+        void AddStream<T>(string name, Func<CancellationToken, Task<T>> streamFactory, Action? cleanup = null, HttpContentHeaders? headers = null)
             where T : Stream;
 
         /// <summary>
@@ -40,7 +41,7 @@ namespace GraphQL.Attachments
         /// <summary>
         /// Add an attachment with the default name of <see cref="string.Empty"/> to the current outgoing pipeline.
         /// </summary>
-        void AddStream<T>(Func<Task<T>> streamFactory, Action? cleanup = null, HttpContentHeaders? headers = null)
+        void AddStream<T>(Func<CancellationToken, Task<T>> streamFactory, Action? cleanup = null, HttpContentHeaders? headers = null)
             where T : Stream;
 
         /// <summary>
@@ -75,7 +76,7 @@ namespace GraphQL.Attachments
         /// <remarks>
         /// This should only be used when the data size is know to be small as it causes the full size of the attachment to be allocated in memory.
         /// </remarks>
-        void AddBytes(Func<Task<byte[]>> bytesFactory, Action? cleanup = null, HttpContentHeaders? headers = null);
+        void AddBytes(Func<CancellationToken, Task<byte[]>> bytesFactory, Action? cleanup = null, HttpContentHeaders? headers = null);
 
         /// <summary>
         /// Add an attachment with <paramref name="name"/> to the current outgoing pipeline.
@@ -83,7 +84,7 @@ namespace GraphQL.Attachments
         /// <remarks>
         /// This should only be used when the data size is know to be small as it causes the full size of the attachment to be allocated in memory.
         /// </remarks>
-        void AddBytes(string name, Func<Task<byte[]>> bytesFactory, Action? cleanup = null, HttpContentHeaders? headers = null);
+        void AddBytes(string name, Func<CancellationToken, Task<byte[]>> bytesFactory, Action? cleanup = null, HttpContentHeaders? headers = null);
 
         /// <summary>
         /// Add an attachment with the default name of <see cref="string.Empty"/> to the current outgoing pipeline.
@@ -123,7 +124,7 @@ namespace GraphQL.Attachments
         /// <remarks>
         /// This should only be used when the data size is know to be small as it causes the full size of the attachment to be allocated in memory.
         /// </remarks>
-        void AddString(Func<Task<string>> valueFactory, Action? cleanup = null, HttpContentHeaders? headers = null);
+        void AddString(Func<CancellationToken, Task<string>> valueFactory, Action? cleanup = null, HttpContentHeaders? headers = null);
 
         /// <summary>
         /// Add an attachment with <paramref name="name"/> to the current outgoing pipeline.
@@ -131,7 +132,7 @@ namespace GraphQL.Attachments
         /// <remarks>
         /// This should only be used when the data size is know to be small as it causes the full size of the attachment to be allocated in memory.
         /// </remarks>
-        void AddString(string name, Func<Task<string>> valueFactory, Action? cleanup = null, HttpContentHeaders? headers = null);
+        void AddString(string name, Func<CancellationToken, Task<string>> valueFactory, Action? cleanup = null, HttpContentHeaders? headers = null);
 
         /// <summary>
         /// Add an attachment with the default name of <see cref="string.Empty"/> to the current outgoing pipeline.

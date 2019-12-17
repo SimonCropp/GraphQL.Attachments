@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using Newtonsoft.Json;
 
 namespace GraphQL.Attachments
@@ -13,7 +14,7 @@ namespace GraphQL.Attachments
             writer.WritePropertyName("Headers");
             serializer.Serialize(writer, outgoing.Headers);
             writer.WritePropertyName("Value");
-            var content = outgoing.ContentBuilder().GetAwaiter().GetResult();
+            var content = outgoing.ContentBuilder(CancellationToken.None).GetAwaiter().GetResult();
             var result = content.ReadAsStringAsync().GetAwaiter().GetResult();
             serializer.Serialize(writer, result);
             writer.WriteEndObject();

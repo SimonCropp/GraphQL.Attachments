@@ -12,7 +12,7 @@ public class Tests :
     VerifyBase
 {
     [Fact]
-    public async Task Mutation()
+    public Task Mutation()
     {
         var mutation = @"
 mutation
@@ -22,11 +22,11 @@ mutation
     argument
   }
 }";
-        await Verify(RunQuery(mutation));
+        return Verify(RunQuery(mutation));
     }
 
     [Fact]
-    public async Task Query()
+    public Task Query()
     {
         var queryString = @"
 {
@@ -35,7 +35,7 @@ mutation
     argument
   }
 }";
-        await Verify(RunQuery(queryString));
+        return Verify(RunQuery(queryString));
     }
 
     static Task<AttachmentExecutionResult> RunQuery(string queryString)

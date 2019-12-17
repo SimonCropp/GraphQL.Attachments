@@ -2,6 +2,7 @@
 using System.IO;
 using System.Linq;
 using System.Text.Json;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Primitives;
@@ -26,15 +27,17 @@ namespace GraphQL.Attachments
         /// <summary>
         /// Parse a <see cref="HttpRequest"/> Post into the corresponding query, <see cref="Inputs"/>, operation, and <see cref="IIncomingAttachments"/>.
         /// </summary>
-        public static async Task<(string query, Inputs inputs, IIncomingAttachments attachments, string? operation)> ReadPost(HttpRequest request)
+        public static async Task<(string query, Inputs inputs, IIncomingAttachments attachments, string? operation)> ReadPost(
+            HttpRequest request,
+            CancellationToken cancellation = default)
         {
             Guard.AgainstNull(nameof(request), request);
             if (request.HasFormContentType)
             {
-                return await ReadForm(request);
+                return await ReadForm(request, cancellation);
             }
 
-            var (query, inputs, operation) = await ReadBody(request.Body);
+            var (query, inputs, operation) = await ReadBody(request.Body, cancellation);
             return (query, inputs, new IncomingAttachments(), operation);
         }
 
@@ -45,15 +48,19 @@ namespace GraphQL.Attachments
             public JObject variables { get; set; } = null!;
         }
 
-        internal static async Task<(string query, Inputs inputs, string operation)> ReadBody(Stream stream)
+        internal static async Task<(string query, Inputs inputs, string operation)> ReadBody(
+            Stream stream,
+            CancellationToken cancellation)
         {
-            var postBody = await JsonSerializer.DeserializeAsync<PostBody>(stream);
+            var postBody = await JsonSerializer.DeserializeAsync<PostBody>(stream, cancellationToken: cancellation);
             return (postBody!.query, postBody.variables.ToInputs(), postBody.operationName);
         }
 
-        static async Task<(string query, Inputs inputs, IIncomingAttachments attachments, string? operation)> ReadForm(HttpRequest request)
+        static async Task<(string query, Inputs inputs, IIncomingAttachments attachments, string? operation)> ReadForm(
+            HttpRequest request,
+            CancellationToken cancellation)
         {
-            var form = await request.ReadFormAsync();
+            var form = await request.ReadFormAsync(cancellation);
             var (query, inputs, operation) = ReadParams(form.TryGetValue);
 
             var streams = form.Files.ToDictionary(

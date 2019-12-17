@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Threading;
 using System.Threading.Tasks;
 using GraphQL.Attachments;
 
@@ -16,13 +17,13 @@ class OutgoingAttachments :
 
     public IReadOnlyList<string> Names => Inner.Keys.ToList();
 
-    public void AddStream<T>(Func<Task<T>> streamFactory, Action? cleanup = null, HttpContentHeaders? headers = null)
+    public void AddStream<T>(Func<CancellationToken, Task<T>> streamFactory, Action? cleanup = null, HttpContentHeaders? headers = null)
         where T : Stream
     {
         AddStream("default", streamFactory, cleanup, headers);
     }
 
-    public void AddStream<T>(string name, Func<Task<T>> streamFactory, Action? cleanup = null, HttpContentHeaders? headers = null)
+    public void AddStream<T>(string name, Func<CancellationToken, Task<T>> streamFactory, Action? cleanup = null, HttpContentHeaders? headers = null)
         where T : Stream
     {
         Guard.AgainstNull(nameof(name), name);
@@ -30,10 +31,10 @@ class OutgoingAttachments :
         Inner.Add(name,
             new Outgoing
             (
-                contentBuilder: async () =>
+                contentBuilder: async cancellation =>
                 {
                     streamFactory = streamFactory.WrapFuncTaskInCheck(name);
-                    var value = await streamFactory();
+                    var value = await streamFactory(cancellation);
                     return new StreamContent(value);
                 },
                 cleanup: cleanup.WrapCleanupInCheck(name),
@@ -58,7 +59,7 @@ class OutgoingAttachments :
         Inner.Add(name,
             new Outgoing
             (
-                contentBuilder: () =>
+                contentBuilder: cancellation =>
                 {
                     streamFactory = streamFactory.WrapFuncInCheck(name);
                     var value = streamFactory();
@@ -76,7 +77,7 @@ class OutgoingAttachments :
         Inner.Add(name,
             new Outgoing
             (
-                contentBuilder: () => Task.FromResult<HttpContent>(new StreamContent(stream)),
+                contentBuilder: cancellation => Task.FromResult<HttpContent>(new StreamContent(stream)),
                 cleanup: cleanup.WrapCleanupInCheck(name),
                 headers: headers
             ));
@@ -99,7 +100,7 @@ class OutgoingAttachments :
         Inner.Add(name,
             new Outgoing
             (
-                contentBuilder: () =>
+                contentBuilder: cancellation =>
                 {
                     bytesFactory = bytesFactory.WrapFuncInCheck(name);
                     var value = bytesFactory();
@@ -117,28 +118,28 @@ class OutgoingAttachments :
         Inner.Add(name,
             new Outgoing
             (
-                contentBuilder: () => Task.FromResult<HttpContent>(new ByteArrayContent(bytes)),
+                contentBuilder: cancellation => Task.FromResult<HttpContent>(new ByteArrayContent(bytes)),
                 cleanup: cleanup.WrapCleanupInCheck(name),
                 headers: headers
             ));
     }
 
-    public void AddBytes(Func<Task<byte[]>> bytesFactory, Action? cleanup = null, HttpContentHeaders? headers = null)
+    public void AddBytes(Func<CancellationToken, Task<byte[]>> bytesFactory, Action? cleanup = null, HttpContentHeaders? headers = null)
     {
         AddBytes("default", bytesFactory, cleanup, headers);
     }
 
-    public void AddBytes(string name, Func<Task<byte[]>> bytesFactory, Action? cleanup = null, HttpContentHeaders? headers = null)
+    public void AddBytes(string name, Func<CancellationToken, Task<byte[]>> bytesFactory, Action? cleanup = null, HttpContentHeaders? headers = null)
     {
         Guard.AgainstNull(nameof(name), name);
         Guard.AgainstNull(nameof(bytesFactory), bytesFactory);
         Inner.Add(name,
             new Outgoing
             (
-                contentBuilder: async () =>
+                contentBuilder: async cancellation =>
                 {
                     bytesFactory = bytesFactory.WrapFuncTaskInCheck(name);
-                    var value = await bytesFactory();
+                    var value = await bytesFactory(cancellation);
                     return new ByteArrayContent(value);
                 },
                 cleanup: cleanup.WrapCleanupInCheck(name),
@@ -163,7 +164,7 @@ class OutgoingAttachments :
         Inner.Add(name,
             new Outgoing
             (
-                contentBuilder: () =>
+                contentBuilder: cancellation =>
                 {
                     valueFactory = valueFactory.WrapFuncInCheck(name);
                     var value = valueFactory();
@@ -181,28 +182,28 @@ class OutgoingAttachments :
         Inner.Add(name,
             new Outgoing
             (
-                contentBuilder: () => Task.FromResult<HttpContent>(new StringContent(value)),
+                contentBuilder: cancellation => Task.FromResult<HttpContent>(new StringContent(value)),
                 cleanup: cleanup.WrapCleanupInCheck(name),
                 headers: headers
             ));
     }
 
-    public void AddString(Func<Task<string>> valueFactory, Action? cleanup = null, HttpContentHeaders? headers = null)
+    public void AddString(Func<CancellationToken, Task<string>> valueFactory, Action? cleanup = null, HttpContentHeaders? headers = null)
     {
         AddString("default", valueFactory, cleanup, headers);
     }
 
-    public void AddString(string name, Func<Task<string>> valueFactory, Action? cleanup = null, HttpContentHeaders? headers = null)
+    public void AddString(string name, Func<CancellationToken, Task<string>> valueFactory, Action? cleanup = null, HttpContentHeaders? headers = null)
     {
         Guard.AgainstNull(nameof(name), name);
         Guard.AgainstNull(nameof(valueFactory), valueFactory);
         Inner.Add(name,
             new Outgoing
             (
-                contentBuilder: async () =>
+                contentBuilder: async cancellation =>
                 {
                     valueFactory = valueFactory.WrapFuncTaskInCheck(name);
-                    var value = await valueFactory();
+                    var value = await valueFactory(cancellation);
                     return new StringContent(value);
                 },
                 cleanup: cleanup.WrapCleanupInCheck(name),

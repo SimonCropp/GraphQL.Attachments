@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 
 static class Guard
@@ -33,9 +34,9 @@ static class Guard
         return () => func.EvaluateAndCheck(name);
     }
 
-    static T EvaluateAndCheck<T>(this Func<T> func, string attachmentName)
+    static T EvaluateAndCheck<T>(this Func<T> func, string attachment)
     {
-        var message = $"Provided delegate threw an exception. Attachment name: {attachmentName}.";
+        var message = $"Provided delegate threw an exception. Attachment: {attachment}.";
         T value;
         try
         {
@@ -46,11 +47,31 @@ static class Guard
             throw new Exception(message, exception);
         }
 
-        ThrowIfNullReturned(null, attachmentName, value);
+        ThrowIfNullReturned(null, attachment, value);
         return value;
     }
 
-    public static Action? WrapCleanupInCheck(this Action? cleanup, string attachmentName)
+    static async Task<T> EvaluateAndCheck<T>(
+        this Func<CancellationToken, Task<T>> func,
+        string attachment,
+        CancellationToken cancellation)
+    {
+        var message = $"Provided delegate threw an exception. Attachment: {attachment}.";
+        T value;
+        try
+        {
+            value = await func(cancellation);
+        }
+        catch (Exception exception)
+        {
+            throw new Exception(message, exception);
+        }
+
+        ThrowIfNullReturned(null, attachment, value);
+        return value;
+    }
+
+    public static Action? WrapCleanupInCheck(this Action? cleanup, string attachment)
     {
         if (cleanup == null)
         {
@@ -65,50 +86,55 @@ static class Guard
             }
             catch (Exception exception)
             {
-                throw new Exception($"Cleanup threw an exception. Attachment name: {attachmentName}.", exception);
+                throw new Exception($"Cleanup threw an exception. Attachment: {attachment}.", exception);
             }
         };
     }
 
-    public static Func<Task<T>> WrapFuncTaskInCheck<T>(this Func<Task<T>> func, string attachmentName)
+    public static Func<CancellationToken, Task<T>> WrapFuncTaskInCheck<T>(
+        this Func<CancellationToken, Task<T>> func,
+        string attachment)
     {
-        return async () =>
+        return async cancellation =>
         {
-            var task = func.EvaluateAndCheck(attachmentName);
-            ThrowIfNullReturned(null, attachmentName, task);
+            var task = func.EvaluateAndCheck(attachment, cancellation);
+            ThrowIfNullReturned(null, attachment, task);
             var value = await task;
-            ThrowIfNullReturned(null, attachmentName, value);
+            ThrowIfNullReturned(null, attachment, value);
             return value;
         };
     }
 
-    public static Func<Task<Stream>> WrapStreamFuncTaskInCheck<T>(this Func<Task<T>> func, string attachmentName)
+    public static Func<CancellationToken, Task<Stream>> WrapStreamFuncTaskInCheck<T>(
+        this Func<CancellationToken, Task<T>> func,
+        string attachment)
         where T : Stream
     {
-        return async () =>
+        return async cancellation =>
         {
-            var task = func.EvaluateAndCheck(attachmentName);
-            ThrowIfNullReturned(null, attachmentName, task);
+            var task = func.EvaluateAndCheck(attachment, cancellation);
+            ThrowIfNullReturned(null, attachment, task);
             var value = await task;
-            ThrowIfNullReturned(null, attachmentName, value);
+            ThrowIfNullReturned(null, attachment, value);
             return value;
         };
     }
 
-    public static void ThrowIfNullReturned(string? messageId, string attachmentName, object? value)
+    public static void ThrowIfNullReturned(string? messageId, string attachment, object? value)
     {
         if (value != null)
         {
             return;
         }
-        if (attachmentName != null && messageId != null)
+
+        if (attachment != null && messageId != null)
         {
-            throw new Exception($"Provided delegate returned a null. MessageId: '{messageId}', Attachment: '{attachmentName}'.");
+            throw new Exception($"Provided delegate returned a null. MessageId: '{messageId}', Attachment: '{attachment}'.");
         }
 
-        if (attachmentName != null)
+        if (attachment != null)
         {
-            throw new Exception($"Provided delegate returned a null. Attachment: '{attachmentName}'.");
+            throw new Exception($"Provided delegate returned a null. Attachment: '{attachment}'.");
         }
 
         if (messageId != null)

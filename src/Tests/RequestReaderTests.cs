@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using GraphQL;
 using GraphQL.Attachments;
@@ -36,7 +37,7 @@ public class RequestReaderTests :
     async Task Parse(string chars)
     {
         await using var stream = new MemoryStream(Encoding.UTF8.GetBytes(chars)) {Position = 0};
-        var (query, inputs, operation) = await RequestReader.ReadBody(stream);
+        var (query, inputs, operation) = await RequestReader.ReadBody(stream, CancellationToken.None);
         await Verify(new
         {
             query, inputs, operation

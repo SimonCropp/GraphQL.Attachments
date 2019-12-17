@@ -9,7 +9,10 @@ static class QueryRunner
 {
     static DocumentExecuter executer = new DocumentExecuter();
 
-    public static async Task<AttachmentExecutionResult> ExecuteQuery(string query, ServiceCollection services, IIncomingAttachments incomingAttachments)
+    public static async Task<AttachmentExecutionResult> ExecuteQuery(
+        string query,
+        ServiceCollection services,
+        IIncomingAttachments incomingAttachments)
     {
         query = query.Replace("'", "\"");
         await using var provider = services.BuildServiceProvider();

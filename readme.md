@@ -112,7 +112,7 @@ When using Attachments the incoming request also requires the incoming form data
 [HttpPost]
 public async Task Post(CancellationToken cancellation)
 {
-    var (query, inputs, attachments, operation) = await RequestReader.ReadPost(Request);
+    var (query, inputs, attachments, operation) = await RequestReader.ReadPost(Request, cancellation);
     await Execute(query, operation, attachments, inputs, cancellation);
 }
 ```
@@ -153,7 +153,7 @@ As with RequestReader for the incoming data, the outgoing data needs to be writt
 <!-- snippet: ResponseWriter -->
 <a id='snippet-responsewriter'/></a>
 ```cs
-await ResponseWriter.WriteResult(Response, result);
+await ResponseWriter.WriteResult(Response, result, cancellation);
 ```
 <sup><a href='/src/SampleWeb/GraphQlController.cs#L72-L76' title='File snippet `responsewriter` was extracted from'>snippet source</a> | <a href='#snippet-responsewriter' title='Navigate to start of snippet `responsewriter`'>anchor</a></sup>
 <!-- endsnippet -->

@@ -9,7 +9,8 @@ namespace GraphQL.Attachments
     /// <summary>
     /// Wraps a <see cref="Stream"/> to provide extra information when reading.
     /// </summary>
-    public class AttachmentStream : Stream
+    public class AttachmentStream :
+        Stream
     {
         Stream inner;
 
