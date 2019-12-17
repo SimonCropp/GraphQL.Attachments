@@ -85,11 +85,11 @@ namespace GraphQL.Attachments
             return httpContent;
         }
 
-        static async Task WriteStream(ExecutionResult result, HttpResponse response)
+        static Task WriteStream(ExecutionResult result, HttpResponse response)
         {
             response.Headers.Add("Content-Type", "application/json");
-            await using var streamWriter = new StreamWriter(response.Body, Encoding.UTF8, 1024, true);
-            await streamWriter.WriteAsync(JsonConvert.SerializeObject(result));
+            var serializeObject = JsonConvert.SerializeObject(result);
+            return response.WriteAsync(serializeObject);
         }
     }
 }

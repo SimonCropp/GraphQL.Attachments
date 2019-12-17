@@ -13,7 +13,6 @@ namespace GraphQL.Attachments
         public static async Task<QueryResult> ProcessResponse(this HttpResponseMessage response, CancellationToken cancellation = default)
         {
             Guard.AgainstNull(nameof(response), response);
-            Guard.AgainstNull(nameof(response), response);
             if (!response.IsMultipart())
             {
                 return new QueryResult(await response.Content.ReadAsStreamAsync(), new Dictionary<string, Attachment>(), response.Content.Headers);
