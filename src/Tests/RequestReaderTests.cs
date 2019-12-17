@@ -4,6 +4,7 @@ using System.Text;
 using System.Threading.Tasks;
 using GraphQL;
 using GraphQL.Attachments;
+using GraphQL.Introspection;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Internal;
 using Microsoft.Extensions.Primitives;
@@ -20,6 +21,12 @@ public class RequestReaderTests :
     {
         return Parse("{\"query\":\"{\\n  noAttachment\\n  {\\n    argument\\n  }\\n}\",\"variables\":null,\"operationName\":\"theOperation\"}");
     }
+    [Fact]
+    public Task ParsingMinimal()
+    {
+        return Parse("{\"query\":\"{foo}\"}");
+    }
+
 
     async Task Parse(string chars)
     {
