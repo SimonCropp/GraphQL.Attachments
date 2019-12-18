@@ -17,7 +17,7 @@ namespace GraphQL.Attachments
         /// <summary>
         /// Writes <paramref name="result"/> to <paramref name="response"/>.
         /// </summary>
-        public static Task WriteResult(HttpResponse response, AttachmentExecutionResult result, CancellationToken cancellation)
+        public static Task WriteResult(HttpResponse response, AttachmentExecutionResult result, CancellationToken cancellation = default)
         {
             Guard.AgainstNull(nameof(response), response);
             Guard.AgainstNull(nameof(result), result);
