@@ -26,8 +26,13 @@ public class GraphQlController :
     [HttpPost]
     public async Task Post(CancellationToken cancellation)
     {
-        var (query, inputs, attachments, operation) = await RequestReader.ReadPost(Request, cancellation);
-        await Execute(query, operation, attachments, inputs, cancellation);
+        var result = await RequestReader.ReadPost(Request, cancellation);
+        await Execute(
+            result.query,
+            result.operation,
+            result.attachments,
+            result.inputs,
+            cancellation);
     }
 
     #endregion
@@ -65,7 +70,9 @@ public class GraphQlController :
 
         #region ExecuteWithAttachments
 
-        var result = await executer.ExecuteWithAttachments(executionOptions, incomingAttachments);
+        var result = await executer.ExecuteWithAttachments(
+            executionOptions,
+            incomingAttachments);
 
         #endregion
 

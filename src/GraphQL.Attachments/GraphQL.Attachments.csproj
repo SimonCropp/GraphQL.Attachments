@@ -8,7 +8,7 @@
     <PackageReference Include="ConfigureAwait.Fody" Version="3.3.1" PrivateAssets="All" />
     <PackageReference Include="Fody" Version="6.0.5" PrivateAssets="All" />
     <PackageReference Include="GraphQL" Version="2.4.0" />
-    <PackageReference Include="Nullable" Version="1.1.1" PrivateAssets="All" />
+    <PackageReference Include="Nullable" Version="1.2.0" PrivateAssets="all" />
     <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
     <PackageReference Include="ProjectDefaults" Version="1.0.37" PrivateAssets="All" />
     <PackageReference Include="System.Text.Json" Version="4.7.0" />

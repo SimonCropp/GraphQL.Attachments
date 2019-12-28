@@ -112,11 +112,16 @@ When using Attachments the incoming request also requires the incoming form data
 [HttpPost]
 public async Task Post(CancellationToken cancellation)
 {
-    var (query, inputs, attachments, operation) = await RequestReader.ReadPost(Request, cancellation);
-    await Execute(query, operation, attachments, inputs, cancellation);
+    var result = await RequestReader.ReadPost(Request, cancellation);
+    await Execute(
+        result.query,
+        result.operation,
+        result.attachments,
+        result.inputs,
+        cancellation);
 }
 ```
-<sup><a href='/src/SampleWeb/GraphQlController.cs#L24-L33' title='File snippet `controllerpost` was extracted from'>snippet source</a> | <a href='#snippet-controllerpost' title='Navigate to start of snippet `controllerpost`'>anchor</a></sup>
+<sup><a href='/src/SampleWeb/GraphQlController.cs#L24-L38' title='File snippet `controllerpost` was extracted from'>snippet source</a> | <a href='#snippet-controllerpost' title='Navigate to start of snippet `controllerpost`'>anchor</a></sup>
 <!-- endsnippet -->
 
 <!-- snippet: ControllerGet -->
@@ -129,7 +134,7 @@ public Task Get(CancellationToken cancellation)
     return Execute(query, operation, null, inputs, cancellation);
 }
 ```
-<sup><a href='/src/SampleWeb/GraphQlController.cs#L35-L44' title='File snippet `controllerget` was extracted from'>snippet source</a> | <a href='#snippet-controllerget' title='Navigate to start of snippet `controllerget`'>anchor</a></sup>
+<sup><a href='/src/SampleWeb/GraphQlController.cs#L40-L49' title='File snippet `controllerget` was extracted from'>snippet source</a> | <a href='#snippet-controllerget' title='Navigate to start of snippet `controllerget`'>anchor</a></sup>
 <!-- endsnippet -->
 
 
@@ -140,9 +145,11 @@ To expose the attachments to the queries, the attachment context needs to be add
 <!-- snippet: ExecuteWithAttachments -->
 <a id='snippet-executewithattachments'/></a>
 ```cs
-var result = await executer.ExecuteWithAttachments(executionOptions, incomingAttachments);
+var result = await executer.ExecuteWithAttachments(
+    executionOptions,
+    incomingAttachments);
 ```
-<sup><a href='/src/SampleWeb/GraphQlController.cs#L66-L70' title='File snippet `executewithattachments` was extracted from'>snippet source</a> | <a href='#snippet-executewithattachments' title='Navigate to start of snippet `executewithattachments`'>anchor</a></sup>
+<sup><a href='/src/SampleWeb/GraphQlController.cs#L71-L77' title='File snippet `executewithattachments` was extracted from'>snippet source</a> | <a href='#snippet-executewithattachments' title='Navigate to start of snippet `executewithattachments`'>anchor</a></sup>
 <!-- endsnippet -->
 
 
@@ -155,7 +162,7 @@ As with RequestReader for the incoming data, the outgoing data needs to be writt
 ```cs
 await ResponseWriter.WriteResult(Response, result, cancellation);
 ```
-<sup><a href='/src/SampleWeb/GraphQlController.cs#L72-L76' title='File snippet `responsewriter` was extracted from'>snippet source</a> | <a href='#snippet-responsewriter' title='Navigate to start of snippet `responsewriter`'>anchor</a></sup>
+<sup><a href='/src/SampleWeb/GraphQlController.cs#L79-L83' title='File snippet `responsewriter` was extracted from'>snippet source</a> | <a href='#snippet-responsewriter' title='Navigate to start of snippet `responsewriter`'>anchor</a></sup>
 <!-- endsnippet -->
 
 
@@ -177,7 +184,10 @@ function PostMutation() {
     for (var i = 0; i < files.length; i++) {
         data.append('files[]', files[i], files[i].name);
     }
-    data.append("query", 'mutation{ withAttachment (argument: "argumentValue"){argument}}');
+    data.append(
+        "query",
+        'mutation{ withAttachment (argument: "argumentValue"){argument}}'
+    );
 
     var postSettings = {
         method: 'POST',
@@ -192,7 +202,7 @@ function PostMutation() {
         });
 }
 ```
-<sup><a href='/src/SampleWeb/test.html#L5-L26' title='File snippet `postmutation` was extracted from'>snippet source</a> | <a href='#snippet-postmutation' title='Navigate to start of snippet `postmutation`'>anchor</a></sup>
+<sup><a href='/src/SampleWeb/test.html#L5-L29' title='File snippet `postmutation` was extracted from'>snippet source</a> | <a href='#snippet-postmutation' title='Navigate to start of snippet `postmutation`'>anchor</a></sup>
 <!-- endsnippet -->
 
 
