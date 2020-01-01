@@ -9,7 +9,7 @@ Provides access to a HTTP stream (via JavaScript on a web page) in [GraphQL](htt
 toc
 
 
-## NuGet
+## NuGet package
 
 https://nuget.org/packages/GraphQL.Attachments/
 

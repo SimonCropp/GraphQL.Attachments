@@ -25,7 +25,7 @@ Provides access to a HTTP stream (via JavaScript on a web page) in [GraphQL](htt
   * [Client - .NET](#client---net)<!-- endtoc -->
 
 
-## NuGet
+## NuGet package
 
 https://nuget.org/packages/GraphQL.Attachments/
 
