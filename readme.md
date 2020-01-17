@@ -22,7 +22,8 @@ Provides access to a HTTP stream (via JavaScript on a web page) in [GraphQL](htt
     * [With Attachments scenario](#with-attachments-scenario)
     * [Full Controller](#full-controller)
   * [Client - JavaScript](#client---javascript)
-  * [Client - .NET](#client---net)<!-- endtoc -->
+  * [Client - .NET](#client---net)
+  * [Security contact information](#security-contact-information)<!-- endtoc -->
 
 
 ## NuGet package
@@ -283,6 +284,16 @@ namespace GraphQL.Attachments
 <!-- endsnippet -->
 
 This can be useful when performing [Integration testing in ASP.NET Core](https://docs.microsoft.com/en-us/aspnet/core/testing/integration-testing).
+
+
+## Security contact information
+
+To report a security vulnerability, please use the [Tidelift security contact](https://tidelift.com/security). Tidelift will coordinate the fix and disclosure.
+
+
+## Release Notes
+
+See [closed milestones](../../milestones?state=closed).
 
 
 ## Icon
