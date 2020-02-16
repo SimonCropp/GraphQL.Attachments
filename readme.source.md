@@ -5,6 +5,7 @@
 
 Provides access to a HTTP stream (via JavaScript on a web page) in [GraphQL](https://graphql-dotnet.github.io/) [Mutations](https://graphql-dotnet.github.io/docs/getting-started/mutations/) or [Queries](https://graphql-dotnet.github.io/docs/getting-started/queries). Attachments are transfered via a [multipart form](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Disposition).
 
+Support is available via a [Tidelift Subscription](https://tidelift.com/subscription/pkg/nuget-graphql.attachments?utm_source=nuget-graphql.attachments&utm_medium=referral&utm_campaign=enterprise).
 
 toc
 
