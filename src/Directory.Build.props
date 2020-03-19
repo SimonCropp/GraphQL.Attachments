@@ -2,7 +2,7 @@
 <Project>
   <PropertyGroup>
     <NoWarn>CS1591;NU5104</NoWarn>
-    <Version>0.9.2</Version>
+    <Version>1.0.0</Version>
     <PackageTags>GraphQL, Attachments</PackageTags>
     <SignAssembly>false</SignAssembly>
     <Description>Add attachment support to GraphQL</Description>
