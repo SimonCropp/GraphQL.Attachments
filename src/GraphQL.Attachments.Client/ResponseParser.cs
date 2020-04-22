@@ -53,9 +53,9 @@ namespace GraphQL.Attachments
             }
 
             var name = first.Headers.ContentDisposition.Name;
-            if (name != null)
+            if (name == null)
             {
-                throw new Exception("Expected the first part in the multipart response to be un-named.");
+                throw new Exception("Expected the first part in the multipart response to be named.");
             }
 
             return first.ReadAsStreamAsync();

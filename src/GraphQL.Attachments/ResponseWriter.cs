@@ -47,7 +47,10 @@ namespace GraphQL.Attachments
             {
                 using var multipart = new MultipartFormDataContent();
                 var serializedResult = JsonConvert.SerializeObject(result);
-                multipart.Add(new StringContent(serializedResult));
+
+                // Add a name for the serialized result which will enable fetch().formData() to parse the result to FormData object
+                // To be reviewed by Simon
+                multipart.Add(new StringContent(serializedResult), "result");
 
                 foreach (var attachment in attachments.Inner)
                 {
