@@ -2,36 +2,68 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <script>
-    // begin-snippet: PostMutation
-    function PostMutation() {
-        var data = new FormData();
-        var files = document.getElementById("files").files;
-        for (var i = 0; i < files.length; i++) {
-            data.append('files[]', files[i], files[i].name);
-        }
-        data.append(
-            "query",
-            'mutation{ withAttachment (argument: "argumentValue"){argument}}'
-        );
+        // begin-snippet: PostMutation
+        function PostMutationWithTextResult() {
 
-        var postSettings = {
-            method: 'POST',
-            body: data
-        };
-
-        return fetch('graphql', postSettings)
-            .then(function (data) {
-                return data.text().then(x => {
-                    result.innerHTML = x;
+            var postSettings = BuildPostSettings();
+            return fetch('graphql', postSettings)
+                .then(function (data) {
+                    return data.text().then(x => {
+                        result.innerHTML = x;
+                    });
                 });
-            });
-    }
-    // end-snippet
+        }
+
+        function PostMutationAndDownloadFile() {
+
+            var postSettings = BuildPostSettings();
+            return fetch('graphql', postSettings)
+                .then(function (data) {
+                    return data.formData().then(x => {
+                        var resultContent= ''
+                        x.forEach(e => {
+                            // This is the attachments
+                            if (e.name) {
+                                var a = document.createElement('a');
+                                var blob = new Blob([e]);
+                                a.href = window.URL.createObjectURL(blob);
+                                a.download = e.name;
+                                a.click();
+                            }
+                            else {
+                                resultContent += JSON.stringify(e);
+                            }
+                        });
+                        result.innerHTML = resultContent;
+                    });
+                });
+        }
+
+        function BuildPostSettings() {
+            var data = new FormData();
+            var files = document.getElementById("files").files;
+            for (var i = 0; i < files.length; i++) {
+                data.append('files[]', files[i], files[i].name);
+            }
+            data.append(
+                "query",
+                'mutation{ withAttachment (argument: "argumentValue"){argument}}'
+            );
+
+            var postSettings = {
+                method: 'POST',
+                body: data
+            };
+            return postSettings;
+        }
+        // end-snippet
     </script>
 </head>
 <body>
-Select files: <input type="file" id="files" multiple /><br />
-<button onclick="PostMutation()">PostMutation</button><br />
+    Select files: <input type="file" id="files" multiple /><br /><br />
+    <button onclick="PostMutationWithTextResult()">PostMutation With Text Result</button>
+    <button style="margin-left:2rem" onclick="PostMutationAndDownloadFile()">PostMutation And Download File</button><br />
+
 <pre id="result"></pre>
 </body>
 </html>

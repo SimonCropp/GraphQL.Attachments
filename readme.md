@@ -180,7 +180,43 @@ The JavaScript that submits the query does so through by building up a [FormData
 <!-- snippet: PostMutation -->
 <a id='snippet-postmutation'/></a>
 ```html
-function PostMutation() {
+function PostMutationWithTextResult() {
+
+    var postSettings = BuildPostSettings();
+    return fetch('graphql', postSettings)
+        .then(function (data) {
+            return data.text().then(x => {
+                result.innerHTML = x;
+            });
+        });
+}
+
+function PostMutationAndDownloadFile() {
+
+    var postSettings = BuildPostSettings();
+    return fetch('graphql', postSettings)
+        .then(function (data) {
+            return data.formData().then(x => {
+                var resultContent= ''
+                x.forEach(e => {
+                    // This is the attachments
+                    if (e.name) {
+                        var a = document.createElement('a');
+                        var blob = new Blob([e]);
+                        a.href = window.URL.createObjectURL(blob);
+                        a.download = e.name;
+                        a.click();
+                    }
+                    else {
+                        resultContent += JSON.stringify(e);
+                    }
+                });
+                result.innerHTML = resultContent;
+            });
+        });
+}
+
+function BuildPostSettings() {
     var data = new FormData();
     var files = document.getElementById("files").files;
     for (var i = 0; i < files.length; i++) {
@@ -195,16 +231,10 @@ function PostMutation() {
         method: 'POST',
         body: data
     };
-
-    return fetch('graphql', postSettings)
-        .then(function (data) {
-            return data.text().then(x => {
-                result.innerHTML = x;
-            });
-        });
+    return postSettings;
 }
 ```
-<sup><a href='/src/SampleWeb/test.html#L5-L29' title='File snippet `postmutation` was extracted from'>snippet source</a> | <a href='#snippet-postmutation' title='Navigate to start of snippet `postmutation`'>anchor</a></sup>
+<sup><a href='/src/SampleWeb/test.html#L5-L59' title='File snippet `postmutation` was extracted from'>snippet source</a> | <a href='#snippet-postmutation' title='Navigate to start of snippet `postmutation`'>anchor</a></sup>
 <!-- endsnippet -->
 
 
