@@ -177,45 +177,9 @@ await ResponseWriter.WriteResult(Response, result, cancellation);
 
 The JavaScript that submits the query does so through by building up a [FormData](https://developer.mozilla.org/en-US/docs/Web/API/FormData) object and [POSTing](https://developer.mozilla.org/en-US/docs/Learn/HTML/Forms/Sending_and_retrieving_form_data#The_POST_method) that via the [Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API).
 
-<!-- snippet: PostMutation -->
-<a id='snippet-postmutation'/></a>
+<!-- snippet: BuildPostSettings -->
+<a id='snippet-buildpostsettings'/></a>
 ```html
-function PostMutationWithTextResult() {
-
-    var postSettings = BuildPostSettings();
-    return fetch('graphql', postSettings)
-        .then(function (data) {
-            return data.text().then(x => {
-                result.innerHTML = x;
-            });
-        });
-}
-
-function PostMutationAndDownloadFile() {
-
-    var postSettings = BuildPostSettings();
-    return fetch('graphql', postSettings)
-        .then(function (data) {
-            return data.formData().then(x => {
-                var resultContent= ''
-                x.forEach(e => {
-                    // This is the attachments
-                    if (e.name) {
-                        var a = document.createElement('a');
-                        var blob = new Blob([e]);
-                        a.href = window.URL.createObjectURL(blob);
-                        a.download = e.name;
-                        a.click();
-                    }
-                    else {
-                        resultContent += JSON.stringify(e);
-                    }
-                });
-                result.innerHTML = resultContent;
-            });
-        });
-}
-
 function BuildPostSettings() {
     var data = new FormData();
     var files = document.getElementById("files").files;
@@ -234,7 +198,54 @@ function BuildPostSettings() {
     return postSettings;
 }
 ```
-<sup><a href='/src/SampleWeb/test.html#L5-L59' title='File snippet `postmutation` was extracted from'>snippet source</a> | <a href='#snippet-postmutation' title='Navigate to start of snippet `postmutation`'>anchor</a></sup>
+<sup><a href='/src/SampleWeb/test.html#L44-L62' title='File snippet `buildpostsettings` was extracted from'>snippet source</a> | <a href='#snippet-buildpostsettings' title='Navigate to start of snippet `buildpostsettings`'>anchor</a></sup>
+<!-- endsnippet -->
+
+<!-- snippet: PostMutationAndDownloadFile -->
+<a id='snippet-postmutationanddownloadfile'/></a>
+```html
+function PostMutationAndDownloadFile() {
+
+    var postSettings = BuildPostSettings();
+    return fetch('graphql', postSettings)
+        .then(function (data) {
+            return data.formData().then(x => {
+                var resultContent = '';
+                x.forEach(e => {
+                    // This is the attachments
+                    if (e.name) {
+                        var a = document.createElement('a');
+                        var blob = new Blob([e]);
+                        a.href = window.URL.createObjectURL(blob);
+                        a.download = e.name;
+                        a.click();
+                    }
+                    else {
+                        resultContent += JSON.stringify(e);
+                    }
+                });
+                result.innerHTML = resultContent;
+            });
+        });
+}
+```
+<sup><a href='/src/SampleWeb/test.html#L17-L42' title='File snippet `postmutationanddownloadfile` was extracted from'>snippet source</a> | <a href='#snippet-postmutationanddownloadfile' title='Navigate to start of snippet `postmutationanddownloadfile`'>anchor</a></sup>
+<!-- endsnippet -->
+
+<!-- snippet: PostMutationWithTextResult -->
+<a id='snippet-postmutationwithtextresult'/></a>
+```html
+function PostMutationWithTextResult() {
+    var postSettings = BuildPostSettings();
+    return fetch('graphql', postSettings)
+        .then(function (data) {
+            return data.text().then(x => {
+                result.innerHTML = x;
+            });
+        });
+}
+```
+<sup><a href='/src/SampleWeb/test.html#L5-L15' title='File snippet `postmutationwithtextresult` was extracted from'>snippet source</a> | <a href='#snippet-postmutationwithtextresult' title='Navigate to start of snippet `postmutationwithtextresult`'>anchor</a></sup>
 <!-- endsnippet -->
 
 

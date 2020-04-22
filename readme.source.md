@@ -86,7 +86,11 @@ snippet: ResponseWriter
 
 The JavaScript that submits the query does so through by building up a [FormData](https://developer.mozilla.org/en-US/docs/Web/API/FormData) object and [POSTing](https://developer.mozilla.org/en-US/docs/Learn/HTML/Forms/Sending_and_retrieving_form_data#The_POST_method) that via the [Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API).
 
-snippet: PostMutation
+snippet: BuildPostSettings
+
+snippet: PostMutationAndDownloadFile
+
+snippet: PostMutationWithTextResult
 
 
 ## Client - .NET

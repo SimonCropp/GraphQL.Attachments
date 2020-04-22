@@ -2,9 +2,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <script>
-        // begin-snippet: PostMutation
+        // begin-snippet: PostMutationWithTextResult
         function PostMutationWithTextResult() {
-
             var postSettings = BuildPostSettings();
             return fetch('graphql', postSettings)
                 .then(function (data) {
@@ -13,14 +12,16 @@
                     });
                 });
         }
+        // end-snippet
 
+        // begin-snippet: PostMutationAndDownloadFile
         function PostMutationAndDownloadFile() {
 
             var postSettings = BuildPostSettings();
             return fetch('graphql', postSettings)
                 .then(function (data) {
                     return data.formData().then(x => {
-                        var resultContent= ''
+                        var resultContent = '';
                         x.forEach(e => {
                             // This is the attachments
                             if (e.name) {
@@ -38,7 +39,9 @@
                     });
                 });
         }
+        // end-snippet
 
+        // begin-snippet: BuildPostSettings
         function BuildPostSettings() {
             var data = new FormData();
             var files = document.getElementById("files").files;
