@@ -53,19 +53,18 @@
                 'mutation{ withAttachment (argument: "argumentValue"){argument}}'
             );
 
-            var postSettings = {
+            return {
                 method: 'POST',
                 body: data
             };
-            return postSettings;
         }
         // end-snippet
     </script>
 </head>
 <body>
     Select files: <input type="file" id="files" multiple /><br /><br />
-    <button onclick="PostMutationWithTextResult()">PostMutation With Text Result</button>
-    <button style="margin-left:2rem" onclick="PostMutationAndDownloadFile()">PostMutation And Download File</button><br />
+    <button onclick="PostMutationWithTextResult()">PostMutation With Text Result</button><br /><br />
+    <button onclick="PostMutationAndDownloadFile()">PostMutation And Download File</button><br /><br />
 
 <pre id="result"></pre>
 </body>

@@ -177,6 +177,8 @@ await ResponseWriter.WriteResult(Response, result, cancellation);
 
 The JavaScript that submits the query does so through by building up a [FormData](https://developer.mozilla.org/en-US/docs/Web/API/FormData) object and [POSTing](https://developer.mozilla.org/en-US/docs/Learn/HTML/Forms/Sending_and_retrieving_form_data#The_POST_method) that via the [Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API).
 
+#### Helper method for builgin post settings
+
 <!-- snippet: BuildPostSettings -->
 <a id='snippet-buildpostsettings'/></a>
 ```html
@@ -191,15 +193,17 @@ function BuildPostSettings() {
         'mutation{ withAttachment (argument: "argumentValue"){argument}}'
     );
 
-    var postSettings = {
+    return {
         method: 'POST',
         body: data
     };
-    return postSettings;
 }
 ```
-<sup><a href='/src/SampleWeb/test.html#L44-L62' title='File snippet `buildpostsettings` was extracted from'>snippet source</a> | <a href='#snippet-buildpostsettings' title='Navigate to start of snippet `buildpostsettings`'>anchor</a></sup>
+<sup><a href='/src/SampleWeb/test.html#L44-L61' title='File snippet `buildpostsettings` was extracted from'>snippet source</a> | <a href='#snippet-buildpostsettings' title='Navigate to start of snippet `buildpostsettings`'>anchor</a></sup>
 <!-- endsnippet -->
+
+
+#### Post mutation and download result
 
 <!-- snippet: PostMutationAndDownloadFile -->
 <a id='snippet-postmutationanddownloadfile'/></a>
@@ -231,6 +235,9 @@ function PostMutationAndDownloadFile() {
 ```
 <sup><a href='/src/SampleWeb/test.html#L17-L42' title='File snippet `postmutationanddownloadfile` was extracted from'>snippet source</a> | <a href='#snippet-postmutationanddownloadfile' title='Navigate to start of snippet `postmutationanddownloadfile`'>anchor</a></sup>
 <!-- endsnippet -->
+
+
+#### Post mutation and display text result
 
 <!-- snippet: PostMutationWithTextResult -->
 <a id='snippet-postmutationwithtextresult'/></a>
