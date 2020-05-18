@@ -9,7 +9,7 @@ namespace GraphQL
     public static class AttachmentsExtensions
     {
         /// <summary>
-        /// Executes a graphql query and makes attachments available.
+        /// Executes a GraphQL query and makes attachments available.
         /// </summary>
         public static async Task<AttachmentExecutionResult> ExecuteWithAttachments(
             this IDocumentExecuter executer,

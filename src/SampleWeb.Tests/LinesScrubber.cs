@@ -3,11 +3,10 @@ using System.Text;
 
 public static class LinesScrubber
 {
-    public static string RemoveLineSuffix(this string input, string stringToMatch)
+    public static void RemoveLineSuffix(this StringBuilder builder, string stringToMatch)
     {
-        using var reader = new StringReader(input);
-        var builder = new StringBuilder();
-
+        using var reader = new StringReader(builder.ToString());
+        builder.Clear();
         string? line;
         while ((line = reader.ReadLine()) != null)
         {
@@ -15,6 +14,6 @@ public static class LinesScrubber
             builder.AppendLine(split[0]);
         }
 
-        return builder.ToString();
+        builder.Length -= 1;
     }
 }
