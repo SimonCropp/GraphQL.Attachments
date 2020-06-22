@@ -6,10 +6,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using VerifyXunit;
 using Xunit;
-using Xunit.Abstractions;
 
-public class Tests :
-    VerifyBase
+[UsesVerify]
+public class Tests
 {
     [Fact]
     public Task Mutation()
@@ -22,7 +21,7 @@ mutation
     argument
   }
 }";
-        return Verify(RunQuery(mutation));
+        return Verifier.Verify(RunQuery(mutation));
     }
 
     [Fact]
@@ -35,7 +34,7 @@ mutation
     argument
   }
 }";
-        return Verify(RunQuery(queryString));
+        return Verifier.Verify(RunQuery(queryString));
     }
 
     static Task<AttachmentExecutionResult> RunQuery(string queryString)
@@ -62,10 +61,5 @@ mutation
         writer.Flush();
         stream.Position = 0;
         return stream;
-    }
-
-    public Tests(ITestOutputHelper output) :
-        base(output)
-    {
     }
 }

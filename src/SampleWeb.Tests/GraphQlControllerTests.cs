@@ -6,10 +6,9 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
 using VerifyXunit;
 using Xunit;
-using Xunit.Abstractions;
 
-public class GraphQlControllerTests :
-    VerifyBase
+[UsesVerify]
+public class GraphQlControllerTests
 {
     static QueryExecutor executor;
     static TestServer server;
@@ -22,21 +21,16 @@ public class GraphQlControllerTests :
         executor = new QueryExecutor(client);
     }
 
-    public GraphQlControllerTests(ITestOutputHelper output) :
-        base(output)
-    {
-    }
-
     [Fact]
     public Task GetIntrospection()
     {
-        return Verify(executor.ExecuteGet(SchemaIntrospection.IntrospectionQuery));
+        return Verifier.Verify(executor.ExecuteGet(SchemaIntrospection.IntrospectionQuery));
     }
 
     [Fact]
     public Task PostIntrospection()
     {
-        return Verify(executor.ExecutePost(SchemaIntrospection.IntrospectionQuery));
+        return Verifier.Verify(executor.ExecutePost(SchemaIntrospection.IntrospectionQuery));
     }
 
     [Fact]
@@ -49,7 +43,7 @@ public class GraphQlControllerTests :
     argument
   }
 }";
-        return Verify(executor.ExecuteGet(query));
+        return Verifier.Verify(executor.ExecuteGet(query));
     }
 
     [Fact]
@@ -62,7 +56,7 @@ public class GraphQlControllerTests :
     argument
   }
 }";
-        return Verify(executor.ExecuteGet(query));
+        return Verifier.Verify(executor.ExecuteGet(query));
     }
 
     [Fact]
@@ -78,7 +72,7 @@ public class GraphQlControllerTests :
         using var content = new MultipartFormDataContent();
         content.AddQueryAndVariables(mutation);
         using var response = await client.PostAsync("graphql", content);
-        await Verify(response.ProcessResponse());
+        await Verifier.Verify(response.ProcessResponse());
     }
 
     [Fact]
@@ -96,7 +90,7 @@ public class GraphQlControllerTests :
         content.AddQueryAndVariables(mutation);
         content.AddContent("key", "foo");
         using var response = await client.PostAsync("graphql", content);
-        await Verify(response.ProcessResponse());
+        await Verifier.Verify(response.ProcessResponse());
     }
 
     [Fact]
@@ -115,7 +109,7 @@ public class GraphQlControllerTests :
         content.AddContent("key1", "foo1");
         content.AddContent("key2", "foo2");
         using var response = await client.PostAsync("graphql", content);
-        await Verify(response.ProcessResponse());
+        await Verifier.Verify(response.ProcessResponse());
     }
 
     static TestServer GetTestServer()

@@ -11,10 +11,9 @@ using Microsoft.Extensions.Primitives;
 using Newtonsoft.Json;
 using VerifyXunit;
 using Xunit;
-using Xunit.Abstractions;
 
-public class RequestReaderTests :
-    VerifyBase
+[UsesVerify]
+public class RequestReaderTests
 {
     [Fact]
     public Task Parsing()
@@ -44,7 +43,7 @@ public class RequestReaderTests :
     {
         await using var stream = new MemoryStream(Encoding.UTF8.GetBytes(chars)) {Position = 0};
         var (query, inputs, operation) = await RequestReader.ReadBody(stream, CancellationToken.None);
-        await Verify(new
+        await Verifier.Verify(new
         {
             query, inputs, operation
         });
@@ -66,7 +65,7 @@ public class RequestReaderTests :
                 new FormFileCollection()),
         };
         var result = await RequestReader.ReadPost(mockHttpRequest);
-        await Verify(new
+        await Verifier.Verify(new
         {
             result.attachments,
             result.inputs,
@@ -90,7 +89,7 @@ public class RequestReaderTests :
                 })
         };
         var result = RequestReader.ReadGet(mockHttpRequest);
-        await Verify(new
+        await Verifier.Verify(new
         {
             result.inputs,
             result.operation,
@@ -125,7 +124,7 @@ public class RequestReaderTests :
                 })
         };
         var result = RequestReader.ReadGet(mockHttpRequest);
-        await Verify(new
+        await Verifier.Verify(new
         {
             result.inputs,
             result.operation,
@@ -179,17 +178,12 @@ public class RequestReaderTests :
                 }),
         };
         var result = await RequestReader.ReadPost(mockHttpRequest);
-        await Verify(new
+        await Verifier.Verify(new
         {
             result.attachments,
             result.inputs,
             result.operation,
             result.query
         });
-    }
-
-    public RequestReaderTests(ITestOutputHelper output) :
-        base(output)
-    {
     }
 }
