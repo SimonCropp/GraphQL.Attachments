@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using System;
+using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Linq;
@@ -81,17 +82,17 @@ namespace GraphQL.Attachments
             CancellationToken cancellation)
         {
             var outgoing = attachment.Value;
-            var httpContent = await outgoing.ContentBuilder(cancellation);
+            var content = await outgoing.ContentBuilder(cancellation);
             if (outgoing.Headers != null)
             {
                 foreach (var (key, value) in outgoing.Headers)
                 {
-                    httpContent.Headers.Add(key, value);
+                    content.Headers.Add(key, value);
                 }
             }
 
-            multipart.Add(httpContent, attachment.Key, attachment.Key);
-            return httpContent;
+            multipart.Add(content, attachment.Key, Uri.EscapeDataString(attachment.Key));
+            return content;
         }
 
         static Task WriteStream(ExecutionResult result, HttpResponse response, CancellationToken cancellation)
