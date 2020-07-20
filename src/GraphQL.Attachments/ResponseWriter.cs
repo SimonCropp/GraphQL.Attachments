@@ -24,7 +24,7 @@ namespace GraphQL.Attachments
             Guard.AgainstNull(nameof(result), result);
             var executionResult = result.ExecutionResult;
             var attachments = (OutgoingAttachments) result.Attachments;
-            if (executionResult.Errors?.Count > 0)
+            if (response.StatusCode == (int) HttpStatusCode.OK && executionResult.Errors?.Count > 0)
             {
                 response.StatusCode = (int) HttpStatusCode.BadRequest;
                 return WriteStream(executionResult, response, cancellation);
