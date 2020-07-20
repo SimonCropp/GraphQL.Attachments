@@ -15,7 +15,7 @@ namespace GraphQL.Attachments
             Guard.AgainstNull(nameof(response), response);
             if (!response.IsMultipart())
             {
-                return new QueryResult(await response.Content.ReadAsStreamAsync(), new Dictionary<string, Attachment>(), response.Content.Headers);
+                return new QueryResult(await response.Content.ReadAsStreamAsync(), new Dictionary<string, Attachment>(), response.Content.Headers, response.StatusCode);
             }
 
             var multipart = await response.Content.ReadAsMultipartAsync(cancellation);
@@ -26,7 +26,7 @@ namespace GraphQL.Attachments
                 attachments.Add(attachment.Name, attachment);
             }
 
-            return new QueryResult(await ProcessBody(multipart), attachments, response.Content.Headers);
+            return new QueryResult(await ProcessBody(multipart), attachments, response.Content.Headers, response.StatusCode);
         }
 
         static async IAsyncEnumerable<Attachment> ReadAttachments(MultipartMemoryStreamProvider multipart)

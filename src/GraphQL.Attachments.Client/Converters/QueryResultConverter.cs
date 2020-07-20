@@ -12,6 +12,8 @@ namespace GraphQL.Attachments
         {
             var result = (QueryResult) value!;
             writer.WriteStartObject();
+            writer.WritePropertyName("Status");
+            serializer.Serialize(writer, result.Status);
             writer.WritePropertyName("ResultStream");
             var json = new StreamReader(result.Stream).ReadToEnd();
             writer.WriteRawValue(JToken.Parse(json).ToString());
