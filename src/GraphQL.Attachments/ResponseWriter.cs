@@ -46,12 +46,10 @@ namespace GraphQL.Attachments
             var httpContents = new List<HttpContent>();
             try
             {
-                using var multipart = new MultipartFormDataContent();
-                var serializedResult = JsonConvert.SerializeObject(result);
-
-                // Add a name for the serialized result which will enable fetch().formData() to parse the result to FormData object
-                // To be reviewed by Simon
-                multipart.Add(new StringContent(serializedResult), "result");
+                using var multipart = new MultipartFormDataContent
+                {
+                    {new StringContent(SerializeObject(result)), "result"}
+                };
 
                 foreach (var attachment in attachments.Inner)
                 {
@@ -98,8 +96,23 @@ namespace GraphQL.Attachments
         static Task WriteStream(ExecutionResult result, HttpResponse response, CancellationToken cancellation)
         {
             response.Headers.Add("Content-Type", "application/json");
-            var serializeObject = JsonConvert.SerializeObject(result);
-            return response.WriteAsync(serializeObject, cancellation);
+            return response.WriteAsync(SerializeObject(result), cancellation);
+        }
+
+        static string SerializeObject(ExecutionResult result)
+        {
+            if (result.Errors == null)
+                return JsonConvert.SerializeObject(
+                    new
+                    {
+                        data = result.Data
+                    });
+            return JsonConvert.SerializeObject(
+                new
+                {
+                    data = result.Data,
+                    errors = result.Errors
+                });
         }
     }
 }
