@@ -11,8 +11,6 @@ public class Startup
         TestServices.AddGraphQlTestTypes(services);
 
         services.AddSingleton<IDocumentExecuter, DocumentExecuter>();
-        services.AddSingleton<IDependencyResolver>(
-            provider => new FuncDependencyResolver(provider.GetRequiredService));
         services.AddSingleton<ISchema, Schema>();
         var mvc = services.AddMvc(option => option.EnableEndpointRouting = false);
         mvc.SetCompatibilityVersion(CompatibilityVersion.Latest);
