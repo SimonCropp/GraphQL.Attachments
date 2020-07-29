@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using GraphQL;
 using GraphQL.Attachments;
 using GraphQL.Types;
 

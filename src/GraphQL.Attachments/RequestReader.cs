@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
+using GraphQL.NewtonsoftJson;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Primitives;
 using Newtonsoft.Json.Linq;
@@ -110,7 +111,7 @@ namespace GraphQL.Attachments
         {
             if (!tryGetValue("variables", out var values))
             {
-                return new Inputs();
+                return Inputs.Empty;
             }
 
             if (values.Count != 1)
@@ -121,7 +122,7 @@ namespace GraphQL.Attachments
             var json = values.ToString();
             if (json.Length == 0)
             {
-                return new Inputs();
+                return Inputs.Empty;
             }
             var variables = JObject.Parse(json);
             return variables.ToInputs();

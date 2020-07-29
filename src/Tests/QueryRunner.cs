@@ -16,7 +16,7 @@ static class QueryRunner
     {
         query = query.Replace("'", "\"");
         await using var provider = services.BuildServiceProvider();
-        using var schema = new Schema(new FuncDependencyResolver(provider.GetRequiredService));
+        using var schema = new Schema(provider);
         var options = new ExecutionOptions
         {
             Schema = schema,

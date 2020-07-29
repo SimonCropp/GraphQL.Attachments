@@ -1,12 +1,12 @@
-﻿using GraphQL;
+﻿using System;
 
 public class Schema :
     GraphQL.Types.Schema
 {
-    public Schema(IDependencyResolver resolver) :
-        base(resolver)
+    public Schema(IServiceProvider provider) :
+        base(provider)
     {
-        Query = resolver.Resolve<Query>();
-        Mutation = resolver.Resolve<Mutation>();
+        Query = (Query) provider.GetService(typeof(Query));
+        Mutation = (Mutation) provider.GetService(typeof(Mutation));
     }
 }

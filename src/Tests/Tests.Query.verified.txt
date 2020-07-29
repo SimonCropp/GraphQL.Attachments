@@ -1,10 +1,11 @@
 {
   ExecutionResult: {
-    data: {
+    Data: {
       withAttachment: {
         argument: 'argumentValue'
       }
-    }
+    },
+    Query: '\n{\n  withAttachment (argument: "argumentValue")\n  {\n    argument\n  }\n}'
   },
   Attachments: {
     HasPendingAttachments: true,

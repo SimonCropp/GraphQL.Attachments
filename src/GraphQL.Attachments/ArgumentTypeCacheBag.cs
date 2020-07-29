@@ -2,13 +2,12 @@
 using System.Collections.Generic;
 using GraphQL;
 using GraphQL.Attachments;
-using GraphQL.Types;
 
 static class ArgumentTypeCacheBag
 {
     const string key = "GraphQL.Attachments.AttachmentContext";
 
-    public static AttachmentContext GetAttachmentContext(this ResolveFieldContext context)
+    public static AttachmentContext GetAttachmentContext(this IResolveFieldContext context)
     {
         return GetAttachmentContext(context.UserContext);
     }
@@ -27,7 +26,7 @@ static class ArgumentTypeCacheBag
         UserContextAsDictionary(options.UserContext).Add(key, attachmentContext);
     }
 
-    public static AttachmentContext GetAttachmentContext<T>(this ResolveFieldContext<T> context)
+    public static AttachmentContext GetAttachmentContext<T>(this IResolveFieldContext<T> context)
     {
         return GetAttachmentContext(context.UserContext);
     }
