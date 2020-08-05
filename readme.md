@@ -39,7 +39,7 @@ https://nuget.org/packages/GraphQL.Attachments/
 Incoming and Outgoing attachments can be accessed via the `ResolveFieldContext`:
 
 <!-- snippet: UsageInGraphs -->
-<a id='snippet-usageingraphs'/></a>
+<a id='snippet-usageingraphs'></a>
 ```cs
 Field<ResultGraph>(
     "withAttachment",
@@ -109,7 +109,7 @@ public Task<ExecutionResult> Post(
 When using Attachments the incoming request also requires the incoming form data to be parse. To facilitate this [RequestReader](/src/GraphQL.Attachments/RequestReader.cs) is used. This removes the requirement for model binding. The resulting Post and Get become:
 
 <!-- snippet: ControllerPost -->
-<a id='snippet-controllerpost'/></a>
+<a id='snippet-controllerpost'></a>
 ```cs
 [HttpPost]
 public async Task Post(CancellationToken cancellation)
@@ -127,7 +127,7 @@ public async Task Post(CancellationToken cancellation)
 <!-- endsnippet -->
 
 <!-- snippet: ControllerGet -->
-<a id='snippet-controllerget'/></a>
+<a id='snippet-controllerget'></a>
 ```cs
 [HttpGet]
 public Task Get(CancellationToken cancellation)
@@ -145,7 +145,7 @@ public Task Get(CancellationToken cancellation)
 To expose the attachments to the queries, the attachment context needs to be added to the `IDocumentExecuter`. This is done using `AttachmentsExtensions.ExecuteWithAttachments`:
 
 <!-- snippet: ExecuteWithAttachments -->
-<a id='snippet-executewithattachments'/></a>
+<a id='snippet-executewithattachments'></a>
 ```cs
 var result = await executer.ExecuteWithAttachments(
     executionOptions,
@@ -160,7 +160,7 @@ var result = await executer.ExecuteWithAttachments(
 As with RequestReader for the incoming data, the outgoing data needs to be written with any resulting attachments. To facilitate this [ResponseWriter](/src/GraphQL.Attachments/ResponseWriter.cs) is used.
 
 <!-- snippet: ResponseWriter -->
-<a id='snippet-responsewriter'/></a>
+<a id='snippet-responsewriter'></a>
 ```cs
 await ResponseWriter.WriteResult(Response, result, cancellation);
 ```
@@ -180,7 +180,7 @@ The JavaScript that submits the query does so through by building up a [FormData
 #### Helper method for builgin post settings
 
 <!-- snippet: BuildPostSettings -->
-<a id='snippet-buildpostsettings'/></a>
+<a id='snippet-buildpostsettings'></a>
 ```html
 function BuildPostSettings() {
     var data = new FormData();
@@ -206,7 +206,7 @@ function BuildPostSettings() {
 #### Post mutation and download result
 
 <!-- snippet: PostMutationAndDownloadFile -->
-<a id='snippet-postmutationanddownloadfile'/></a>
+<a id='snippet-postmutationanddownloadfile'></a>
 ```html
 function PostMutationAndDownloadFile() {
 
@@ -240,7 +240,7 @@ function PostMutationAndDownloadFile() {
 #### Post mutation and display text result
 
 <!-- snippet: PostMutationWithTextResult -->
-<a id='snippet-postmutationwithtextresult'/></a>
+<a id='snippet-postmutationwithtextresult'></a>
 ```html
 function PostMutationWithTextResult() {
     var postSettings = BuildPostSettings();
@@ -261,7 +261,7 @@ function PostMutationWithTextResult() {
 Creating and posting a multipart form can be done using a combination of [MultipartFormDataContent](https://msdn.microsoft.com/en-us/library/system.net.http.multipartformdatacontent.aspx) and [HttpClient.PostAsync](https://msdn.microsoft.com/en-us/library/system.net.http.httpclient.postasync.aspx). To simplify this action the `ClientQueryExecutor` class can be used:
 
 <!-- snippet: QueryExecutor.cs -->
-<a id='snippet-QueryExecutor.cs'/></a>
+<a id='snippet-QueryExecutor.cs'></a>
 ```cs
 using System.Net.Http;
 using System.Threading;
