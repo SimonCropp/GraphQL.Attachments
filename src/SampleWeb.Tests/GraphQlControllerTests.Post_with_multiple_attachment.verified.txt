@@ -28,7 +28,7 @@
         {
           Key: 'Content-Disposition',
           Value: [
-            'form-data; name=key1; filename=key1; filename*=utf-8\'\'key1'
+            "form-data; name=key1; filename=key1; filename*=utf-8''key1"
           ]
         }
       ],
@@ -40,7 +40,7 @@
         {
           Key: 'Content-Disposition',
           Value: [
-            'form-data; name=key2; filename=key2; filename*=utf-8\'\'key2'
+            "form-data; name=key2; filename=key2; filename*=utf-8''key2"
           ]
         }
       ],
