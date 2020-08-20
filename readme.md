@@ -24,7 +24,7 @@ Support is available via a [Tidelift Subscription](https://tidelift.com/subscrip
     * [Full Controller](#full-controller)
   * [Client - JavaScript](#client---javascript)
   * [Client - .NET](#client---net)
-  * [Security contact information](#security-contact-information)<!-- endtoc -->
+  * [Security contact information](#security-contact-information)<!-- endToc -->
 
 
 ## NuGet package
@@ -71,7 +71,7 @@ Field<ResultGraph>(
     });
 ```
 <sup><a href='/src/Shared/Graphs/BaseRootGraph.cs#L25-L55' title='File snippet `usageingraphs` was extracted from'>snippet source</a> | <a href='#snippet-usageingraphs' title='Navigate to start of snippet `usageingraphs`'>anchor</a></sup>
-<!-- endsnippet -->
+<!-- endSnippet -->
 
 
 ## Server-side Controller
@@ -124,7 +124,7 @@ public async Task Post(CancellationToken cancellation)
 }
 ```
 <sup><a href='/src/SampleWeb/GraphQlController.cs#L24-L38' title='File snippet `controllerpost` was extracted from'>snippet source</a> | <a href='#snippet-controllerpost' title='Navigate to start of snippet `controllerpost`'>anchor</a></sup>
-<!-- endsnippet -->
+<!-- endSnippet -->
 
 <!-- snippet: ControllerGet -->
 <a id='snippet-controllerget'></a>
@@ -137,7 +137,7 @@ public Task Get(CancellationToken cancellation)
 }
 ```
 <sup><a href='/src/SampleWeb/GraphQlController.cs#L40-L49' title='File snippet `controllerget` was extracted from'>snippet source</a> | <a href='#snippet-controllerget' title='Navigate to start of snippet `controllerget`'>anchor</a></sup>
-<!-- endsnippet -->
+<!-- endSnippet -->
 
 
 #### Query Execution
@@ -152,7 +152,7 @@ var result = await executer.ExecuteWithAttachments(
     incomingAttachments);
 ```
 <sup><a href='/src/SampleWeb/GraphQlController.cs#L71-L77' title='File snippet `executewithattachments` was extracted from'>snippet source</a> | <a href='#snippet-executewithattachments' title='Navigate to start of snippet `executewithattachments`'>anchor</a></sup>
-<!-- endsnippet -->
+<!-- endSnippet -->
 
 
 #### Result Writing
@@ -165,7 +165,7 @@ As with RequestReader for the incoming data, the outgoing data needs to be writt
 await ResponseWriter.WriteResult(Response, result, cancellation);
 ```
 <sup><a href='/src/SampleWeb/GraphQlController.cs#L79-L83' title='File snippet `responsewriter` was extracted from'>snippet source</a> | <a href='#snippet-responsewriter' title='Navigate to start of snippet `responsewriter`'>anchor</a></sup>
-<!-- endsnippet -->
+<!-- endSnippet -->
 
 
 ### Full Controller
@@ -200,7 +200,7 @@ function BuildPostSettings() {
 }
 ```
 <sup><a href='/src/SampleWeb/test.html#L44-L61' title='File snippet `buildpostsettings` was extracted from'>snippet source</a> | <a href='#snippet-buildpostsettings' title='Navigate to start of snippet `buildpostsettings`'>anchor</a></sup>
-<!-- endsnippet -->
+<!-- endSnippet -->
 
 
 #### Post mutation and download result
@@ -234,7 +234,7 @@ function PostMutationAndDownloadFile() {
 }
 ```
 <sup><a href='/src/SampleWeb/test.html#L17-L42' title='File snippet `postmutationanddownloadfile` was extracted from'>snippet source</a> | <a href='#snippet-postmutationanddownloadfile' title='Navigate to start of snippet `postmutationanddownloadfile`'>anchor</a></sup>
-<!-- endsnippet -->
+<!-- endSnippet -->
 
 
 #### Post mutation and display text result
@@ -253,7 +253,7 @@ function PostMutationWithTextResult() {
 }
 ```
 <sup><a href='/src/SampleWeb/test.html#L5-L15' title='File snippet `postmutationwithtextresult` was extracted from'>snippet source</a> | <a href='#snippet-postmutationwithtextresult' title='Navigate to start of snippet `postmutationwithtextresult`'>anchor</a></sup>
-<!-- endsnippet -->
+<!-- endSnippet -->
 
 
 ## Client - .NET
@@ -330,7 +330,7 @@ namespace GraphQL.Attachments
 }
 ```
 <sup><a href='/src/GraphQL.Attachments.Client/QueryExecutor.cs#L1-L65' title='File snippet `QueryExecutor.cs` was extracted from'>snippet source</a> | <a href='#snippet-QueryExecutor.cs' title='Navigate to start of snippet `QueryExecutor.cs`'>anchor</a></sup>
-<!-- endsnippet -->
+<!-- endSnippet -->
 
 This can be useful when performing [Integration testing in ASP.NET Core](https://docs.microsoft.com/en-us/aspnet/core/testing/integration-testing).
 
