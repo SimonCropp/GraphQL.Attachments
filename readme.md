@@ -151,7 +151,7 @@ var result = await executer.ExecuteWithAttachments(
     executionOptions,
     incomingAttachments);
 ```
-<sup><a href='/src/SampleWeb/GraphQlController.cs#L71-L77' title='File snippet `executewithattachments` was extracted from'>snippet source</a> | <a href='#snippet-executewithattachments' title='Navigate to start of snippet `executewithattachments`'>anchor</a></sup>
+<sup><a href='/src/SampleWeb/GraphQlController.cs#L70-L76' title='File snippet `executewithattachments` was extracted from'>snippet source</a> | <a href='#snippet-executewithattachments' title='Navigate to start of snippet `executewithattachments`'>anchor</a></sup>
 <!-- endSnippet -->
 
 
@@ -164,7 +164,7 @@ As with RequestReader for the incoming data, the outgoing data needs to be writt
 ```cs
 await ResponseWriter.WriteResult(Response, result, cancellation);
 ```
-<sup><a href='/src/SampleWeb/GraphQlController.cs#L79-L83' title='File snippet `responsewriter` was extracted from'>snippet source</a> | <a href='#snippet-responsewriter' title='Navigate to start of snippet `responsewriter`'>anchor</a></sup>
+<sup><a href='/src/SampleWeb/GraphQlController.cs#L78-L82' title='File snippet `responsewriter` was extracted from'>snippet source</a> | <a href='#snippet-responsewriter' title='Navigate to start of snippet `responsewriter`'>anchor</a></sup>
 <!-- endSnippet -->
 
 

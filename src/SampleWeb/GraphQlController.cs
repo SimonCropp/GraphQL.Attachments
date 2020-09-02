@@ -63,7 +63,6 @@ public class GraphQlController :
             CancellationToken = cancellation,
 #if (DEBUG)
             ThrowOnUnhandledException = true,
-            ExposeExceptions = true,
             EnableMetrics = true,
 #endif
         };
