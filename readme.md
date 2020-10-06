@@ -39,7 +39,7 @@ https://nuget.org/packages/GraphQL.Attachments/
 Incoming and Outgoing attachments can be accessed via the `ResolveFieldContext`:
 
 <!-- snippet: UsageInGraphs -->
-<a id='snippet-usageingraphs'></a>
+<a id='13a1cd43'></a>
 ```cs
 Field<ResultGraph>(
     "withAttachment",
@@ -70,7 +70,7 @@ Field<ResultGraph>(
         };
     });
 ```
-<sup><a href='/src/Shared/Graphs/BaseRootGraph.cs#L25-L55' title='File snippet `usageingraphs` was extracted from'>snippet source</a> | <a href='#snippet-usageingraphs' title='Navigate to start of snippet `usageingraphs`'>anchor</a></sup>
+<sup><a href='/src/Shared/Graphs/BaseRootGraph.cs#L25-L55' title='Snippet source file'>snippet source</a> | <a href='#13a1cd43' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 
@@ -109,7 +109,7 @@ public Task<ExecutionResult> Post(
 When using Attachments the incoming request also requires the incoming form data to be parse. To facilitate this [RequestReader](/src/GraphQL.Attachments/RequestReader.cs) is used. This removes the requirement for model binding. The resulting Post and Get become:
 
 <!-- snippet: ControllerPost -->
-<a id='snippet-controllerpost'></a>
+<a id='5255f71d'></a>
 ```cs
 [HttpPost]
 public async Task Post(CancellationToken cancellation)
@@ -123,11 +123,11 @@ public async Task Post(CancellationToken cancellation)
         cancellation);
 }
 ```
-<sup><a href='/src/SampleWeb/GraphQlController.cs#L24-L38' title='File snippet `controllerpost` was extracted from'>snippet source</a> | <a href='#snippet-controllerpost' title='Navigate to start of snippet `controllerpost`'>anchor</a></sup>
+<sup><a href='/src/SampleWeb/GraphQlController.cs#L24-L38' title='Snippet source file'>snippet source</a> | <a href='#5255f71d' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 <!-- snippet: ControllerGet -->
-<a id='snippet-controllerget'></a>
+<a id='b8768437'></a>
 ```cs
 [HttpGet]
 public Task Get(CancellationToken cancellation)
@@ -136,7 +136,7 @@ public Task Get(CancellationToken cancellation)
     return Execute(query, operation, null, inputs, cancellation);
 }
 ```
-<sup><a href='/src/SampleWeb/GraphQlController.cs#L40-L49' title='File snippet `controllerget` was extracted from'>snippet source</a> | <a href='#snippet-controllerget' title='Navigate to start of snippet `controllerget`'>anchor</a></sup>
+<sup><a href='/src/SampleWeb/GraphQlController.cs#L40-L49' title='Snippet source file'>snippet source</a> | <a href='#b8768437' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 
@@ -145,13 +145,13 @@ public Task Get(CancellationToken cancellation)
 To expose the attachments to the queries, the attachment context needs to be added to the `IDocumentExecuter`. This is done using `AttachmentsExtensions.ExecuteWithAttachments`:
 
 <!-- snippet: ExecuteWithAttachments -->
-<a id='snippet-executewithattachments'></a>
+<a id='2ffc037d'></a>
 ```cs
 var result = await executer.ExecuteWithAttachments(
     executionOptions,
     incomingAttachments);
 ```
-<sup><a href='/src/SampleWeb/GraphQlController.cs#L70-L76' title='File snippet `executewithattachments` was extracted from'>snippet source</a> | <a href='#snippet-executewithattachments' title='Navigate to start of snippet `executewithattachments`'>anchor</a></sup>
+<sup><a href='/src/SampleWeb/GraphQlController.cs#L70-L76' title='Snippet source file'>snippet source</a> | <a href='#2ffc037d' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 
@@ -160,11 +160,11 @@ var result = await executer.ExecuteWithAttachments(
 As with RequestReader for the incoming data, the outgoing data needs to be written with any resulting attachments. To facilitate this [ResponseWriter](/src/GraphQL.Attachments/ResponseWriter.cs) is used.
 
 <!-- snippet: ResponseWriter -->
-<a id='snippet-responsewriter'></a>
+<a id='e15018d5'></a>
 ```cs
 await ResponseWriter.WriteResult(Response, result, cancellation);
 ```
-<sup><a href='/src/SampleWeb/GraphQlController.cs#L78-L82' title='File snippet `responsewriter` was extracted from'>snippet source</a> | <a href='#snippet-responsewriter' title='Navigate to start of snippet `responsewriter`'>anchor</a></sup>
+<sup><a href='/src/SampleWeb/GraphQlController.cs#L78-L82' title='Snippet source file'>snippet source</a> | <a href='#e15018d5' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 
@@ -180,7 +180,7 @@ The JavaScript that submits the query does so through by building up a [FormData
 #### Helper method for builgin post settings
 
 <!-- snippet: BuildPostSettings -->
-<a id='snippet-buildpostsettings'></a>
+<a id='c34dc139'></a>
 ```html
 function BuildPostSettings() {
     var data = new FormData();
@@ -199,14 +199,14 @@ function BuildPostSettings() {
     };
 }
 ```
-<sup><a href='/src/SampleWeb/test.html#L44-L61' title='File snippet `buildpostsettings` was extracted from'>snippet source</a> | <a href='#snippet-buildpostsettings' title='Navigate to start of snippet `buildpostsettings`'>anchor</a></sup>
+<sup><a href='/src/SampleWeb/test.html#L44-L61' title='Snippet source file'>snippet source</a> | <a href='#c34dc139' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 
 #### Post mutation and download result
 
 <!-- snippet: PostMutationAndDownloadFile -->
-<a id='snippet-postmutationanddownloadfile'></a>
+<a id='d657c575'></a>
 ```html
 function PostMutationAndDownloadFile() {
 
@@ -233,14 +233,14 @@ function PostMutationAndDownloadFile() {
         });
 }
 ```
-<sup><a href='/src/SampleWeb/test.html#L17-L42' title='File snippet `postmutationanddownloadfile` was extracted from'>snippet source</a> | <a href='#snippet-postmutationanddownloadfile' title='Navigate to start of snippet `postmutationanddownloadfile`'>anchor</a></sup>
+<sup><a href='/src/SampleWeb/test.html#L17-L42' title='Snippet source file'>snippet source</a> | <a href='#d657c575' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 
 #### Post mutation and display text result
 
 <!-- snippet: PostMutationWithTextResult -->
-<a id='snippet-postmutationwithtextresult'></a>
+<a id='7376ae89'></a>
 ```html
 function PostMutationWithTextResult() {
     var postSettings = BuildPostSettings();
@@ -252,7 +252,7 @@ function PostMutationWithTextResult() {
         });
 }
 ```
-<sup><a href='/src/SampleWeb/test.html#L5-L15' title='File snippet `postmutationwithtextresult` was extracted from'>snippet source</a> | <a href='#snippet-postmutationwithtextresult' title='Navigate to start of snippet `postmutationwithtextresult`'>anchor</a></sup>
+<sup><a href='/src/SampleWeb/test.html#L5-L15' title='Snippet source file'>snippet source</a> | <a href='#7376ae89' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 
@@ -261,7 +261,7 @@ function PostMutationWithTextResult() {
 Creating and posting a multipart form can be done using a combination of [MultipartFormDataContent](https://msdn.microsoft.com/en-us/library/system.net.http.multipartformdatacontent.aspx) and [HttpClient.PostAsync](https://msdn.microsoft.com/en-us/library/system.net.http.httpclient.postasync.aspx). To simplify this action the `ClientQueryExecutor` class can be used:
 
 <!-- snippet: QueryExecutor.cs -->
-<a id='snippet-QueryExecutor.cs'></a>
+<a id='f5e92360'></a>
 ```cs
 using System.Net.Http;
 using System.Threading;
@@ -329,7 +329,7 @@ namespace GraphQL.Attachments
     }
 }
 ```
-<sup><a href='/src/GraphQL.Attachments.Client/QueryExecutor.cs#L1-L65' title='File snippet `QueryExecutor.cs` was extracted from'>snippet source</a> | <a href='#snippet-QueryExecutor.cs' title='Navigate to start of snippet `QueryExecutor.cs`'>anchor</a></sup>
+<sup><a href='/src/GraphQL.Attachments.Client/QueryExecutor.cs#L1-L65' title='Snippet source file'>snippet source</a> | <a href='#f5e92360' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 This can be useful when performing [Integration testing in ASP.NET Core](https://docs.microsoft.com/en-us/aspnet/core/testing/integration-testing).
