@@ -20,6 +20,6 @@
     <PackageReference Include="MarkdownSnippets.MsBuild" Version="21.4.0" />
     <ProjectReference Include="..\GraphQL.Attachments\GraphQL.Attachments.csproj" />
     <ProjectReference Include="..\Shared\Shared.csproj" />
-    <PackageReference Include="ProjectDefaults" Version="1.0.46" PrivateAssets="All" />
+    <PackageReference Include="ProjectDefaults" Version="1.0.47" PrivateAssets="All" />
   </ItemGroup>
 </Project>
