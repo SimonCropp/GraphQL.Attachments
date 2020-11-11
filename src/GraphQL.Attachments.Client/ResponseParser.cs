@@ -33,7 +33,7 @@ namespace GraphQL.Attachments
         {
             foreach (var content in multipart.Contents.Skip(1))
             {
-                var name = content.Headers.ContentDisposition.Name;
+                var name = content.Headers.ContentDisposition!.Name!;
                 var stream = await content.ReadAsStreamAsync();
                 yield return new Attachment
                 (
@@ -49,10 +49,10 @@ namespace GraphQL.Attachments
             var first = multipart.Contents.FirstOrDefault();
             if (first == null)
             {
-                throw new Exception("Expected the multipart response have at least one part which contains the graphql response data.");
+                throw new Exception("Expected the multipart response have at least one part which contains the GraphQL response data.");
             }
 
-            var name = first.Headers.ContentDisposition.Name;
+            var name = first.Headers.ContentDisposition?.Name;
             if (name == null)
             {
                 throw new Exception("Expected the first part in the multipart response to be named.");

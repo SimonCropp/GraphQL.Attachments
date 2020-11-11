@@ -112,7 +112,7 @@ namespace GraphQL.Attachments
             set => inner.Position = value;
         }
 
-        public override IAsyncResult BeginRead(byte[] buffer, int offset, int count, AsyncCallback callback, object state)
+        public override IAsyncResult BeginRead(byte[] buffer, int offset, int count, AsyncCallback? callback, object? state)
         {
             return inner.BeginRead(buffer, offset, count, callback, state);
         }
@@ -145,12 +145,7 @@ namespace GraphQL.Attachments
             return inner.EndRead(asyncResult);
         }
 
-        public override object InitializeLifetimeService()
-        {
-            return inner.InitializeLifetimeService();
-        }
-
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             return inner.Equals(obj);
         }
@@ -160,7 +155,7 @@ namespace GraphQL.Attachments
             return inner.GetHashCode();
         }
 
-        public override string ToString()
+        public override string? ToString()
         {
             return inner.ToString();
         }
@@ -187,7 +182,7 @@ namespace GraphQL.Attachments
 
         public override int WriteTimeout => throw new NotImplementedException();
 
-        public override IAsyncResult BeginWrite(byte[] buffer, int offset, int count, AsyncCallback callback, object state)
+        public override IAsyncResult BeginWrite(byte[] buffer, int offset, int count, AsyncCallback? callback, object? state)
         {
             throw new NotImplementedException();
         }

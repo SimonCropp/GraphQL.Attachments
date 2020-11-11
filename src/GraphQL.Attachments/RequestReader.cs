@@ -53,7 +53,7 @@ namespace GraphQL.Attachments
             Stream stream,
             CancellationToken cancellation)
         {
-            var postBody = await JsonSerializer.DeserializeAsync<PostBody>(stream, cancellationToken: cancellation);
+            var postBody = (await JsonSerializer.DeserializeAsync<PostBody>(stream, cancellationToken: cancellation))!;
 
             var variables = postBody.variables?.ToString() ?? string.Empty;
 

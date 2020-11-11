@@ -57,8 +57,8 @@ namespace GraphQL.Attachments
                 }
 
                 response.ContentLength = multipart.Headers.ContentLength;
-                response.ContentType = multipart.Headers.ContentType.ToString();
-                await multipart.CopyToAsync(response.Body);
+                response.ContentType = multipart.Headers.ContentType?.ToString();
+                await multipart.CopyToAsync(response.Body, cancellation);
             }
             finally
             {
