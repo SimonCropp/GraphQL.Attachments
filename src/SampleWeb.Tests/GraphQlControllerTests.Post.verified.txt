@@ -1,5 +1,5 @@
 {
-  Status: 'OK',
+  Status: OK,
   ResultStream: {
   "data": {
     "withAttachment": {
@@ -9,9 +9,9 @@
 },
   ContentHeaders: [
     {
-      Key: 'Content-Type',
+      Key: Content-Type,
       Value: [
-        'application/json'
+        application/json
       ]
     }
   ],

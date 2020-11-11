@@ -2,17 +2,24 @@
   ExecutionResult: {
     Data: {
       withAttachment: {
-        argument: 'argumentValue'
+        argument: argumentValue
       }
     },
-    Query: '\n{\n  withAttachment (argument: "argumentValue")\n  {\n    argument\n  }\n}'
+    Query: 
+
+{
+  withAttachment (argument: "argumentValue")
+  {
+    argument
+  }
+}
   },
   Attachments: {
     HasPendingAttachments: true,
     Inner: {
       key: {
         Headers: null,
-        Value: 'Incoming'
+        Value: Incoming
       }
     }
   }

@@ -1,7 +1,13 @@
 {
-  query: '{\n  noAttachment\n  {\n    argument\n  }\n}',
+  query: 
+{
+  noAttachment
+  {
+    argument
+  }
+},
   inputs: {
-    key: 'value'
+    key: value
   },
-  operation: 'theOperation'
+  operation: theOperation
 }
