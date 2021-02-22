@@ -41,7 +41,7 @@ namespace GraphQL.Attachments
             return (query, inputs, new IncomingAttachments(), operation);
         }
 
-        internal class PostBody
+        class PostBody
         {
             public string operationName { get; set; } = null!;
             public string query { get; set; } = null!;
