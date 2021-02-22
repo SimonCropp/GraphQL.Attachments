@@ -7,13 +7,8 @@
     }
   }
 },
-  ContentHeaders: [
-    {
-      Key: Content-Type,
-      Value: [
-        application/json
-      ]
-    }
-  ],
+  ContentHeaders: {
+    Content-Type: application/json
+  },
   Attachments: {}
 }

@@ -27,7 +27,7 @@ namespace GraphQL.Attachments
             Guard.AgainstNull(nameof(content), content);
             Guard.AgainstNullWhiteSpace(nameof(name), name);
             Guard.AgainstNull(nameof(value), value);
-            var file = new StreamContent(value);
+            StreamContent file = new(value);
             content.Add(file, name, name);
         }
 
@@ -36,7 +36,7 @@ namespace GraphQL.Attachments
             Guard.AgainstNull(nameof(content), content);
             Guard.AgainstNullWhiteSpace(nameof(name), name);
             Guard.AgainstNull(nameof(value), value);
-            var file = new ByteArrayContent(value);
+            ByteArrayContent file = new(value);
             content.Add(file, name, name);
         }
 
@@ -45,7 +45,7 @@ namespace GraphQL.Attachments
             Guard.AgainstNull(nameof(content), content);
             Guard.AgainstNullWhiteSpace(nameof(name), name);
             Guard.AgainstNull(nameof(value), value);
-            var file = new StringContent(value);
+            StringContent file = new(value);
             content.Add(file, name, name);
         }
 

@@ -58,7 +58,7 @@ Field<ResultGraph>(
         {
             // For sample purpose echo the incoming request
             // stream to the outgoing response stream
-            var memoryStream = new MemoryStream();
+            MemoryStream memoryStream = new();
             incoming.CopyTo(memoryStream);
             memoryStream.Position = 0;
             outgoingAttachments.AddStream(incoming.Name, memoryStream);
@@ -293,19 +293,19 @@ namespace GraphQL.Attachments
         {
             Guard.AgainstNull(nameof(request), request);
             Guard.AgainstNull(nameof(request), request);
-            using var content = new MultipartFormDataContent();
+            using MultipartFormDataContent content = new();
             content.AddQueryAndVariables(request.Query, request.Variables, request.OperationName);
 
             if (request.Action != null)
             {
-                var postContext = new PostContext(content);
+                PostContext postContext = new(content);
                 request.Action?.Invoke(postContext);
                 postContext.HeadersAction?.Invoke(content.Headers);
             }
 
             var response = await client.PostAsync(uri, content, cancellation);
             var result = await response.ProcessResponse(cancellation);
-            return new QueryResult(result.Stream, result.Attachments, response.Content.Headers, response.StatusCode);
+            return new(result.Stream, result.Attachments, response.Content.Headers, response.StatusCode);
         }
 
         public Task<QueryResult> ExecuteGet(string query, CancellationToken cancellation = default)
@@ -321,7 +321,7 @@ namespace GraphQL.Attachments
             var variablesString = RequestAppender.ToJson(request.Variables);
             var getUri = UriBuilder.GetUri(uri, variablesString, compressed, request.OperationName);
 
-            using var getRequest = new HttpRequestMessage(HttpMethod.Get, getUri);
+            using HttpRequestMessage getRequest = new(HttpMethod.Get, getUri);
             request.HeadersAction?.Invoke(getRequest.Headers);
             var response = await client.SendAsync(getRequest, cancellation);
             return await response.ProcessResponse(cancellation);

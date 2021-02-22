@@ -39,9 +39,12 @@ public class RequestReaderTests
         return Parse("{\"query\":\"{\\n  noAttachment\\n  {\\n    argument\\n  }\\n}\",\"variables\":{\"key\":\"value\"},\"operationName\":\"theOperation\"}");
     }
 
-    async Task Parse(string chars)
+    static async Task Parse(string chars)
     {
-        await using var stream = new MemoryStream(Encoding.UTF8.GetBytes(chars)) {Position = 0};
+        await using MemoryStream stream = new(Encoding.UTF8.GetBytes(chars))
+        {
+            Position = 0
+        };
         var (query, inputs, operation) = await RequestReader.ReadBody(stream, CancellationToken.None);
         await Verifier.Verify(new
         {
@@ -52,14 +55,14 @@ public class RequestReaderTests
     [Fact]
     public async Task ReadPostMinimal()
     {
-        var mockHttpRequest = new MockHttpRequest
+        MockHttpRequest mockHttpRequest = new()
         {
             Form = new FormCollection(
                 new Dictionary<string, StringValues>
                 {
                     {
                         "query",
-                        new StringValues("theQuery")
+                        new("theQuery")
                     }
                 },
                 new FormFileCollection()),
@@ -77,14 +80,14 @@ public class RequestReaderTests
     [Fact]
     public async Task ReadGetMinimal()
     {
-        var mockHttpRequest = new MockHttpRequest
+        MockHttpRequest mockHttpRequest = new()
         {
             Query = new QueryCollection(
                 new Dictionary<string, StringValues>
                 {
                     {
                         "query",
-                        new StringValues("theQuery")
+                        new("theQuery")
                     }
                 })
         };
@@ -100,22 +103,22 @@ public class RequestReaderTests
     [Fact]
     public async Task ReadGet()
     {
-        var mockHttpRequest = new MockHttpRequest
+        MockHttpRequest mockHttpRequest = new()
         {
             Query = new QueryCollection(
                 new Dictionary<string, StringValues>
                 {
                     {
                         "query",
-                        new StringValues("theQuery")
+                        new("theQuery")
                     },
                     {
                         "operation",
-                        new StringValues("theOperation")
+                        new("theOperation")
                     },
                     {
                         "variables",
-                        new StringValues(JsonConvert.SerializeObject(
+                        new(JsonConvert.SerializeObject(
                             new Inputs(new Dictionary<string, object>
                             {
                                 {"key", "value"}
@@ -137,22 +140,22 @@ public class RequestReaderTests
     {
         var attachment1Bytes = Encoding.UTF8.GetBytes("Attachment1 Text");
         var attachment2Bytes = Encoding.UTF8.GetBytes("Attachment2 Text");
-        var mockHttpRequest = new MockHttpRequest
+        MockHttpRequest mockHttpRequest = new()
         {
             Form = new FormCollection(
                 new Dictionary<string, StringValues>
                 {
                     {
                         "query",
-                        new StringValues("theQuery")
+                        new("theQuery")
                     },
                     {
                         "operation",
-                        new StringValues("theOperation")
+                        new("theOperation")
                     },
                     {
                         "variables",
-                        new StringValues(JsonConvert.SerializeObject(
+                        new(JsonConvert.SerializeObject(
                             new Inputs(new Dictionary<string, object>
                             {
                                 {"key", "value"}

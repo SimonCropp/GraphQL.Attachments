@@ -7,43 +7,23 @@
     }
   }
 },
-  ContentHeaders: [
-    {
-      Key: Content-Length,
-      Value: [
-        486
-      ]
-    },
-    {
-      Key: Content-Type,
-      Value: [
-        multipart/form-data; 
-      ]
-    }
-  ],
+  ContentHeaders: {
+    Content-Length: 486,
+    Content-Type: multipart/form-data; 
+  },
   Attachments: {
     key1: {
       Name: key1,
-      Metadata: [
-        {
-          Key: Content-Disposition,
-          Value: [
-            form-data; name=key1; filename=key1; filename*=utf-8''key1
-          ]
-        }
-      ],
+      Metadata: {
+        Content-Disposition: form-data; name=key1; filename=key1; filename*=utf-8''key1
+      },
       Value: foo1
     },
     key2: {
       Name: key2,
-      Metadata: [
-        {
-          Key: Content-Disposition,
-          Value: [
-            form-data; name=key2; filename=key2; filename*=utf-8''key2
-          ]
-        }
-      ],
+      Metadata: {
+        Content-Disposition: form-data; name=key2; filename=key2; filename*=utf-8''key2
+      },
       Value: foo2
     }
   }

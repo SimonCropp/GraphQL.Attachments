@@ -40,7 +40,7 @@ static class ArgumentTypeCacheBag
             return (AttachmentContext) result;
         }
 
-        throw new Exception($"Could not extract {nameof(AttachmentContext)} from ResolveFieldContext.UserContext. It is possible {nameof(AttachmentsExtensions)}.{nameof(AttachmentsExtensions.ExecuteWithAttachments)} was not used.");
+        throw new($"Could not extract {nameof(AttachmentContext)} from ResolveFieldContext.UserContext. It is possible {nameof(AttachmentsExtensions)}.{nameof(AttachmentsExtensions.ExecuteWithAttachments)} was not used.");
     }
 
     static IDictionary<string, object> UserContextAsDictionary(object userContext)
@@ -54,6 +54,6 @@ static class ArgumentTypeCacheBag
 
     static Exception NotDictionary()
     {
-        return new Exception("Expected UserContext to be of type IDictionary<string, object>.");
+        return new("Expected UserContext to be of type IDictionary<string, object>.");
     }
 }

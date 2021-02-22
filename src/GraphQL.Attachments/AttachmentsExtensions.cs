@@ -21,17 +21,17 @@ namespace GraphQL
             await using var attachmentContext = BuildAttachmentContext(attachments);
             options.SetAttachmentContext(attachmentContext);
             var result = await executer.ExecuteAsync(options);
-            return new AttachmentExecutionResult(result, attachmentContext.Outgoing);
+            return new(result, attachmentContext.Outgoing);
         }
 
         static AttachmentContext BuildAttachmentContext(IIncomingAttachments? incoming)
         {
             if (incoming == null)
             {
-                return new AttachmentContext();
+                return new();
             }
 
-            return new AttachmentContext(incoming);
+            return new(incoming);
         }
     }
 }

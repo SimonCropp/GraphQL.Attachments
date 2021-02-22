@@ -7,7 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 static class QueryRunner
 {
-    static DocumentExecuter executer = new DocumentExecuter();
+    static DocumentExecuter executer = new();
 
     public static async Task<AttachmentExecutionResult> ExecuteQuery(
         string query,
@@ -16,8 +16,8 @@ static class QueryRunner
     {
         query = query.Replace("'", "\"");
         await using var provider = services.BuildServiceProvider();
-        using var schema = new Schema(provider);
-        var options = new ExecutionOptions
+        using Schema schema = new(provider);
+        ExecutionOptions options = new()
         {
             Schema = schema,
             Query = query

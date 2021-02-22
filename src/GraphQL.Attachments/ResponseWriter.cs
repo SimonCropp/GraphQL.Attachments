@@ -43,10 +43,10 @@ namespace GraphQL.Attachments
             OutgoingAttachments attachments,
             CancellationToken cancellation)
         {
-            var httpContents = new List<HttpContent>();
+            List<HttpContent> httpContents = new();
             try
             {
-                using var multipart = new MultipartFormDataContent
+                using MultipartFormDataContent multipart = new()
                 {
                     {new StringContent(SerializeObject(result)), "result"}
                 };

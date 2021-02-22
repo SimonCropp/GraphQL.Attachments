@@ -39,14 +39,14 @@ mutation
 
     static Task<AttachmentExecutionResult> RunQuery(string queryString)
     {
-        var incomingAttachments = new IncomingAttachments();
+        IncomingAttachments incomingAttachments = new();
         var stream = BuildStream();
-        var metadata = new HeaderDictionary
+        HeaderDictionary metadata = new()
         {
             {"header1", "headerValue"}
         };
         incomingAttachments.Add("key", new AttachmentStream("key", stream, 3, metadata));
-        var services = new ServiceCollection();
+        ServiceCollection services = new();
 
         TestServices.AddGraphQlTestTypes(services);
 
@@ -55,8 +55,8 @@ mutation
 
     static MemoryStream BuildStream()
     {
-        var stream = new MemoryStream();
-        var writer = new StreamWriter(stream);
+        MemoryStream stream = new();
+        StreamWriter writer = new(stream);
         writer.Write("Incoming");
         writer.Flush();
         stream.Position = 0;

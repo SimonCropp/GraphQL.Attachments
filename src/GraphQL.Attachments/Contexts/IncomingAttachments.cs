@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
@@ -25,7 +24,7 @@ class IncomingAttachments :
             return stream;
         }
 
-        throw new Exception("Attachment not found.");
+        throw new("Attachment not found.");
     }
 
     public bool TryGetValue([NotNullWhen(true)] out AttachmentStream? stream)
@@ -47,7 +46,7 @@ class IncomingAttachments :
     {
         if (Count != 1)
         {
-            throw new Exception("Reading an attachment with no name is only supported when their is a single attachment.");
+            throw new("Reading an attachment with no name is only supported when their is a single attachment.");
         }
     }
 

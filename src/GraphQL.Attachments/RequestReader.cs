@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Linq;
 using System.Text.Json;
 using System.Threading;
@@ -79,12 +78,12 @@ namespace GraphQL.Attachments
         {
             if (!tryGetValue("query", out var queryValues))
             {
-                throw new Exception("Expected to find a form value named 'query'.");
+                throw new("Expected to find a form value named 'query'.");
             }
 
             if (queryValues.Count != 1)
             {
-                throw new Exception("Expected 'query' to have a single value.");
+                throw new("Expected 'query' to have a single value.");
             }
 
             var operation = ReadOperation(tryGetValue);
@@ -104,7 +103,7 @@ namespace GraphQL.Attachments
                 return operationValues.ToString();
             }
 
-            throw new Exception("Expected 'operation' to have a single value.");
+            throw new("Expected 'operation' to have a single value.");
         }
 
         static Inputs GetInputs(TryGetValue tryGetValue)
@@ -116,7 +115,7 @@ namespace GraphQL.Attachments
 
             if (values.Count != 1)
             {
-                throw new Exception("Expected 'variables' to have a single value.");
+                throw new("Expected 'variables' to have a single value.");
             }
 
             var json = values.ToString();

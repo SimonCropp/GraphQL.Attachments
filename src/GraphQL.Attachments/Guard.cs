@@ -44,7 +44,7 @@ static class Guard
         }
         catch (Exception exception)
         {
-            throw new Exception(message, exception);
+            throw new(message, exception);
         }
 
         ThrowIfNullReturned(null, attachment, value);
@@ -64,7 +64,7 @@ static class Guard
         }
         catch (Exception exception)
         {
-            throw new Exception(message, exception);
+            throw new(message, exception);
         }
 
         ThrowIfNullReturned(null, attachment, value);
@@ -86,7 +86,7 @@ static class Guard
             }
             catch (Exception exception)
             {
-                throw new Exception($"Cleanup threw an exception. Attachment: {attachment}.", exception);
+                throw new($"Cleanup threw an exception. Attachment: {attachment}.", exception);
             }
         };
     }
@@ -129,19 +129,19 @@ static class Guard
 
         if (attachment != null && messageId != null)
         {
-            throw new Exception($"Provided delegate returned a null. MessageId: '{messageId}', Attachment: '{attachment}'.");
+            throw new($"Provided delegate returned a null. MessageId: '{messageId}', Attachment: '{attachment}'.");
         }
 
         if (attachment != null)
         {
-            throw new Exception($"Provided delegate returned a null. Attachment: '{attachment}'.");
+            throw new($"Provided delegate returned a null. Attachment: '{attachment}'.");
         }
 
         if (messageId != null)
         {
-            throw new Exception($"Provided delegate returned a null. MessageId: '{messageId}'.");
+            throw new($"Provided delegate returned a null. MessageId: '{messageId}'.");
         }
 
-        throw new Exception("Provided delegate returned a null.");
+        throw new("Provided delegate returned a null.");
     }
 }

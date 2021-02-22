@@ -17,7 +17,7 @@ public class GraphQlControllerTests
     {
         server = GetTestServer();
         client = server.CreateClient();
-        executor = new QueryExecutor(client);
+        executor = new(client);
     }
 
     [Fact]
@@ -68,7 +68,7 @@ public class GraphQlControllerTests
     argument
   }
 }";
-        using var content = new MultipartFormDataContent();
+        using MultipartFormDataContent content = new();
         content.AddQueryAndVariables(mutation);
         using var response = await client.PostAsync("graphql", content);
         await Verifier.Verify(response.ProcessResponse());
@@ -85,7 +85,7 @@ public class GraphQlControllerTests
   }
 }";
 
-        using var content = new MultipartFormDataContent();
+        using MultipartFormDataContent content = new();
         content.AddQueryAndVariables(mutation);
         content.AddContent("key", "foo");
         using var response = await client.PostAsync("graphql", content);
@@ -103,7 +103,7 @@ public class GraphQlControllerTests
   }
 }";
 
-        using var content = new MultipartFormDataContent();
+        using MultipartFormDataContent content = new();
         content.AddQueryAndVariables(mutation);
         content.AddContent("key1", "foo1");
         content.AddContent("key2", "foo2");
@@ -113,9 +113,9 @@ public class GraphQlControllerTests
 
     static TestServer GetTestServer()
     {
-        var hostBuilder = new WebHostBuilder();
+        WebHostBuilder hostBuilder = new();
         hostBuilder.UseStartup<Startup>();
-        return new TestServer(hostBuilder);
+        return new(hostBuilder);
     }
 
     public static readonly string IntrospectionQuery = @"

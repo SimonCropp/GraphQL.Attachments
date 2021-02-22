@@ -11,7 +11,7 @@ using GraphQL.Attachments;
 class OutgoingAttachments :
     IOutgoingAttachments
 {
-    internal Dictionary<string, Outgoing> Inner = new Dictionary<string, Outgoing>(StringComparer.OrdinalIgnoreCase);
+    internal Dictionary<string, Outgoing> Inner = new(StringComparer.OrdinalIgnoreCase);
 
     public bool HasPendingAttachments => Inner.Any();
 
@@ -29,7 +29,7 @@ class OutgoingAttachments :
         Guard.AgainstNull(nameof(name), name);
         Guard.AgainstNull(nameof(streamFactory), streamFactory);
         Inner.Add(name,
-            new Outgoing
+            new
             (
                 contentBuilder: async cancellation =>
                 {
@@ -57,9 +57,9 @@ class OutgoingAttachments :
         Guard.AgainstNull(nameof(name), name);
         Guard.AgainstNull(nameof(streamFactory), streamFactory);
         Inner.Add(name,
-            new Outgoing
+            new
             (
-                contentBuilder: cancellation =>
+                contentBuilder: _ =>
                 {
                     streamFactory = streamFactory.WrapFuncInCheck(name);
                     var value = streamFactory();
@@ -75,9 +75,9 @@ class OutgoingAttachments :
         Guard.AgainstNull(nameof(name), name);
         Guard.AgainstNull(nameof(stream), stream);
         Inner.Add(name,
-            new Outgoing
+            new
             (
-                contentBuilder: cancellation => Task.FromResult<HttpContent>(new StreamContent(stream)),
+                contentBuilder: _ => Task.FromResult<HttpContent>(new StreamContent(stream)),
                 cleanup: cleanup.WrapCleanupInCheck(name),
                 headers: headers
             ));
@@ -98,9 +98,9 @@ class OutgoingAttachments :
         Guard.AgainstNull(nameof(name), name);
         Guard.AgainstNull(nameof(bytesFactory), bytesFactory);
         Inner.Add(name,
-            new Outgoing
+            new
             (
-                contentBuilder: cancellation =>
+                contentBuilder: _ =>
                 {
                     bytesFactory = bytesFactory.WrapFuncInCheck(name);
                     var value = bytesFactory();
@@ -116,9 +116,9 @@ class OutgoingAttachments :
         Guard.AgainstNull(nameof(name), name);
         Guard.AgainstNull(nameof(bytes), bytes);
         Inner.Add(name,
-            new Outgoing
+            new
             (
-                contentBuilder: cancellation => Task.FromResult<HttpContent>(new ByteArrayContent(bytes)),
+                contentBuilder: _ => Task.FromResult<HttpContent>(new ByteArrayContent(bytes)),
                 cleanup: cleanup.WrapCleanupInCheck(name),
                 headers: headers
             ));
@@ -134,7 +134,7 @@ class OutgoingAttachments :
         Guard.AgainstNull(nameof(name), name);
         Guard.AgainstNull(nameof(bytesFactory), bytesFactory);
         Inner.Add(name,
-            new Outgoing
+            new
             (
                 contentBuilder: async cancellation =>
                 {
@@ -162,9 +162,9 @@ class OutgoingAttachments :
         Guard.AgainstNull(nameof(name), name);
         Guard.AgainstNull(nameof(valueFactory), valueFactory);
         Inner.Add(name,
-            new Outgoing
+            new
             (
-                contentBuilder: cancellation =>
+                contentBuilder: _ =>
                 {
                     valueFactory = valueFactory.WrapFuncInCheck(name);
                     var value = valueFactory();
@@ -180,9 +180,9 @@ class OutgoingAttachments :
         Guard.AgainstNull(nameof(name), name);
         Guard.AgainstNull(nameof(value), value);
         Inner.Add(name,
-            new Outgoing
+            new
             (
-                contentBuilder: cancellation => Task.FromResult<HttpContent>(new StringContent(value)),
+                contentBuilder: _ => Task.FromResult<HttpContent>(new StringContent(value)),
                 cleanup: cleanup.WrapCleanupInCheck(name),
                 headers: headers
             ));
@@ -198,7 +198,7 @@ class OutgoingAttachments :
         Guard.AgainstNull(nameof(name), name);
         Guard.AgainstNull(nameof(valueFactory), valueFactory);
         Inner.Add(name,
-            new Outgoing
+            new
             (
                 contentBuilder: async cancellation =>
                 {

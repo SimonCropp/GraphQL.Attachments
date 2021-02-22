@@ -54,7 +54,7 @@ public class GraphQlController :
         Inputs inputs,
         CancellationToken cancellation)
     {
-        var executionOptions = new ExecutionOptions
+        ExecutionOptions executionOptions = new()
         {
             Schema = schema,
             Query = query,

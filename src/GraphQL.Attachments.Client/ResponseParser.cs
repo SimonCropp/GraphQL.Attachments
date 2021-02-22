@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
@@ -15,18 +14,18 @@ namespace GraphQL.Attachments
             Guard.AgainstNull(nameof(response), response);
             if (!response.IsMultipart())
             {
-                return new QueryResult(await response.Content.ReadAsStreamAsync(), new Dictionary<string, Attachment>(), response.Content.Headers, response.StatusCode);
+                return new(await response.Content.ReadAsStreamAsync(), new Dictionary<string, Attachment>(), response.Content.Headers, response.StatusCode);
             }
 
             var multipart = await response.Content.ReadAsMultipartAsync(cancellation);
-            var attachments = new Dictionary<string, Attachment>();
+            Dictionary<string, Attachment> attachments = new();
 
             await foreach (var attachment in ReadAttachments(multipart).WithCancellation(cancellation))
             {
                 attachments.Add(attachment.Name, attachment);
             }
 
-            return new QueryResult(await ProcessBody(multipart), attachments, response.Content.Headers, response.StatusCode);
+            return new(await ProcessBody(multipart), attachments, response.Content.Headers, response.StatusCode);
         }
 
         static async IAsyncEnumerable<Attachment> ReadAttachments(MultipartMemoryStreamProvider multipart)
@@ -35,7 +34,7 @@ namespace GraphQL.Attachments
             {
                 var name = content.Headers.ContentDisposition!.Name!;
                 var stream = await content.ReadAsStreamAsync();
-                yield return new Attachment
+                yield return new
                 (
                     name: name,
                     stream: stream,
@@ -49,13 +48,13 @@ namespace GraphQL.Attachments
             var first = multipart.Contents.FirstOrDefault();
             if (first == null)
             {
-                throw new Exception("Expected the multipart response have at least one part which contains the GraphQL response data.");
+                throw new("Expected the multipart response have at least one part which contains the GraphQL response data.");
             }
 
             var name = first.Headers.ContentDisposition?.Name;
             if (name == null)
             {
-                throw new Exception("Expected the first part in the multipart response to be named.");
+                throw new("Expected the first part in the multipart response to be named.");
             }
 
             return first.ReadAsStreamAsync();
