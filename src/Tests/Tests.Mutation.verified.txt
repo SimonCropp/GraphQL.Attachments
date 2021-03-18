@@ -7,42 +7,22 @@
           {
             Name: withAttachment,
             NameNode: {
-              Name: withAttachment,
-              SourceLocation: {
-                Start: 17,
-                End: 31
-              }
+              Name: withAttachment
             },
             Arguments: [
               {
                 Name: argument,
                 NameNode: {
-                  Name: argument,
-                  SourceLocation: {
-                    Start: 33,
-                    End: 41
-                  }
+                  Name: argument
                 },
                 Value: {
-                  Value: argumentValue,
-                  SourceLocation: {
-                    Start: 43,
-                    End: 58
-                  }
+                  Value: argumentValue
                 },
                 Children: [
                   {
-                    Value: argumentValue,
-                    SourceLocation: {
-                      Start: 43,
-                      End: 58
-                    }
+                    Value: argumentValue
                   }
-                ],
-                SourceLocation: {
-                  Start: 33,
-                  End: 41
-                }
+                ]
               }
             ],
             SelectionSet: {
@@ -50,11 +30,7 @@
                 {
                   Name: argument,
                   NameNode: {
-                    Name: argument,
-                    SourceLocation: {
-                      Start: 70,
-                      End: 78
-                    }
+                    Name: argument
                   },
                   SelectionSet: {
                     Children: []
@@ -63,22 +39,14 @@
                     {
                       Children: []
                     }
-                  ],
-                  SourceLocation: {
-                    Start: 70,
-                    End: 78
-                  }
+                  ]
                 }
               ],
               Children: [
                 {
                   Name: argument,
                   NameNode: {
-                    Name: argument,
-                    SourceLocation: {
-                      Start: 70,
-                      End: 78
-                    }
+                    Name: argument
                   },
                   SelectionSet: {
                     Children: []
@@ -87,49 +55,25 @@
                     {
                       Children: []
                     }
-                  ],
-                  SourceLocation: {
-                    Start: 70,
-                    End: 78
-                  }
+                  ]
                 }
-              ],
-              SourceLocation: {
-                Start: 63,
-                End: 83
-              }
+              ]
             },
             Children: [
               [
                 {
                   Name: argument,
                   NameNode: {
-                    Name: argument,
-                    SourceLocation: {
-                      Start: 33,
-                      End: 41
-                    }
+                    Name: argument
                   },
                   Value: {
-                    Value: argumentValue,
-                    SourceLocation: {
-                      Start: 43,
-                      End: 58
-                    }
+                    Value: argumentValue
                   },
                   Children: [
                     {
-                      Value: argumentValue,
-                      SourceLocation: {
-                        Start: 43,
-                        End: 58
-                      }
+                      Value: argumentValue
                     }
-                  ],
-                  SourceLocation: {
-                    Start: 33,
-                    End: 41
-                  }
+                  ]
                 }
               ],
               {
@@ -137,11 +81,7 @@
                   {
                     Name: argument,
                     NameNode: {
-                      Name: argument,
-                      SourceLocation: {
-                        Start: 70,
-                        End: 78
-                      }
+                      Name: argument
                     },
                     SelectionSet: {
                       Children: []
@@ -150,22 +90,14 @@
                       {
                         Children: []
                       }
-                    ],
-                    SourceLocation: {
-                      Start: 70,
-                      End: 78
-                    }
+                    ]
                   }
                 ],
                 Children: [
                   {
                     Name: argument,
                     NameNode: {
-                      Name: argument,
-                      SourceLocation: {
-                        Start: 70,
-                        End: 78
-                      }
+                      Name: argument
                     },
                     SelectionSet: {
                       Children: []
@@ -174,65 +106,33 @@
                       {
                         Children: []
                       }
-                    ],
-                    SourceLocation: {
-                      Start: 70,
-                      End: 78
-                    }
+                    ]
                   }
-                ],
-                SourceLocation: {
-                  Start: 63,
-                  End: 83
-                }
+                ]
               }
-            ],
-            SourceLocation: {
-              Start: 17,
-              End: 83
-            }
+            ]
           }
         ],
         Children: [
           {
             Name: withAttachment,
             NameNode: {
-              Name: withAttachment,
-              SourceLocation: {
-                Start: 17,
-                End: 31
-              }
+              Name: withAttachment
             },
             Arguments: [
               {
                 Name: argument,
                 NameNode: {
-                  Name: argument,
-                  SourceLocation: {
-                    Start: 33,
-                    End: 41
-                  }
+                  Name: argument
                 },
                 Value: {
-                  Value: argumentValue,
-                  SourceLocation: {
-                    Start: 43,
-                    End: 58
-                  }
+                  Value: argumentValue
                 },
                 Children: [
                   {
-                    Value: argumentValue,
-                    SourceLocation: {
-                      Start: 43,
-                      End: 58
-                    }
+                    Value: argumentValue
                   }
-                ],
-                SourceLocation: {
-                  Start: 33,
-                  End: 41
-                }
+                ]
               }
             ],
             SelectionSet: {
@@ -240,11 +140,7 @@
                 {
                   Name: argument,
                   NameNode: {
-                    Name: argument,
-                    SourceLocation: {
-                      Start: 70,
-                      End: 78
-                    }
+                    Name: argument
                   },
                   SelectionSet: {
                     Children: []
@@ -253,22 +149,14 @@
                     {
                       Children: []
                     }
-                  ],
-                  SourceLocation: {
-                    Start: 70,
-                    End: 78
-                  }
+                  ]
                 }
               ],
               Children: [
                 {
                   Name: argument,
                   NameNode: {
-                    Name: argument,
-                    SourceLocation: {
-                      Start: 70,
-                      End: 78
-                    }
+                    Name: argument
                   },
                   SelectionSet: {
                     Children: []
@@ -277,49 +165,25 @@
                     {
                       Children: []
                     }
-                  ],
-                  SourceLocation: {
-                    Start: 70,
-                    End: 78
-                  }
+                  ]
                 }
-              ],
-              SourceLocation: {
-                Start: 63,
-                End: 83
-              }
+              ]
             },
             Children: [
               [
                 {
                   Name: argument,
                   NameNode: {
-                    Name: argument,
-                    SourceLocation: {
-                      Start: 33,
-                      End: 41
-                    }
+                    Name: argument
                   },
                   Value: {
-                    Value: argumentValue,
-                    SourceLocation: {
-                      Start: 43,
-                      End: 58
-                    }
+                    Value: argumentValue
                   },
                   Children: [
                     {
-                      Value: argumentValue,
-                      SourceLocation: {
-                        Start: 43,
-                        End: 58
-                      }
+                      Value: argumentValue
                     }
-                  ],
-                  SourceLocation: {
-                    Start: 33,
-                    End: 41
-                  }
+                  ]
                 }
               ],
               {
@@ -327,11 +191,7 @@
                   {
                     Name: argument,
                     NameNode: {
-                      Name: argument,
-                      SourceLocation: {
-                        Start: 70,
-                        End: 78
-                      }
+                      Name: argument
                     },
                     SelectionSet: {
                       Children: []
@@ -340,22 +200,14 @@
                       {
                         Children: []
                       }
-                    ],
-                    SourceLocation: {
-                      Start: 70,
-                      End: 78
-                    }
+                    ]
                   }
                 ],
                 Children: [
                   {
                     Name: argument,
                     NameNode: {
-                      Name: argument,
-                      SourceLocation: {
-                        Start: 70,
-                        End: 78
-                      }
+                      Name: argument
                     },
                     SelectionSet: {
                       Children: []
@@ -364,29 +216,13 @@
                       {
                         Children: []
                       }
-                    ],
-                    SourceLocation: {
-                      Start: 70,
-                      End: 78
-                    }
+                    ]
                   }
-                ],
-                SourceLocation: {
-                  Start: 63,
-                  End: 83
-                }
+                ]
               }
-            ],
-            SourceLocation: {
-              Start: 17,
-              End: 83
-            }
+            ]
           }
-        ],
-        SourceLocation: {
-          Start: 12,
-          End: 86
-        }
+        ]
       },
       SubFields: [
         {
@@ -398,11 +234,7 @@
               Field: {
                 Name: argument,
                 NameNode: {
-                  Name: argument,
-                  SourceLocation: {
-                    Start: 70,
-                    End: 78
-                  }
+                  Name: argument
                 },
                 SelectionSet: {
                   Children: []
@@ -411,11 +243,7 @@
                   {
                     Children: []
                   }
-                ],
-                SourceLocation: {
-                  Start: 70,
-                  End: 78
-                }
+                ]
               },
               FieldDefinition: {
                 Name: argument,
@@ -452,11 +280,7 @@
               {
                 Name: argument,
                 NameNode: {
-                  Name: argument,
-                  SourceLocation: {
-                    Start: 70,
-                    End: 78
-                  }
+                  Name: argument
                 },
                 SelectionSet: {
                   Children: []
@@ -465,22 +289,14 @@
                   {
                     Children: []
                   }
-                ],
-                SourceLocation: {
-                  Start: 70,
-                  End: 78
-                }
+                ]
               }
             ],
             Children: [
               {
                 Name: argument,
                 NameNode: {
-                  Name: argument,
-                  SourceLocation: {
-                    Start: 70,
-                    End: 78
-                  }
+                  Name: argument
                 },
                 SelectionSet: {
                   Children: []
@@ -489,17 +305,9 @@
                   {
                     Children: []
                   }
-                ],
-                SourceLocation: {
-                  Start: 70,
-                  End: 78
-                }
+                ]
               }
-            ],
-            SourceLocation: {
-              Start: 63,
-              End: 83
-            }
+            ]
           },
           GraphType: {
             IsTypeOf: {
@@ -531,42 +339,22 @@
           Field: {
             Name: withAttachment,
             NameNode: {
-              Name: withAttachment,
-              SourceLocation: {
-                Start: 17,
-                End: 31
-              }
+              Name: withAttachment
             },
             Arguments: [
               {
                 Name: argument,
                 NameNode: {
-                  Name: argument,
-                  SourceLocation: {
-                    Start: 33,
-                    End: 41
-                  }
+                  Name: argument
                 },
                 Value: {
-                  Value: argumentValue,
-                  SourceLocation: {
-                    Start: 43,
-                    End: 58
-                  }
+                  Value: argumentValue
                 },
                 Children: [
                   {
-                    Value: argumentValue,
-                    SourceLocation: {
-                      Start: 43,
-                      End: 58
-                    }
+                    Value: argumentValue
                   }
-                ],
-                SourceLocation: {
-                  Start: 33,
-                  End: 41
-                }
+                ]
               }
             ],
             SelectionSet: {
@@ -574,11 +362,7 @@
                 {
                   Name: argument,
                   NameNode: {
-                    Name: argument,
-                    SourceLocation: {
-                      Start: 70,
-                      End: 78
-                    }
+                    Name: argument
                   },
                   SelectionSet: {
                     Children: []
@@ -587,22 +371,14 @@
                     {
                       Children: []
                     }
-                  ],
-                  SourceLocation: {
-                    Start: 70,
-                    End: 78
-                  }
+                  ]
                 }
               ],
               Children: [
                 {
                   Name: argument,
                   NameNode: {
-                    Name: argument,
-                    SourceLocation: {
-                      Start: 70,
-                      End: 78
-                    }
+                    Name: argument
                   },
                   SelectionSet: {
                     Children: []
@@ -611,49 +387,25 @@
                     {
                       Children: []
                     }
-                  ],
-                  SourceLocation: {
-                    Start: 70,
-                    End: 78
-                  }
+                  ]
                 }
-              ],
-              SourceLocation: {
-                Start: 63,
-                End: 83
-              }
+              ]
             },
             Children: [
               [
                 {
                   Name: argument,
                   NameNode: {
-                    Name: argument,
-                    SourceLocation: {
-                      Start: 33,
-                      End: 41
-                    }
+                    Name: argument
                   },
                   Value: {
-                    Value: argumentValue,
-                    SourceLocation: {
-                      Start: 43,
-                      End: 58
-                    }
+                    Value: argumentValue
                   },
                   Children: [
                     {
-                      Value: argumentValue,
-                      SourceLocation: {
-                        Start: 43,
-                        End: 58
-                      }
+                      Value: argumentValue
                     }
-                  ],
-                  SourceLocation: {
-                    Start: 33,
-                    End: 41
-                  }
+                  ]
                 }
               ],
               {
@@ -661,11 +413,7 @@
                   {
                     Name: argument,
                     NameNode: {
-                      Name: argument,
-                      SourceLocation: {
-                        Start: 70,
-                        End: 78
-                      }
+                      Name: argument
                     },
                     SelectionSet: {
                       Children: []
@@ -674,22 +422,14 @@
                       {
                         Children: []
                       }
-                    ],
-                    SourceLocation: {
-                      Start: 70,
-                      End: 78
-                    }
+                    ]
                   }
                 ],
                 Children: [
                   {
                     Name: argument,
                     NameNode: {
-                      Name: argument,
-                      SourceLocation: {
-                        Start: 70,
-                        End: 78
-                      }
+                      Name: argument
                     },
                     SelectionSet: {
                       Children: []
@@ -698,23 +438,11 @@
                       {
                         Children: []
                       }
-                    ],
-                    SourceLocation: {
-                      Start: 70,
-                      End: 78
-                    }
+                    ]
                   }
-                ],
-                SourceLocation: {
-                  Start: 63,
-                  End: 83
-                }
+                ]
               }
-            ],
-            SourceLocation: {
-              Start: 17,
-              End: 83
-            }
+            ]
           },
           FieldDefinition: {
             Name: withAttachment,
