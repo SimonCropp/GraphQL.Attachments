@@ -1,6 +1,5 @@
 ﻿using System;
 using Microsoft.AspNetCore.Http;
-using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -18,7 +17,7 @@ namespace GraphQL.Attachments
         /// <summary>
         /// Writes <paramref name="result"/> to <paramref name="response"/>.
         /// </summary>
-        public static Task WriteResult(HttpResponse response, AttachmentExecutionResult result, CancellationToken cancellation = default)
+        public static Task WriteResult(IDocumentWriter writer, HttpResponse response, AttachmentExecutionResult result, CancellationToken cancellation = default)
         {
             Guard.AgainstNull(nameof(response), response);
             Guard.AgainstNull(nameof(result), result);
@@ -27,17 +26,18 @@ namespace GraphQL.Attachments
             if (response.StatusCode == (int) HttpStatusCode.OK && executionResult.Errors?.Count > 0)
             {
                 response.StatusCode = (int) HttpStatusCode.BadRequest;
-                return WriteStream(executionResult, response, cancellation);
+                return WriteStream(writer, executionResult, response, cancellation);
             }
 
             if (attachments.HasPendingAttachments)
             {
-                return WriteMultipart(response, executionResult, attachments, cancellation);
+                return WriteMultipart(writer, response, executionResult, attachments, cancellation);
             }
-            return WriteStream(executionResult, response, cancellation);
+            return WriteStream(writer, executionResult, response, cancellation);
         }
 
         static async Task WriteMultipart(
+            IDocumentWriter writer,
             HttpResponse response,
             ExecutionResult result,
             OutgoingAttachments attachments,
@@ -48,7 +48,8 @@ namespace GraphQL.Attachments
             {
                 using MultipartFormDataContent multipart = new()
                 {
-                    {new StringContent(SerializeObject(result)), "result"}
+                    //TODO: no point doing tostring
+                    {new StringContent(await writer.WriteToStringAsync(result)), "result"}
                 };
 
                 foreach (var attachment in attachments.Inner)
@@ -93,26 +94,15 @@ namespace GraphQL.Attachments
             return content;
         }
 
-        static Task WriteStream(ExecutionResult result, HttpResponse response, CancellationToken cancellation)
+        static async Task WriteStream(
+            IDocumentWriter writer,
+            ExecutionResult result,
+            HttpResponse response,
+            CancellationToken cancellation)
         {
             response.Headers.Add("Content-Type", "application/json");
-            return response.WriteAsync(SerializeObject(result), cancellation);
-        }
-
-        static string SerializeObject(ExecutionResult result)
-        {
-            if (result.Errors == null)
-                return JsonConvert.SerializeObject(
-                    new
-                    {
-                        data = result.Data
-                    });
-            return JsonConvert.SerializeObject(
-                new
-                {
-                    data = result.Data,
-                    errors = result.Errors
-                });
+            //TODO: no point doing tostring
+            await response.WriteAsync(await writer.WriteToStringAsync(result), cancellation);
         }
     }
 }

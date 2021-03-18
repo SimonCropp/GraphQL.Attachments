@@ -3,10 +3,9 @@ using System.Linq;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
-using GraphQL.NewtonsoftJson;
+using GraphQL.SystemTextJson;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Primitives;
-using Newtonsoft.Json.Linq;
 
 namespace GraphQL.Attachments
 {
@@ -123,7 +122,7 @@ namespace GraphQL.Attachments
             {
                 return Inputs.Empty;
             }
-            var variables = JObject.Parse(json);
+            var variables = json.ToDictionary();
             return variables.ToInputs();
         }
     }

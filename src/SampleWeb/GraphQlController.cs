@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using GraphQL;
 using GraphQL.Attachments;
+using GraphQL.NewtonsoftJson;
 using GraphQL.Types;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,6 +15,7 @@ public class GraphQlController :
 {
     IDocumentExecuter executer;
     ISchema schema;
+    static DocumentWriter writer = new(indent: true);
 
     public GraphQlController(ISchema schema, IDocumentExecuter executer)
     {
@@ -49,7 +51,8 @@ public class GraphQlController :
     #endregion
 
     async Task Execute(
-        string query, string operation,
+        string query,
+        string operation,
         IIncomingAttachments incomingAttachments,
         Inputs inputs,
         CancellationToken cancellation)
@@ -77,7 +80,7 @@ public class GraphQlController :
 
         #region ResponseWriter
 
-        await ResponseWriter.WriteResult(Response, result, cancellation);
+        await ResponseWriter.WriteResult(writer, Response, result, cancellation);
 
         #endregion
     }

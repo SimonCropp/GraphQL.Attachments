@@ -123,7 +123,7 @@ public async Task Post(CancellationToken cancellation)
         cancellation);
 }
 ```
-<sup><a href='/src/SampleWeb/GraphQlController.cs#L24-L38' title='Snippet source file'>snippet source</a> | <a href='#snippet-controllerpost' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/src/SampleWeb/GraphQlController.cs#L26-L40' title='Snippet source file'>snippet source</a> | <a href='#snippet-controllerpost' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 <!-- snippet: ControllerGet -->
@@ -136,7 +136,7 @@ public Task Get(CancellationToken cancellation)
     return Execute(query, operation, null, inputs, cancellation);
 }
 ```
-<sup><a href='/src/SampleWeb/GraphQlController.cs#L40-L49' title='Snippet source file'>snippet source</a> | <a href='#snippet-controllerget' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/src/SampleWeb/GraphQlController.cs#L42-L51' title='Snippet source file'>snippet source</a> | <a href='#snippet-controllerget' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 
@@ -151,7 +151,7 @@ var result = await executer.ExecuteWithAttachments(
     executionOptions,
     incomingAttachments);
 ```
-<sup><a href='/src/SampleWeb/GraphQlController.cs#L70-L76' title='Snippet source file'>snippet source</a> | <a href='#snippet-executewithattachments' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/src/SampleWeb/GraphQlController.cs#L73-L79' title='Snippet source file'>snippet source</a> | <a href='#snippet-executewithattachments' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 
@@ -162,9 +162,9 @@ As with RequestReader for the incoming data, the outgoing data needs to be writt
 <!-- snippet: ResponseWriter -->
 <a id='snippet-responsewriter'></a>
 ```cs
-await ResponseWriter.WriteResult(Response, result, cancellation);
+await ResponseWriter.WriteResult(writer, Response, result, cancellation);
 ```
-<sup><a href='/src/SampleWeb/GraphQlController.cs#L78-L82' title='Snippet source file'>snippet source</a> | <a href='#snippet-responsewriter' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/src/SampleWeb/GraphQlController.cs#L81-L85' title='Snippet source file'>snippet source</a> | <a href='#snippet-responsewriter' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 
