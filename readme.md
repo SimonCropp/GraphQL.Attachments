@@ -14,18 +14,6 @@ Provides access to a HTTP stream (via JavaScript on a web page) in [GraphQL](htt
 
 Support is available via a [Tidelift Subscription](https://tidelift.com/subscription/pkg/nuget-graphql.attachments?utm_source=nuget-graphql.attachments&utm_medium=referral&utm_campaign=enterprise).
 
-<!-- toc -->
-## Contents
-
-  * [Usage in Graphs](#usage-in-graphs)
-  * [Server-side Controller](#server-side-controller)
-    * [Non Attachments scenario](#non-attachments-scenario)
-    * [With Attachments scenario](#with-attachments-scenario)
-    * [Full Controller](#full-controller)
-  * [Client - JavaScript](#client---javascript)
-  * [Client - .NET](#client---net)
-  * [Security contact information](#security-contact-information)<!-- endToc -->
-
 
 ## NuGet package
 
