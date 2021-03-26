@@ -7,8 +7,6 @@ Provides access to a HTTP stream (via JavaScript on a web page) in [GraphQL](htt
 
 Support is available via a [Tidelift Subscription](https://tidelift.com/subscription/pkg/nuget-graphql.attachments?utm_source=nuget-graphql.attachments&utm_medium=referral&utm_campaign=enterprise).
 
-toc
-
 
 ## NuGet package
 
