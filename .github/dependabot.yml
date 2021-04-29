@@ -1,0 +1,39 @@
+version: 2
+updates:
+- package-ecosystem: nuget
+  directory: "/"
+  schedule:
+    interval: daily
+    time: "19:00"
+  open-pull-requests-limit: 10
+  ignore:
+  - dependency-name: GraphQL
+    versions:
+    - 3.1.0
+  - dependency-name: ProjectDefaults
+    versions:
+    - 1.0.47
+  - dependency-name: Fody
+    versions:
+    - 6.3.0
+  - dependency-name: Microsoft.AspNetCore.Http.Features
+    versions:
+    - 3.1.9
+  - dependency-name: Microsoft.Extensions.Primitives
+    versions:
+    - 3.1.9
+  - dependency-name: Microsoft.AspNetCore.Mvc.NewtonsoftJson
+    versions:
+    - 3.1.9
+  - dependency-name: Microsoft.Extensions.DependencyInjection
+    versions:
+    - 3.1.9
+  - dependency-name: Microsoft.AspNetCore.Mvc.Testing
+    versions:
+    - 3.1.9
+  - dependency-name: Verify.Xunit
+    versions:
+    - 6.24.0
+  - dependency-name: MarkdownSnippets.MsBuild
+    versions:
+    - 21.3.0
