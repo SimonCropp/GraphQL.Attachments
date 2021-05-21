@@ -1,4 +1,4 @@
-{
+﻿{
   ExecutionResult: {
     Executed: true,
     Data: {
@@ -598,7 +598,7 @@
       Path: [],
       ResponsePath: []
     },
-    Query: 
+    Query:
 
 mutation
 {

@@ -1,5 +1,5 @@
-{
-  query: 
+﻿{
+  query:
 
     query IntrospectionQuery {
       __schema {

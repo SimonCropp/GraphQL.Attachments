@@ -48,7 +48,7 @@ namespace GraphQL.Attachments
             {
                 using MultipartFormDataContent multipart = new()
                 {
-                    //TODO: no point doing tostring
+                    //TODO: no point doing ToString
                     {new StringContent(await writer.WriteToStringAsync(result)), "result"}
                 };
 
@@ -101,7 +101,7 @@ namespace GraphQL.Attachments
             CancellationToken cancellation)
         {
             response.Headers.Add("Content-Type", "application/json");
-            //TODO: no point doing tostring
+            //TODO: no point doing ToString
             await response.WriteAsync(await writer.WriteToStringAsync(result), cancellation);
         }
     }
