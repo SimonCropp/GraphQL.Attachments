@@ -12,8 +12,6 @@ To change this file edit the source file and then run MarkdownSnippets.
 
 Provides access to a HTTP stream (via JavaScript on a web page) in [GraphQL](https://graphql-dotnet.github.io/) [Mutations](https://graphql-dotnet.github.io/docs/getting-started/mutations/) or [Queries](https://graphql-dotnet.github.io/docs/getting-started/queries). Attachments are transferred via a [multipart form](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Disposition).
 
-Support is available via a [Tidelift Subscription](https://tidelift.com/subscription/pkg/nuget-graphql.attachments?utm_source=nuget-graphql.attachments&utm_medium=referral&utm_campaign=enterprise).
-
 
 ## NuGet package
 
@@ -321,11 +319,6 @@ namespace GraphQL.Attachments
 <!-- endSnippet -->
 
 This can be useful when performing [Integration testing in ASP.NET Core](https://docs.microsoft.com/en-us/aspnet/core/testing/integration-testing).
-
-
-## Security contact information
-
-To report a security vulnerability, use the [Tidelift security contact](https://tidelift.com/security). Tidelift will coordinate the fix and disclosure.
 
 
 ## Icon
