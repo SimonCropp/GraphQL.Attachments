@@ -38,7 +38,7 @@ namespace GraphQL.SystemTextJson
         {
             if (json == string.Empty)
             {
-                return new Dictionary<string, object>();
+                return new();
             }
             return JsonSerializer.Deserialize<Dictionary<string, object>>(json, _jsonOptions)!;
         }

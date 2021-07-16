@@ -58,7 +58,7 @@ public class RequestReaderTests
         MockHttpRequest mockHttpRequest = new()
         {
             Form = new FormCollection(
-                new Dictionary<string, StringValues>
+                new()
                 {
                     {
                         "query",
@@ -143,7 +143,7 @@ public class RequestReaderTests
         MockHttpRequest mockHttpRequest = new()
         {
             Form = new FormCollection(
-                new Dictionary<string, StringValues>
+                new()
                 {
                     {
                         "query",

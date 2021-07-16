@@ -12,7 +12,7 @@ public abstract class BaseRootGraph :
 
         Field<ResultGraph>(
             "noAttachment",
-            arguments: new QueryArguments(
+            arguments: new(
                 new QueryArgument<NonNullGraphType<StringGraphType>>
                 {
                     Name = "argument"
@@ -25,7 +25,7 @@ public abstract class BaseRootGraph :
         #region UsageInGraphs
         Field<ResultGraph>(
             "withAttachment",
-            arguments: new QueryArguments(
+            arguments: new(
                 new QueryArgument<NonNullGraphType<StringGraphType>>
                 {
                     Name = "argument"

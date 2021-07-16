@@ -1,9 +1,11 @@
-﻿using GraphQL;
+﻿using System.Runtime.CompilerServices;
+using GraphQL;
 using GraphQL.Attachments;
 using VerifyTests;
 
 public static class ModuleInitializer
 {
+    [ModuleInitializer]
     public static void Initialize()
     {
         VerifierSettings.AddScrubber(x => x.RemoveLineSuffix("boundary="));

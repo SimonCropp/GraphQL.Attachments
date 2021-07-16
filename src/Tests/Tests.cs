@@ -1,7 +1,6 @@
 ﻿using System.IO;
 using System.Threading.Tasks;
 using GraphQL;
-using GraphQL.Attachments;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using VerifyXunit;
@@ -45,7 +44,7 @@ mutation
         {
             {"header1", "headerValue"}
         };
-        incomingAttachments.Add("key", new AttachmentStream("key", stream, 3, metadata));
+        incomingAttachments.Add("key", new("key", stream, 3, metadata));
         ServiceCollection services = new();
 
         TestServices.AddGraphQlTestTypes(services);
