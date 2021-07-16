@@ -29,7 +29,7 @@ Incoming and Outgoing attachments can be accessed via the `ResolveFieldContext`:
 ```cs
 Field<ResultGraph>(
     "withAttachment",
-    arguments: new QueryArguments(
+    arguments: new(
         new QueryArgument<NonNullGraphType<StringGraphType>>
         {
             Name = "argument"
