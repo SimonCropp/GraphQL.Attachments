@@ -44,7 +44,7 @@ namespace GraphQL.Attachments
         {
             public string operationName { get; set; } = null!;
             public string query { get; set; } = null!;
-            public object variables { get; set; } = null!;
+            public object? variables { get; set; }
         }
 
         internal static async Task<(string query, Inputs inputs, string operation)> ReadBody(
@@ -53,9 +53,9 @@ namespace GraphQL.Attachments
         {
             var postBody = (await JsonSerializer.DeserializeAsync<PostBody>(stream, cancellationToken: cancellation))!;
 
-            var variables = postBody.variables?.ToString() ?? string.Empty;
+            var variables = postBody.variables?.ToString();
 
-            return (postBody!.query, variables.ToInputs(), postBody.operationName);
+            return (postBody.query, variables.ToInputs(), postBody.operationName);
         }
 
         static async Task<(string query, Inputs inputs, IIncomingAttachments attachments, string? operation)> ReadForm(

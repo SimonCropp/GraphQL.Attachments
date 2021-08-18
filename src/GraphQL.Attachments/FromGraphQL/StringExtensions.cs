@@ -23,9 +23,13 @@ namespace GraphQL.SystemTextJson
         /// </summary>
         /// <param name="json">A JSON formatted string.</param>
         /// <returns>Inputs.</returns>
-        public static Inputs ToInputs(this string json)
+        public static Inputs ToInputs(this string? json)
         {
-            var dictionary = json?.ToDictionary();
+            if (json == null)
+            {
+                return new(new Dictionary<string, object>());
+            }
+            var dictionary = json.ToDictionary();
             return dictionary.ToInputs();
         }
 

@@ -14,15 +14,6 @@ static class ArgumentTypeCacheBag
 
     public static void SetAttachmentContext(this ExecutionOptions options, AttachmentContext attachmentContext)
     {
-        if (options.UserContext == null)
-        {
-            options.UserContext = new Dictionary<string, object>
-            {
-                {key, attachmentContext}
-            };
-            return;
-        }
-
         UserContextAsDictionary(options.UserContext).Add(key, attachmentContext);
     }
 
