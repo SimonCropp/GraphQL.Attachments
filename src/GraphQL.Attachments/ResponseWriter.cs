@@ -19,8 +19,6 @@ namespace GraphQL.Attachments
         /// </summary>
         public static Task WriteResult(IDocumentWriter writer, HttpResponse response, AttachmentExecutionResult result, CancellationToken cancellation = default)
         {
-            Guard.AgainstNull(nameof(response), response);
-            Guard.AgainstNull(nameof(result), result);
             var executionResult = result.ExecutionResult;
             var attachments = (OutgoingAttachments) result.Attachments;
             if (response.StatusCode == (int) HttpStatusCode.OK && executionResult.Errors?.Count > 0)

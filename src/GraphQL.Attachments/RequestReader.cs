@@ -19,7 +19,6 @@ namespace GraphQL.Attachments
         /// </summary>
         public static (string query, Inputs inputs, string? operation) ReadGet(HttpRequest request)
         {
-            Guard.AgainstNull(nameof(request), request);
             return ReadParams(request.Query.TryGetValue);
         }
 
@@ -30,7 +29,6 @@ namespace GraphQL.Attachments
             HttpRequest request,
             CancellationToken cancellation = default)
         {
-            Guard.AgainstNull(nameof(request), request);
             if (request.HasFormContentType)
             {
                 return await ReadForm(request, cancellation);

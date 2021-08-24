@@ -8,7 +8,6 @@ namespace GraphQL.Attachments
     {
         public static void AddQueryAndVariables(this MultipartFormDataContent content, string query, object? variables = null, string? operation = null)
         {
-            Guard.AgainstNull(nameof(content), content);
             content.Add(new StringContent(query), "query");
 
             if (operation != null)
@@ -24,27 +23,21 @@ namespace GraphQL.Attachments
 
         public static void AddContent(this MultipartFormDataContent content, string name, Stream value)
         {
-            Guard.AgainstNull(nameof(content), content);
             Guard.AgainstNullWhiteSpace(nameof(name), name);
-            Guard.AgainstNull(nameof(value), value);
             StreamContent file = new(value);
             content.Add(file, name, name);
         }
 
         public static void AddContent(this MultipartFormDataContent content, string name, byte[] value)
         {
-            Guard.AgainstNull(nameof(content), content);
             Guard.AgainstNullWhiteSpace(nameof(name), name);
-            Guard.AgainstNull(nameof(value), value);
             ByteArrayContent file = new(value);
             content.Add(file, name, name);
         }
 
         public static void AddContent(this MultipartFormDataContent content, string name, string value)
         {
-            Guard.AgainstNull(nameof(content), content);
             Guard.AgainstNullWhiteSpace(nameof(name), name);
-            Guard.AgainstNull(nameof(value), value);
             StringContent file = new(value);
             content.Add(file, name, name);
         }

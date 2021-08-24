@@ -262,7 +262,6 @@ namespace GraphQL.Attachments
 
         public QueryExecutor(HttpClient client, string uri = "graphql")
         {
-            Guard.AgainstNull(nameof(client), client);
             Guard.AgainstNullWhiteSpace(nameof(uri), uri);
 
             this.client = client;
@@ -277,8 +276,6 @@ namespace GraphQL.Attachments
 
         public async Task<QueryResult> ExecutePost(PostRequest request, CancellationToken cancellation = default)
         {
-            Guard.AgainstNull(nameof(request), request);
-            Guard.AgainstNull(nameof(request), request);
             using MultipartFormDataContent content = new();
             content.AddQueryAndVariables(request.Query, request.Variables, request.OperationName);
 
@@ -302,7 +299,6 @@ namespace GraphQL.Attachments
 
         public async Task<QueryResult> ExecuteGet(GetRequest request, CancellationToken cancellation = default)
         {
-            Guard.AgainstNull(nameof(request), request);
             var compressed = Compress.Query(request.Query);
             var variablesString = RequestAppender.ToJson(request.Variables);
             var getUri = UriBuilder.GetUri(uri, variablesString, compressed, request.OperationName);
@@ -315,7 +311,7 @@ namespace GraphQL.Attachments
     }
 }
 ```
-<sup><a href='/src/GraphQL.Attachments.Client/QueryExecutor.cs#L1-L65' title='Snippet source file'>snippet source</a> | <a href='#snippet-QueryExecutor.cs' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/src/GraphQL.Attachments.Client/QueryExecutor.cs#L1-L61' title='Snippet source file'>snippet source</a> | <a href='#snippet-QueryExecutor.cs' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 This can be useful when performing [Integration testing in ASP.NET Core](https://docs.microsoft.com/en-us/aspnet/core/testing/integration-testing).

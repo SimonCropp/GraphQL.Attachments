@@ -12,8 +12,6 @@ namespace GraphQL
 
         public AttachmentExecutionResult(ExecutionResult executionResult, IOutgoingAttachments attachments)
         {
-            Guard.AgainstNull(nameof(executionResult), executionResult);
-            Guard.AgainstNull(nameof(attachments), attachments);
             ExecutionResult = executionResult;
             Attachments = attachments;
         }

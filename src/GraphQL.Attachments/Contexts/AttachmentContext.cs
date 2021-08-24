@@ -24,7 +24,6 @@ namespace GraphQL.Attachments
 
         public AttachmentContext(IIncomingAttachments incoming)
         {
-            Guard.AgainstNull(nameof(incoming), incoming);
             Incoming = incoming;
             Outgoing = new OutgoingAttachments();
         }

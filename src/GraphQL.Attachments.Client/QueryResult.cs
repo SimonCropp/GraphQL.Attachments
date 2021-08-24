@@ -17,8 +17,6 @@ namespace GraphQL.Attachments
 
         public QueryResult(Stream stream, IReadOnlyDictionary<string, Attachment> attachments, HttpContentHeaders contentHeaders, HttpStatusCode status)
         {
-            Guard.AgainstNull(nameof(stream), stream);
-            Guard.AgainstNull(nameof(attachments), attachments);
             Stream = stream;
             Attachments = attachments;
             ContentHeaders = contentHeaders;

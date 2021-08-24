@@ -16,8 +16,6 @@ namespace GraphQL
             ExecutionOptions options,
             IIncomingAttachments? attachments = null)
         {
-            Guard.AgainstNull(nameof(executer), executer);
-            Guard.AgainstNull(nameof(options), options);
             await using var attachmentContext = BuildAttachmentContext(attachments);
             options.SetAttachmentContext(attachmentContext);
             var result = await executer.ExecuteAsync(options);

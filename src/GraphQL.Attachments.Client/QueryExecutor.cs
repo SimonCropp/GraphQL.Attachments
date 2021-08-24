@@ -11,7 +11,6 @@ namespace GraphQL.Attachments
 
         public QueryExecutor(HttpClient client, string uri = "graphql")
         {
-            Guard.AgainstNull(nameof(client), client);
             Guard.AgainstNullWhiteSpace(nameof(uri), uri);
 
             this.client = client;
@@ -26,8 +25,6 @@ namespace GraphQL.Attachments
 
         public async Task<QueryResult> ExecutePost(PostRequest request, CancellationToken cancellation = default)
         {
-            Guard.AgainstNull(nameof(request), request);
-            Guard.AgainstNull(nameof(request), request);
             using MultipartFormDataContent content = new();
             content.AddQueryAndVariables(request.Query, request.Variables, request.OperationName);
 
@@ -51,7 +48,6 @@ namespace GraphQL.Attachments
 
         public async Task<QueryResult> ExecuteGet(GetRequest request, CancellationToken cancellation = default)
         {
-            Guard.AgainstNull(nameof(request), request);
             var compressed = Compress.Query(request.Query);
             var variablesString = RequestAppender.ToJson(request.Variables);
             var getUri = UriBuilder.GetUri(uri, variablesString, compressed, request.OperationName);

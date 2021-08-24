@@ -11,13 +11,11 @@ namespace GraphQL.Attachments
 
         public PostContext(MultipartFormDataContent content)
         {
-            Guard.AgainstNull(nameof(content), content);
             this.content = content;
         }
 
         public void SetHeadersAction(Action<HttpContentHeaders> headerAction)
         {
-            Guard.AgainstNull(nameof(headerAction), headerAction);
             HeadersAction = headerAction;
         }
 
@@ -26,7 +24,6 @@ namespace GraphQL.Attachments
         public void AddAttachment(string name, Stream value)
         {
             Guard.AgainstNullWhiteSpace(nameof(name), name);
-            Guard.AgainstNull(nameof(value), value);
             StreamContent file = new(value);
             content.Add(file, name, name);
         }
@@ -34,7 +31,6 @@ namespace GraphQL.Attachments
         public void AddAttachment(string name, byte[] value)
         {
             Guard.AgainstNullWhiteSpace(nameof(name), name);
-            Guard.AgainstNull(nameof(value), value);
             ByteArrayContent file = new(value);
             content.Add(file, name, name);
         }
@@ -42,7 +38,6 @@ namespace GraphQL.Attachments
         public void AddAttachment(string name, string value)
         {
             Guard.AgainstNullWhiteSpace(nameof(name), name);
-            Guard.AgainstNull(nameof(value), value);
             StringContent file = new(value);
             content.Add(file, name, name);
         }

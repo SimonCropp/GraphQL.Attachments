@@ -26,8 +26,6 @@ class OutgoingAttachments :
     public void AddStream<T>(string name, Func<CancellationToken, Task<T>> streamFactory, Action? cleanup = null, HttpContentHeaders? headers = null)
         where T : Stream
     {
-        Guard.AgainstNull(nameof(name), name);
-        Guard.AgainstNull(nameof(streamFactory), streamFactory);
         Inner.Add(name,
             new
             (
@@ -54,8 +52,6 @@ class OutgoingAttachments :
 
     public void AddStream(string name, Func<Stream> streamFactory, Action? cleanup = null, HttpContentHeaders? headers = null)
     {
-        Guard.AgainstNull(nameof(name), name);
-        Guard.AgainstNull(nameof(streamFactory), streamFactory);
         Inner.Add(name,
             new
             (
@@ -72,8 +68,6 @@ class OutgoingAttachments :
 
     public void AddStream(string name, Stream stream, Action? cleanup = null, HttpContentHeaders? headers = null)
     {
-        Guard.AgainstNull(nameof(name), name);
-        Guard.AgainstNull(nameof(stream), stream);
         Inner.Add(name,
             new
             (
@@ -95,8 +89,6 @@ class OutgoingAttachments :
 
     public void AddBytes(string name, Func<byte[]> bytesFactory, Action? cleanup = null, HttpContentHeaders? headers = null)
     {
-        Guard.AgainstNull(nameof(name), name);
-        Guard.AgainstNull(nameof(bytesFactory), bytesFactory);
         Inner.Add(name,
             new
             (
@@ -113,8 +105,6 @@ class OutgoingAttachments :
 
     public void AddBytes(string name, byte[] bytes, Action? cleanup = null, HttpContentHeaders? headers = null)
     {
-        Guard.AgainstNull(nameof(name), name);
-        Guard.AgainstNull(nameof(bytes), bytes);
         Inner.Add(name,
             new
             (
@@ -131,8 +121,6 @@ class OutgoingAttachments :
 
     public void AddBytes(string name, Func<CancellationToken, Task<byte[]>> bytesFactory, Action? cleanup = null, HttpContentHeaders? headers = null)
     {
-        Guard.AgainstNull(nameof(name), name);
-        Guard.AgainstNull(nameof(bytesFactory), bytesFactory);
         Inner.Add(name,
             new
             (
@@ -159,8 +147,6 @@ class OutgoingAttachments :
 
     public void AddString(string name, Func<string> valueFactory, Action? cleanup = null, HttpContentHeaders? headers = null)
     {
-        Guard.AgainstNull(nameof(name), name);
-        Guard.AgainstNull(nameof(valueFactory), valueFactory);
         Inner.Add(name,
             new
             (
@@ -177,8 +163,6 @@ class OutgoingAttachments :
 
     public void AddString(string name, string value, Action? cleanup = null, HttpContentHeaders? headers = null)
     {
-        Guard.AgainstNull(nameof(name), name);
-        Guard.AgainstNull(nameof(value), value);
         Inner.Add(name,
             new
             (
@@ -195,8 +179,6 @@ class OutgoingAttachments :
 
     public void AddString(string name, Func<CancellationToken, Task<string>> valueFactory, Action? cleanup = null, HttpContentHeaders? headers = null)
     {
-        Guard.AgainstNull(nameof(name), name);
-        Guard.AgainstNull(nameof(valueFactory), valueFactory);
         Inner.Add(name,
             new
             (

@@ -24,8 +24,6 @@ namespace GraphQL.Attachments
         public AttachmentStream(string name, Stream inner, long length, IHeaderDictionary metadata)
         {
             Guard.AgainstNullWhiteSpace(nameof(name), name);
-            Guard.AgainstNull(nameof(inner), inner);
-            Guard.AgainstNull(nameof(metadata), metadata);
             this.inner = inner;
             Name = name;
             Length = length;
