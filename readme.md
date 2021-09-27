@@ -250,8 +250,6 @@ Creating and posting a multipart form can be done using a combination of [Multip
 <a id='snippet-QueryExecutor.cs'></a>
 ```cs
 using System.Net.Http;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace GraphQL.Attachments
 {
@@ -311,7 +309,7 @@ namespace GraphQL.Attachments
     }
 }
 ```
-<sup><a href='/src/GraphQL.Attachments.Client/QueryExecutor.cs#L1-L61' title='Snippet source file'>snippet source</a> | <a href='#snippet-QueryExecutor.cs' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/src/GraphQL.Attachments.Client/QueryExecutor.cs#L1-L59' title='Snippet source file'>snippet source</a> | <a href='#snippet-QueryExecutor.cs' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 This can be useful when performing [Integration testing in ASP.NET Core](https://docs.microsoft.com/en-us/aspnet/core/testing/integration-testing).
