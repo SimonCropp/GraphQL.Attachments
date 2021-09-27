@@ -1,6 +1,4 @@
-﻿using System.IO;
-using System.Threading.Tasks;
-using GraphQL;
+﻿using GraphQL;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using VerifyXunit;

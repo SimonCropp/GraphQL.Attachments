@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-using GraphQL.Attachments;
+﻿using GraphQL.Attachments;
 
 namespace GraphQL
 {

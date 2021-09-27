@@ -1,7 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
-
-namespace GraphQL.Attachments
+﻿namespace GraphQL.Attachments
 {
     public class AttachmentContext :
         IAsyncDisposable

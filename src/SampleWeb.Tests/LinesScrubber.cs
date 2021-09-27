@@ -1,7 +1,4 @@
-﻿using System.IO;
-using System.Text;
-
-public static class LinesScrubber
+﻿public static class LinesScrubber
 {
     public static void RemoveLineSuffix(this StringBuilder builder, string stringToMatch)
     {

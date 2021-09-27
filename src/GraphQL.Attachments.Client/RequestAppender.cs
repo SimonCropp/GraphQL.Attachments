@@ -1,5 +1,4 @@
-﻿using System.IO;
-using System.Net.Http;
+﻿using System.Net.Http;
 using Newtonsoft.Json;
 
 namespace GraphQL.Attachments

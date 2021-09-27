@@ -1,7 +1,4 @@
-﻿using System.IO;
-using System.Threading;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 
 public class MockHttpRequest :
     HttpRequest
@@ -32,5 +29,5 @@ public class MockHttpRequest :
         get { return Form != null; }
     }
 
-    public override IFormCollection Form { get; set; } = null!;
+    public override IFormCollection? Form { get; set; }
 }

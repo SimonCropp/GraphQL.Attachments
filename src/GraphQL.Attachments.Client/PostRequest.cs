@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace GraphQL.Attachments
+﻿namespace GraphQL.Attachments
 {
     public class PostRequest
     {

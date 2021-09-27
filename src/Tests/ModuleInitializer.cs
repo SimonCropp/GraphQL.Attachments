@@ -1,5 +1,4 @@
-﻿using System.Runtime.CompilerServices;
-using GraphQL;
+﻿using GraphQL;
 using GraphQL.Attachments;
 using VerifyTests;
 

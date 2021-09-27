@@ -1,5 +1,4 @@
 ﻿using System.Net.Http;
-using System.Threading.Tasks;
 using GraphQL.Attachments;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
