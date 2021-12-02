@@ -19,6 +19,6 @@
     <ProjectReference Include="..\GraphQL.Attachments.Client\GraphQL.Attachments.Client.csproj" />
     <ProjectReference Include="..\GraphQL.Attachments\GraphQL.Attachments.csproj" />
     <ProjectReference Include="..\Shared\Shared.csproj" />
-    <PackageReference Include="ProjectDefaults" Version="1.0.61" PrivateAssets="All" />
+    <PackageReference Include="ProjectDefaults" Version="1.0.62" PrivateAssets="all" />
   </ItemGroup>
 </Project>
