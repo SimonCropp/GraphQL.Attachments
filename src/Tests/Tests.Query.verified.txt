@@ -311,7 +311,7 @@
           },
           GraphType: {
             IsTypeOf: {
-              Type: Func<Object, Boolean>,
+              Type: Func<object, bool>,
               Target: ObjectGraphType<Result>.<>c,
               Method: Boolean .ctor(System.Object)
             },
@@ -449,7 +449,7 @@
             Type: ResultGraph,
             ResolvedType: {
               IsTypeOf: {
-                Type: Func<Object, Boolean>,
+                Type: Func<object, bool>,
                 Target: ObjectGraphType<Result>.<>c,
                 Method: Boolean .ctor(System.Object)
               },
@@ -509,7 +509,7 @@
             Type: ResultGraph,
             ResolvedType: {
               IsTypeOf: {
-                Type: Func<Object, Boolean>,
+                Type: Func<object, bool>,
                 Target: ObjectGraphType<Result>.<>c,
                 Method: Boolean .ctor(System.Object)
               },
@@ -553,7 +553,7 @@
             Type: ResultGraph,
             ResolvedType: {
               IsTypeOf: {
-                Type: Func<Object, Boolean>,
+                Type: Func<object, bool>,
                 Target: ObjectGraphType<Result>.<>c,
                 Method: Boolean .ctor(System.Object)
               },

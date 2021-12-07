@@ -251,65 +251,64 @@ Creating and posting a multipart form can be done using a combination of [Multip
 ```cs
 using System.Net.Http;
 
-namespace GraphQL.Attachments
+namespace GraphQL.Attachments;
+
+public class QueryExecutor
 {
-    public class QueryExecutor
+    HttpClient client;
+    string uri;
+
+    public QueryExecutor(HttpClient client, string uri = "graphql")
     {
-        HttpClient client;
-        string uri;
+        Guard.AgainstNullWhiteSpace(nameof(uri), uri);
 
-        public QueryExecutor(HttpClient client, string uri = "graphql")
+        this.client = client;
+        this.uri = uri;
+    }
+
+    public Task<QueryResult> ExecutePost(string query, CancellationToken cancellation = default)
+    {
+        Guard.AgainstNullWhiteSpace(nameof(query), query);
+        return ExecutePost(new PostRequest(query), cancellation);
+    }
+
+    public async Task<QueryResult> ExecutePost(PostRequest request, CancellationToken cancellation = default)
+    {
+        using MultipartFormDataContent content = new();
+        content.AddQueryAndVariables(request.Query, request.Variables, request.OperationName);
+
+        if (request.Action != null)
         {
-            Guard.AgainstNullWhiteSpace(nameof(uri), uri);
-
-            this.client = client;
-            this.uri = uri;
+            PostContext postContext = new(content);
+            request.Action?.Invoke(postContext);
+            postContext.HeadersAction?.Invoke(content.Headers);
         }
 
-        public Task<QueryResult> ExecutePost(string query, CancellationToken cancellation = default)
-        {
-            Guard.AgainstNullWhiteSpace(nameof(query), query);
-            return ExecutePost(new PostRequest(query), cancellation);
-        }
+        var response = await client.PostAsync(uri, content, cancellation);
+        var result = await response.ProcessResponse(cancellation);
+        return new(result.Stream, result.Attachments, response.Content.Headers, response.StatusCode);
+    }
 
-        public async Task<QueryResult> ExecutePost(PostRequest request, CancellationToken cancellation = default)
-        {
-            using MultipartFormDataContent content = new();
-            content.AddQueryAndVariables(request.Query, request.Variables, request.OperationName);
+    public Task<QueryResult> ExecuteGet(string query, CancellationToken cancellation = default)
+    {
+        Guard.AgainstNullWhiteSpace(nameof(query), query);
+        return ExecuteGet(new GetRequest(query), cancellation);
+    }
 
-            if (request.Action != null)
-            {
-                PostContext postContext = new(content);
-                request.Action?.Invoke(postContext);
-                postContext.HeadersAction?.Invoke(content.Headers);
-            }
+    public async Task<QueryResult> ExecuteGet(GetRequest request, CancellationToken cancellation = default)
+    {
+        var compressed = Compress.Query(request.Query);
+        var variablesString = RequestAppender.ToJson(request.Variables);
+        var getUri = UriBuilder.GetUri(uri, variablesString, compressed, request.OperationName);
 
-            var response = await client.PostAsync(uri, content, cancellation);
-            var result = await response.ProcessResponse(cancellation);
-            return new(result.Stream, result.Attachments, response.Content.Headers, response.StatusCode);
-        }
-
-        public Task<QueryResult> ExecuteGet(string query, CancellationToken cancellation = default)
-        {
-            Guard.AgainstNullWhiteSpace(nameof(query), query);
-            return ExecuteGet(new GetRequest(query), cancellation);
-        }
-
-        public async Task<QueryResult> ExecuteGet(GetRequest request, CancellationToken cancellation = default)
-        {
-            var compressed = Compress.Query(request.Query);
-            var variablesString = RequestAppender.ToJson(request.Variables);
-            var getUri = UriBuilder.GetUri(uri, variablesString, compressed, request.OperationName);
-
-            using HttpRequestMessage getRequest = new(HttpMethod.Get, getUri);
-            request.HeadersAction?.Invoke(getRequest.Headers);
-            var response = await client.SendAsync(getRequest, cancellation);
-            return await response.ProcessResponse(cancellation);
-        }
+        using HttpRequestMessage getRequest = new(HttpMethod.Get, getUri);
+        request.HeadersAction?.Invoke(getRequest.Headers);
+        var response = await client.SendAsync(getRequest, cancellation);
+        return await response.ProcessResponse(cancellation);
     }
 }
 ```
-<sup><a href='/src/GraphQL.Attachments.Client/QueryExecutor.cs#L1-L59' title='Snippet source file'>snippet source</a> | <a href='#snippet-QueryExecutor.cs' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/src/GraphQL.Attachments.Client/QueryExecutor.cs#L1-L58' title='Snippet source file'>snippet source</a> | <a href='#snippet-QueryExecutor.cs' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 This can be useful when performing [Integration testing in ASP.NET Core](https://docs.microsoft.com/en-us/aspnet/core/testing/integration-testing).

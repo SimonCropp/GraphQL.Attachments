@@ -4,8 +4,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Internal;
 using Microsoft.Extensions.Primitives;
 using Newtonsoft.Json;
-using VerifyXunit;
-using Xunit;
 
 [UsesVerify]
 public class RequestReaderTests

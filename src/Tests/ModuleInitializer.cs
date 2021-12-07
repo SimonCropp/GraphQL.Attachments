@@ -1,12 +1,12 @@
 ﻿using GraphQL;
 using GraphQL.Attachments;
-using VerifyTests;
 
 public static class ModuleInitializer
 {
     [ModuleInitializer]
     public static void Initialize()
     {
+        VerifyHttp.Enable();
         VerifierSettings.ModifySerialization(settings =>
         {
             settings.IgnoreMember<ExecutionResult>(result => result.Perf);

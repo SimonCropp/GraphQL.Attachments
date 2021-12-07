@@ -1,12 +1,11 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 
-namespace GraphQL.Attachments
+namespace GraphQL.Attachments;
+
+public interface IIncomingAttachments:
+    IReadOnlyDictionary<string, AttachmentStream>,
+    IAsyncDisposable
 {
-    public interface IIncomingAttachments:
-        IReadOnlyDictionary<string, AttachmentStream>,
-        IAsyncDisposable
-    {
-        AttachmentStream GetValue();
-        bool TryGetValue([NotNullWhen(true)] out AttachmentStream? func);
-    }
+    AttachmentStream GetValue();
+    bool TryGetValue([NotNullWhen(true)] out AttachmentStream? func);
 }

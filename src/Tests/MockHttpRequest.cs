@@ -21,13 +21,13 @@ public class MockHttpRequest :
     public override IHeaderDictionary Headers { get; } = null!;
     public override IRequestCookieCollection Cookies { get; set; } = null!;
     public override long? ContentLength { get; set; }
-    public override string ContentType { get; set; } = null!;
+    public override string? ContentType { get; set; } = null!;
     public override Stream Body { get; set; } = null!;
 
     public override bool HasFormContentType
     {
-        get { return Form != null; }
+        get { return true; }
     }
 
-    public override IFormCollection? Form { get; set; }
+    public override IFormCollection Form { get; set; } = null!;
 }

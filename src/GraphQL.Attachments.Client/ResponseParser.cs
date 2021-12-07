@@ -1,59 +1,56 @@
-﻿using System.Linq;
-using System.Net.Http;
-using System.Threading.Tasks;
+﻿using System.Net.Http;
 
-namespace GraphQL.Attachments
+namespace GraphQL.Attachments;
+
+public static class ResponseParser
 {
-    public static class ResponseParser
+    public static async Task<QueryResult> ProcessResponse(this HttpResponseMessage response, CancellationToken cancellation = default)
     {
-        public static async Task<QueryResult> ProcessResponse(this HttpResponseMessage response, CancellationToken cancellation = default)
+        if (!response.IsMultipart())
         {
-            if (!response.IsMultipart())
-            {
-                return new(await response.Content.ReadAsStreamAsync(), new Dictionary<string, Attachment>(), response.Content.Headers, response.StatusCode);
-            }
-
-            var multipart = await response.Content.ReadAsMultipartAsync(cancellation);
-            Dictionary<string, Attachment> attachments = new();
-
-            await foreach (var attachment in ReadAttachments(multipart).WithCancellation(cancellation))
-            {
-                attachments.Add(attachment.Name, attachment);
-            }
-
-            return new(await ProcessBody(multipart), attachments, response.Content.Headers, response.StatusCode);
+            return new(await response.Content.ReadAsStreamAsync(), new Dictionary<string, Attachment>(), response.Content.Headers, response.StatusCode);
         }
 
-        static async IAsyncEnumerable<Attachment> ReadAttachments(MultipartMemoryStreamProvider multipart)
+        var multipart = await response.Content.ReadAsMultipartAsync(cancellation);
+        Dictionary<string, Attachment> attachments = new();
+
+        await foreach (var attachment in ReadAttachments(multipart).WithCancellation(cancellation))
         {
-            foreach (var content in multipart.Contents.Skip(1))
-            {
-                var name = content.Headers.ContentDisposition!.Name!;
-                var stream = await content.ReadAsStreamAsync();
-                yield return new
-                (
-                    name: name,
-                    stream: stream,
-                    headers: content.Headers
-                );
-            }
+            attachments.Add(attachment.Name, attachment);
         }
 
-        static Task<Stream> ProcessBody(MultipartStreamProvider multipart)
+        return new(await ProcessBody(multipart), attachments, response.Content.Headers, response.StatusCode);
+    }
+
+    static async IAsyncEnumerable<Attachment> ReadAttachments(MultipartMemoryStreamProvider multipart)
+    {
+        foreach (var content in multipart.Contents.Skip(1))
         {
-            var first = multipart.Contents.FirstOrDefault();
-            if (first == null)
-            {
-                throw new("Expected the multipart response have at least one part which contains the GraphQL response data.");
-            }
-
-            var name = first.Headers.ContentDisposition?.Name;
-            if (name == null)
-            {
-                throw new("Expected the first part in the multipart response to be named.");
-            }
-
-            return first.ReadAsStreamAsync();
+            var name = content.Headers.ContentDisposition!.Name!;
+            var stream = await content.ReadAsStreamAsync();
+            yield return new
+            (
+                name: name,
+                stream: stream,
+                headers: content.Headers
+            );
         }
+    }
+
+    static Task<Stream> ProcessBody(MultipartStreamProvider multipart)
+    {
+        var first = multipart.Contents.FirstOrDefault();
+        if (first == null)
+        {
+            throw new("Expected the multipart response have at least one part which contains the GraphQL response data.");
+        }
+
+        var name = first.Headers.ContentDisposition?.Name;
+        if (name == null)
+        {
+            throw new("Expected the first part in the multipart response to be named.");
+        }
+
+        return first.ReadAsStreamAsync();
     }
 }

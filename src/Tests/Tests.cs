@@ -1,9 +1,6 @@
 ﻿using GraphQL;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
-using VerifyXunit;
-using Xunit;
-
 [UsesVerify]
 public class Tests
 {

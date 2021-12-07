@@ -1,35 +1,34 @@
 ﻿using Newtonsoft.Json;
 
-namespace GraphQL.Attachments
+namespace GraphQL.Attachments;
+
+public class AttachmentConverter :
+    JsonConverter
 {
-    public class AttachmentConverter :
-        JsonConverter
+    public override void WriteJson(JsonWriter writer, object? value, JsonSerializer serializer)
     {
-        public override void WriteJson(JsonWriter writer, object? value, JsonSerializer serializer)
+        var attachment = (Attachment) value!;
+        writer.WriteStartObject();
+        writer.WritePropertyName("Name");
+        serializer.Serialize(writer, attachment.Name);
+        writer.WritePropertyName("Metadata");
+        serializer.Serialize(writer, attachment.Headers);
+        writer.WritePropertyName("Value");
+        using (StreamReader reader = new(attachment.Stream))
         {
-            var attachment = (Attachment) value!;
-            writer.WriteStartObject();
-            writer.WritePropertyName("Name");
-            serializer.Serialize(writer, attachment.Name);
-            writer.WritePropertyName("Metadata");
-            serializer.Serialize(writer, attachment.Headers);
-            writer.WritePropertyName("Value");
-            using (StreamReader reader = new(attachment.Stream))
-            {
-                serializer.Serialize(writer, reader.ReadToEnd());
-            }
-
-            writer.WriteEndObject();
+            serializer.Serialize(writer, reader.ReadToEnd());
         }
 
-        public override object ReadJson(JsonReader reader, Type type, object? value, JsonSerializer serializer)
-        {
-            throw new NotImplementedException();
-        }
+        writer.WriteEndObject();
+    }
 
-        public override bool CanConvert(Type type)
-        {
-            return typeof(Attachment).IsAssignableFrom(type);
-        }
+    public override object ReadJson(JsonReader reader, Type type, object? value, JsonSerializer serializer)
+    {
+        throw new NotImplementedException();
+    }
+
+    public override bool CanConvert(Type type)
+    {
+        return typeof(Attachment).IsAssignableFrom(type);
     }
 }

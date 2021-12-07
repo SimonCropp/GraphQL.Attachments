@@ -7,6 +7,7 @@ public static class ModuleInitializer
     [ModuleInitializer]
     public static void Initialize()
     {
+        VerifyHttp.Enable();
         VerifierSettings.AddScrubber(x => x.RemoveLineSuffix("boundary="));
         VerifierSettings.ModifySerialization(settings =>
         {
