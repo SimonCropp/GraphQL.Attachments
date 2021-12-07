@@ -13,7 +13,6 @@ public class Startup
         services.AddSingleton<IDocumentExecuter, DocumentExecuter>();
         services.AddSingleton<ISchema, Schema>();
         var mvc = services.AddMvc(option => option.EnableEndpointRouting = false);
-        mvc.SetCompatibilityVersion(CompatibilityVersion.Latest);
         mvc.AddNewtonsoftJson();
     }
 
