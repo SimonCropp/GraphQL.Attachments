@@ -6,6 +6,7 @@
     <AssemblyVersion>1.0.0</AssemblyVersion>
     <PackageTags>GraphQL, Attachments</PackageTags>
     <SignAssembly>false</SignAssembly>
+    <ImplicitUsings>enable</ImplicitUsings>
     <Description>Add attachment support to GraphQL</Description>
   </PropertyGroup>
 </Project>

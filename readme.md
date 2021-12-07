@@ -56,7 +56,7 @@ Field<ResultGraph>(
         };
     });
 ```
-<sup><a href='/src/Shared/Graphs/BaseRootGraph.cs#L25-L55' title='Snippet source file'>snippet source</a> | <a href='#snippet-usageingraphs' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/src/Shared/Graphs/BaseRootGraph.cs#L24-L54' title='Snippet source file'>snippet source</a> | <a href='#snippet-usageingraphs' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 
@@ -109,7 +109,7 @@ public async Task Post(CancellationToken cancellation)
         cancellation);
 }
 ```
-<sup><a href='/src/SampleWeb/GraphQlController.cs#L26-L40' title='Snippet source file'>snippet source</a> | <a href='#snippet-controllerpost' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/src/SampleWeb/GraphQlController.cs#L24-L38' title='Snippet source file'>snippet source</a> | <a href='#snippet-controllerpost' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 <!-- snippet: ControllerGet -->
@@ -122,7 +122,7 @@ public Task Get(CancellationToken cancellation)
     return Execute(query, operation, null, inputs, cancellation);
 }
 ```
-<sup><a href='/src/SampleWeb/GraphQlController.cs#L42-L51' title='Snippet source file'>snippet source</a> | <a href='#snippet-controllerget' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/src/SampleWeb/GraphQlController.cs#L40-L49' title='Snippet source file'>snippet source</a> | <a href='#snippet-controllerget' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 
@@ -137,7 +137,7 @@ var result = await executer.ExecuteWithAttachments(
     executionOptions,
     incomingAttachments);
 ```
-<sup><a href='/src/SampleWeb/GraphQlController.cs#L73-L79' title='Snippet source file'>snippet source</a> | <a href='#snippet-executewithattachments' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/src/SampleWeb/GraphQlController.cs#L71-L77' title='Snippet source file'>snippet source</a> | <a href='#snippet-executewithattachments' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 
@@ -150,7 +150,7 @@ As with RequestReader for the incoming data, the outgoing data needs to be writt
 ```cs
 await ResponseWriter.WriteResult(writer, Response, result, cancellation);
 ```
-<sup><a href='/src/SampleWeb/GraphQlController.cs#L81-L85' title='Snippet source file'>snippet source</a> | <a href='#snippet-responsewriter' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/src/SampleWeb/GraphQlController.cs#L79-L83' title='Snippet source file'>snippet source</a> | <a href='#snippet-responsewriter' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 
@@ -249,8 +249,6 @@ Creating and posting a multipart form can be done using a combination of [Multip
 <!-- snippet: QueryExecutor.cs -->
 <a id='snippet-QueryExecutor.cs'></a>
 ```cs
-using System.Net.Http;
-
 namespace GraphQL.Attachments;
 
 public class QueryExecutor
@@ -308,7 +306,7 @@ public class QueryExecutor
     }
 }
 ```
-<sup><a href='/src/GraphQL.Attachments.Client/QueryExecutor.cs#L1-L58' title='Snippet source file'>snippet source</a> | <a href='#snippet-QueryExecutor.cs' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/src/GraphQL.Attachments.Client/QueryExecutor.cs#L1-L56' title='Snippet source file'>snippet source</a> | <a href='#snippet-QueryExecutor.cs' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 This can be useful when performing [Integration testing in ASP.NET Core](https://docs.microsoft.com/en-us/aspnet/core/testing/integration-testing).

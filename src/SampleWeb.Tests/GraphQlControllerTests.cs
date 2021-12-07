@@ -1,9 +1,6 @@
-﻿using System.Net.Http;
-using GraphQL.Attachments;
+﻿using GraphQL.Attachments;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
-using VerifyXunit;
-using Xunit;
 
 [UsesVerify]
 public class GraphQlControllerTests

@@ -1,6 +1,4 @@
-﻿using System.Net.Http;
-
-namespace GraphQL.Attachments;
+﻿namespace GraphQL.Attachments;
 
 public static class ResponseParser
 {

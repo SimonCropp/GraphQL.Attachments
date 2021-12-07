@@ -1,6 +1,5 @@
 ﻿using GraphQL;
 using GraphQL.Attachments;
-using VerifyTests;
 
 public static class ModuleInitializer
 {
