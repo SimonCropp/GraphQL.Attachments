@@ -15,7 +15,7 @@ mutation
     argument
   }
 }";
-        return Verifier.Verify(RunQuery(mutation));
+        return Verify(RunQuery(mutation));
     }
 
     [Fact]
@@ -28,7 +28,7 @@ mutation
     argument
   }
 }";
-        return Verifier.Verify(RunQuery(queryString));
+        return Verify(RunQuery(queryString));
     }
 
     static Task<AttachmentExecutionResult> RunQuery(string queryString)

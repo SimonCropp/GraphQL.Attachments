@@ -39,7 +39,7 @@ public class RequestReaderTests
             Position = 0
         };
         var (query, inputs, operation) = await RequestReader.ReadBody(stream, CancellationToken.None);
-        await Verifier.Verify(new
+        await Verify(new
         {
             query, inputs, operation
         });
@@ -61,7 +61,7 @@ public class RequestReaderTests
                 new FormFileCollection()),
         };
         var result = await RequestReader.ReadPost(mockHttpRequest);
-        await Verifier.Verify(new
+        await Verify(new
         {
             result.attachments,
             result.inputs,
@@ -85,7 +85,7 @@ public class RequestReaderTests
                 })
         };
         var result = RequestReader.ReadGet(mockHttpRequest);
-        await Verifier.Verify(new
+        await Verify(new
         {
             result.inputs,
             result.operation,
@@ -120,7 +120,7 @@ public class RequestReaderTests
                 })
         };
         var result = RequestReader.ReadGet(mockHttpRequest);
-        await Verifier.Verify(new
+        await Verify(new
         {
             result.inputs,
             result.operation,
@@ -174,7 +174,7 @@ public class RequestReaderTests
                 }),
         };
         var result = await RequestReader.ReadPost(mockHttpRequest);
-        await Verifier.Verify(new
+        await Verify(new
         {
             result.attachments,
             result.inputs,

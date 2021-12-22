@@ -19,13 +19,13 @@ public class GraphQlControllerTests
     [Fact]
     public Task GetIntrospection()
     {
-        return Verifier.Verify(executor.ExecuteGet(IntrospectionQuery));
+        return Verify(executor.ExecuteGet(IntrospectionQuery));
     }
 
     [Fact]
     public Task PostIntrospection()
     {
-        return Verifier.Verify(executor.ExecutePost(IntrospectionQuery));
+        return Verify(executor.ExecutePost(IntrospectionQuery));
     }
 
     [Fact]
@@ -38,7 +38,7 @@ public class GraphQlControllerTests
     argument
   }
 }";
-        return Verifier.Verify(executor.ExecuteGet(query));
+        return Verify(executor.ExecuteGet(query));
     }
 
     [Fact]
@@ -51,7 +51,7 @@ public class GraphQlControllerTests
     argument
   }
 }";
-        return Verifier.Verify(executor.ExecuteGet(query));
+        return Verify(executor.ExecuteGet(query));
     }
 
     [Fact]
@@ -67,7 +67,7 @@ public class GraphQlControllerTests
         using MultipartFormDataContent content = new();
         content.AddQueryAndVariables(mutation);
         using var response = await client.PostAsync("graphql", content);
-        await Verifier.Verify(response.ProcessResponse());
+        await Verify(response.ProcessResponse());
     }
 
     [Fact]
@@ -85,7 +85,7 @@ public class GraphQlControllerTests
         content.AddQueryAndVariables(mutation);
         content.AddContent("key", "foo");
         using var response = await client.PostAsync("graphql", content);
-        await Verifier.Verify(response.ProcessResponse());
+        await Verify(response.ProcessResponse());
     }
 
     [Fact]
@@ -104,7 +104,7 @@ public class GraphQlControllerTests
         content.AddContent("key1", "foo1");
         content.AddContent("key2", "foo2");
         using var response = await client.PostAsync("graphql", content);
-        await Verifier.Verify(response.ProcessResponse());
+        await Verify(response.ProcessResponse());
     }
 
     static TestServer GetTestServer()
