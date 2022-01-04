@@ -112,7 +112,7 @@ public class RequestReaderTests
                     {
                         "variables",
                         new(JsonConvert.SerializeObject(
-                            new Inputs(new Dictionary<string, object>
+                            new Inputs(new Dictionary<string, object?>
                             {
                                 {"key", "value"}
                             })))
@@ -149,7 +149,7 @@ public class RequestReaderTests
                     {
                         "variables",
                         new(JsonConvert.SerializeObject(
-                            new Inputs(new Dictionary<string, object>
+                            new Inputs(new Dictionary<string, object?>
                             {
                                 {"key", "value"}
                             })))

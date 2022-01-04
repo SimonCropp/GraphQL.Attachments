@@ -1,10 +1,7 @@
 using System.Text.Json;
+using GraphQL;
+using GraphQL.SystemTextJson;
 
-namespace GraphQL.SystemTextJson;
-
-/// <summary>
-/// Provides extension methods to deserialize json strings into object dictionaries.
-/// </summary>
 static class StringExtensions
 {
     private static readonly JsonSerializerOptions _jsonOptions = new()
@@ -26,7 +23,7 @@ static class StringExtensions
     {
         if (json == null)
         {
-            return new(new Dictionary<string, object>());
+            return new(new Dictionary<string, object?>());
         }
         var dictionary = json.ToDictionary();
         return dictionary.ToInputs();
@@ -37,7 +34,7 @@ static class StringExtensions
     /// </summary>
     /// <param name="json">The json.</param>
     /// <returns>Dictionary.</returns>
-    public static Dictionary<string, object> ToDictionary(this string json)
+    public static Dictionary<string, object?> ToDictionary(this string json)
     {
         if (json == string.Empty)
         {

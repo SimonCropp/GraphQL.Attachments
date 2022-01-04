@@ -1,5 +1,4 @@
 ﻿using System.Text.Json;
-using GraphQL.SystemTextJson;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Primitives;
 
@@ -116,6 +115,7 @@ public static class RequestReader
         {
             return Inputs.Empty;
         }
+
         var variables = json.ToDictionary();
         return variables.ToInputs();
     }
