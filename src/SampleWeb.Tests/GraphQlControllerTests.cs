@@ -17,16 +17,12 @@ public class GraphQlControllerTests
     }
 
     [Fact]
-    public Task GetIntrospection()
-    {
-        return Verify(executor.ExecuteGet(IntrospectionQuery));
-    }
+    public Task GetIntrospection() =>
+        Verify(executor.ExecuteGet(IntrospectionQuery));
 
     [Fact]
-    public Task PostIntrospection()
-    {
-        return Verify(executor.ExecutePost(IntrospectionQuery));
-    }
+    public Task PostIntrospection() =>
+        Verify(executor.ExecutePost(IntrospectionQuery));
 
     [Fact]
     public Task Get()

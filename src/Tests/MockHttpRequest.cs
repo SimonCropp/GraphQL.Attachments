@@ -3,10 +3,8 @@
 public class MockHttpRequest :
     HttpRequest
 {
-    public override Task<IFormCollection> ReadFormAsync(CancellationToken cancellationToken = default)
-    {
-        return Task.FromResult(Form);
-    }
+    public override Task<IFormCollection> ReadFormAsync(CancellationToken cancellationToken = default) =>
+        Task.FromResult(Form);
 
     public override HttpContext HttpContext { get; } = null!;
     public override string Method { get; set; } = null!;
@@ -24,10 +22,7 @@ public class MockHttpRequest :
     public override string? ContentType { get; set; } = null!;
     public override Stream Body { get; set; } = null!;
 
-    public override bool HasFormContentType
-    {
-        get { return true; }
-    }
+    public override bool HasFormContentType => true;
 
     public override IFormCollection Form { get; set; } = null!;
 }

@@ -12,10 +12,8 @@ public static class RequestReader
     /// <summary>
     /// Parse a <see cref="HttpRequest"/> Get into the corresponding query, <see cref="Inputs"/>, and operation.
     /// </summary>
-    public static (string query, Inputs inputs, string? operation) ReadGet(HttpRequest request)
-    {
-        return ReadParams(request.Query.TryGetValue);
-    }
+    public static (string query, Inputs inputs, string? operation) ReadGet(HttpRequest request) =>
+        ReadParams(request.Query.TryGetValue);
 
     /// <summary>
     /// Parse a <see cref="HttpRequest"/> Post into the corresponding query, <see cref="Inputs"/>, operation, and <see cref="IIncomingAttachments"/>.

@@ -6,15 +6,11 @@ public class PostContext
 {
     MultipartFormDataContent content;
 
-    public PostContext(MultipartFormDataContent content)
-    {
+    public PostContext(MultipartFormDataContent content) =>
         this.content = content;
-    }
 
-    public void SetHeadersAction(Action<HttpContentHeaders> headerAction)
-    {
+    public void SetHeadersAction(Action<HttpContentHeaders> headerAction) =>
         HeadersAction = headerAction;
-    }
 
     public Action<HttpContentHeaders>? HeadersAction { get; private set; }
 

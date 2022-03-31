@@ -22,13 +22,9 @@ public class AttachmentConverter :
         writer.WriteEndObject();
     }
 
-    public override object ReadJson(JsonReader reader, Type type, object? value, JsonSerializer serializer)
-    {
+    public override object ReadJson(JsonReader reader, Type type, object? value, JsonSerializer serializer) =>
         throw new NotImplementedException();
-    }
 
-    public override bool CanConvert(Type type)
-    {
-        return typeof(Attachment).IsAssignableFrom(type);
-    }
+    public override bool CanConvert(Type type) =>
+        typeof(Attachment).IsAssignableFrom(type);
 }

@@ -16,10 +16,8 @@ static class Guard
         }
     }
 
-    public static Func<T> WrapFuncInCheck<T>(this Func<T> func, string name)
-    {
-        return () => func.EvaluateAndCheck(name);
-    }
+    public static Func<T> WrapFuncInCheck<T>(this Func<T> func, string name) =>
+        () => func.EvaluateAndCheck(name);
 
     static T EvaluateAndCheck<T>(this Func<T> func, string attachment)
     {
@@ -80,9 +78,8 @@ static class Guard
 
     public static Func<CancellationToken, Task<T>> WrapFuncTaskInCheck<T>(
         this Func<CancellationToken, Task<T>> func,
-        string attachment)
-    {
-        return async cancellation =>
+        string attachment) =>
+        async cancellation =>
         {
             var task = func.EvaluateAndCheck(attachment, cancellation);
             ThrowIfNullReturned(null, attachment, task);
@@ -90,14 +87,12 @@ static class Guard
             ThrowIfNullReturned(null, attachment, value);
             return value;
         };
-    }
 
     public static Func<CancellationToken, Task<Stream>> WrapStreamFuncTaskInCheck<T>(
         this Func<CancellationToken, Task<T>> func,
         string attachment)
-        where T : Stream
-    {
-        return async cancellation =>
+        where T : Stream =>
+        async cancellation =>
         {
             var task = func.EvaluateAndCheck(attachment, cancellation);
             ThrowIfNullReturned(null, attachment, task);
@@ -105,7 +100,6 @@ static class Guard
             ThrowIfNullReturned(null, attachment, value);
             return value;
         };
-    }
 
     public static void ThrowIfNullReturned(string? messageId, string attachment, object? value)
     {

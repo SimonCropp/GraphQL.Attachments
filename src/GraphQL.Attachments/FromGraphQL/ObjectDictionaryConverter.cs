@@ -22,23 +22,31 @@ class ObjectDictionaryConverter : JsonConverter<Dictionary<string, object?>>
     private static Dictionary<string, object?> ReadDictionary(ref Utf8JsonReader reader)
     {
         if (reader.TokenType != JsonTokenType.StartObject)
+        {
             throw new JsonException();
+        }
 
         var result = new Dictionary<string, object?>();
 
         while (reader.Read())
         {
             if (reader.TokenType == JsonTokenType.EndObject)
+            {
                 break;
+            }
 
             if (reader.TokenType != JsonTokenType.PropertyName)
+            {
                 throw new JsonException();
+            }
 
             var key = reader.GetString()!;
 
             // move to property value
             if (!reader.Read())
+            {
                 throw new JsonException();
+            }
 
             result.Add(key, ReadValue(ref reader));
         }
@@ -63,14 +71,18 @@ class ObjectDictionaryConverter : JsonConverter<Dictionary<string, object?>>
     private static List<object?> ReadArray(ref Utf8JsonReader reader)
     {
         if (reader.TokenType != JsonTokenType.StartArray)
+        {
             throw new JsonException();
+        }
 
         var result = new List<object?>();
 
         while (reader.Read())
         {
             if (reader.TokenType == JsonTokenType.EndArray)
+            {
                 break;
+            }
 
             result.Add(ReadValue(ref reader));
         }
@@ -81,15 +93,29 @@ class ObjectDictionaryConverter : JsonConverter<Dictionary<string, object?>>
     private static object ReadNumber(ref Utf8JsonReader reader)
     {
         if (reader.TryGetInt32(out var i))
+        {
             return i;
-        else if (reader.TryGetInt64(out var l))
+        }
+
+        if (reader.TryGetInt64(out var l))
+        {
             return l;
-        else if (JsonConverterBigInteger.TryGetBigInteger(ref reader, out var bi))
+        }
+
+        if (JsonConverterBigInteger.TryGetBigInteger(ref reader, out var bi))
+        {
             return bi;
-        else if (reader.TryGetDouble(out var d))
+        }
+
+        if (reader.TryGetDouble(out var d))
+        {
             return d;
-        else if (reader.TryGetDecimal(out var dm))
+        }
+
+        if (reader.TryGetDecimal(out var dm))
+        {
             return dm;
+        }
 
         var span = reader.HasValueSequence ? reader.ValueSequence.ToArray() : reader.ValueSpan;
 #if NETSTANDARD2_0

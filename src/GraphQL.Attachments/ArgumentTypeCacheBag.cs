@@ -5,20 +5,14 @@ static class ArgumentTypeCacheBag
 {
     const string key = "GraphQL.Attachments.AttachmentContext";
 
-    public static AttachmentContext GetAttachmentContext(this IResolveFieldContext context)
-    {
-        return GetAttachmentContext(context.UserContext);
-    }
+    public static AttachmentContext GetAttachmentContext(this IResolveFieldContext context) =>
+        GetAttachmentContext(context.UserContext);
 
-    public static void SetAttachmentContext(this ExecutionOptions options, AttachmentContext attachmentContext)
-    {
+    public static void SetAttachmentContext(this ExecutionOptions options, AttachmentContext attachmentContext) =>
         UserContextAsDictionary(options.UserContext).Add(key, attachmentContext);
-    }
 
-    public static AttachmentContext GetAttachmentContext<T>(this IResolveFieldContext<T> context)
-    {
-        return GetAttachmentContext(context.UserContext);
-    }
+    public static AttachmentContext GetAttachmentContext<T>(this IResolveFieldContext<T> context) =>
+        GetAttachmentContext(context.UserContext);
 
     static AttachmentContext GetAttachmentContext(object userContext)
     {
@@ -41,8 +35,6 @@ static class ArgumentTypeCacheBag
         throw NotDictionary();
     }
 
-    static Exception NotDictionary()
-    {
-        return new("Expected UserContext to be of type IDictionary<string, object>.");
-    }
+    static Exception NotDictionary() =>
+        new("Expected UserContext to be of type IDictionary<string, object>.");
 }

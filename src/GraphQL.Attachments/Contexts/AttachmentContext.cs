@@ -28,8 +28,6 @@ public class AttachmentContext :
     /// <summary>
     /// <see cref="IAsyncDisposable.DisposeAsync"/>.
     /// </summary>
-    public ValueTask DisposeAsync()
-    {
-        return Incoming.DisposeAsync();
-    }
+    public ValueTask DisposeAsync() =>
+        Incoming.DisposeAsync();
 }

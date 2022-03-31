@@ -3,8 +3,6 @@
 public class ResultGraph :
     ObjectGraphType<Result>
 {
-    public ResultGraph()
-    {
+    public ResultGraph() =>
         Field(x => x.Argument);
-    }
 }
