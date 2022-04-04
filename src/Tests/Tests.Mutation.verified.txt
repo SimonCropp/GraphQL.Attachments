@@ -3,224 +3,83 @@
     Executed: true,
     Data: {
       SelectionSet: {
+        Location: {
+          Start: 12,
+          End: 86
+        },
+        Kind: SelectionSet,
         Selections: [
           {
-            Name: withAttachment,
-            NameNode: {
-              Name: withAttachment
+            Location: {
+              Start: 17,
+              End: 83
+            },
+            Kind: Field,
+            Name: {
+              Location: {
+                Start: 17,
+                End: 31
+              },
+              Value: {
+                Length: 14
+              },
+              StringValue: withAttachment
             },
             Arguments: [
               {
-                Name: argument,
-                NameNode: {
-                  Name: argument
+                Location: {
+                  Start: 33,
+                  End: 58
+                },
+                Kind: Argument,
+                Name: {
+                  Location: {
+                    Start: 33,
+                    End: 41
+                  },
+                  Value: {
+                    Length: 8
+                  },
+                  StringValue: argument
                 },
                 Value: {
-                  Value: argumentValue
-                },
-                Children: [
-                  {
-                    Value: argumentValue
+                  Location: {
+                    Start: 43,
+                    End: 58
+                  },
+                  Kind: StringValue,
+                  Value: {
+                    Length: 13
                   }
-                ]
+                }
               }
             ],
             SelectionSet: {
+              Location: {
+                Start: 63,
+                End: 83
+              },
+              Kind: SelectionSet,
               Selections: [
                 {
-                  Name: argument,
-                  NameNode: {
-                    Name: argument
+                  Location: {
+                    Start: 70,
+                    End: 78
                   },
-                  SelectionSet: {
-                    Children: []
-                  },
-                  Children: [
-                    {
-                      Children: []
-                    }
-                  ]
-                }
-              ],
-              Children: [
-                {
-                  Name: argument,
-                  NameNode: {
-                    Name: argument
-                  },
-                  SelectionSet: {
-                    Children: []
-                  },
-                  Children: [
-                    {
-                      Children: []
-                    }
-                  ]
+                  Kind: Field,
+                  Name: {
+                    Location: {
+                      Start: 70,
+                      End: 78
+                    },
+                    Value: {
+                      Length: 8
+                    },
+                    StringValue: argument
+                  }
                 }
               ]
-            },
-            Children: [
-              [
-                {
-                  Name: argument,
-                  NameNode: {
-                    Name: argument
-                  },
-                  Value: {
-                    Value: argumentValue
-                  },
-                  Children: [
-                    {
-                      Value: argumentValue
-                    }
-                  ]
-                }
-              ],
-              {
-                Selections: [
-                  {
-                    Name: argument,
-                    NameNode: {
-                      Name: argument
-                    },
-                    SelectionSet: {
-                      Children: []
-                    },
-                    Children: [
-                      {
-                        Children: []
-                      }
-                    ]
-                  }
-                ],
-                Children: [
-                  {
-                    Name: argument,
-                    NameNode: {
-                      Name: argument
-                    },
-                    SelectionSet: {
-                      Children: []
-                    },
-                    Children: [
-                      {
-                        Children: []
-                      }
-                    ]
-                  }
-                ]
-              }
-            ]
-          }
-        ],
-        Children: [
-          {
-            Name: withAttachment,
-            NameNode: {
-              Name: withAttachment
-            },
-            Arguments: [
-              {
-                Name: argument,
-                NameNode: {
-                  Name: argument
-                },
-                Value: {
-                  Value: argumentValue
-                },
-                Children: [
-                  {
-                    Value: argumentValue
-                  }
-                ]
-              }
-            ],
-            SelectionSet: {
-              Selections: [
-                {
-                  Name: argument,
-                  NameNode: {
-                    Name: argument
-                  },
-                  SelectionSet: {
-                    Children: []
-                  },
-                  Children: [
-                    {
-                      Children: []
-                    }
-                  ]
-                }
-              ],
-              Children: [
-                {
-                  Name: argument,
-                  NameNode: {
-                    Name: argument
-                  },
-                  SelectionSet: {
-                    Children: []
-                  },
-                  Children: [
-                    {
-                      Children: []
-                    }
-                  ]
-                }
-              ]
-            },
-            Children: [
-              [
-                {
-                  Name: argument,
-                  NameNode: {
-                    Name: argument
-                  },
-                  Value: {
-                    Value: argumentValue
-                  },
-                  Children: [
-                    {
-                      Value: argumentValue
-                    }
-                  ]
-                }
-              ],
-              {
-                Selections: [
-                  {
-                    Name: argument,
-                    NameNode: {
-                      Name: argument
-                    },
-                    SelectionSet: {
-                      Children: []
-                    },
-                    Children: [
-                      {
-                        Children: []
-                      }
-                    ]
-                  }
-                ],
-                Children: [
-                  {
-                    Name: argument,
-                    NameNode: {
-                      Name: argument
-                    },
-                    SelectionSet: {
-                      Children: []
-                    },
-                    Children: [
-                      {
-                        Children: []
-                      }
-                    ]
-                  }
-                ]
-              }
-            ]
+            }
           }
         ]
       },
@@ -232,18 +91,21 @@
                 Name: String
               },
               Field: {
-                Name: argument,
-                NameNode: {
-                  Name: argument
+                Location: {
+                  Start: 70,
+                  End: 78
                 },
-                SelectionSet: {
-                  Children: []
-                },
-                Children: [
-                  {
-                    Children: []
-                  }
-                ]
+                Kind: Field,
+                Name: {
+                  Location: {
+                    Start: 70,
+                    End: 78
+                  },
+                  Value: {
+                    Length: 8
+                  },
+                  StringValue: argument
+                }
               },
               FieldDefinition: {
                 Name: argument,
@@ -276,36 +138,28 @@
             }
           ],
           SelectionSet: {
+            Location: {
+              Start: 63,
+              End: 83
+            },
+            Kind: SelectionSet,
             Selections: [
               {
-                Name: argument,
-                NameNode: {
-                  Name: argument
+                Location: {
+                  Start: 70,
+                  End: 78
                 },
-                SelectionSet: {
-                  Children: []
-                },
-                Children: [
-                  {
-                    Children: []
-                  }
-                ]
-              }
-            ],
-            Children: [
-              {
-                Name: argument,
-                NameNode: {
-                  Name: argument
-                },
-                SelectionSet: {
-                  Children: []
-                },
-                Children: [
-                  {
-                    Children: []
-                  }
-                ]
+                Kind: Field,
+                Name: {
+                  Location: {
+                    Start: 70,
+                    End: 78
+                  },
+                  Value: {
+                    Length: 8
+                  },
+                  StringValue: argument
+                }
               }
             ]
           },
@@ -337,112 +191,76 @@
             Name: ResultGraph
           },
           Field: {
-            Name: withAttachment,
-            NameNode: {
-              Name: withAttachment
+            Location: {
+              Start: 17,
+              End: 83
+            },
+            Kind: Field,
+            Name: {
+              Location: {
+                Start: 17,
+                End: 31
+              },
+              Value: {
+                Length: 14
+              },
+              StringValue: withAttachment
             },
             Arguments: [
               {
-                Name: argument,
-                NameNode: {
-                  Name: argument
+                Location: {
+                  Start: 33,
+                  End: 58
+                },
+                Kind: Argument,
+                Name: {
+                  Location: {
+                    Start: 33,
+                    End: 41
+                  },
+                  Value: {
+                    Length: 8
+                  },
+                  StringValue: argument
                 },
                 Value: {
-                  Value: argumentValue
-                },
-                Children: [
-                  {
-                    Value: argumentValue
+                  Location: {
+                    Start: 43,
+                    End: 58
+                  },
+                  Kind: StringValue,
+                  Value: {
+                    Length: 13
                   }
-                ]
+                }
               }
             ],
             SelectionSet: {
+              Location: {
+                Start: 63,
+                End: 83
+              },
+              Kind: SelectionSet,
               Selections: [
                 {
-                  Name: argument,
-                  NameNode: {
-                    Name: argument
+                  Location: {
+                    Start: 70,
+                    End: 78
                   },
-                  SelectionSet: {
-                    Children: []
-                  },
-                  Children: [
-                    {
-                      Children: []
-                    }
-                  ]
-                }
-              ],
-              Children: [
-                {
-                  Name: argument,
-                  NameNode: {
-                    Name: argument
-                  },
-                  SelectionSet: {
-                    Children: []
-                  },
-                  Children: [
-                    {
-                      Children: []
-                    }
-                  ]
+                  Kind: Field,
+                  Name: {
+                    Location: {
+                      Start: 70,
+                      End: 78
+                    },
+                    Value: {
+                      Length: 8
+                    },
+                    StringValue: argument
+                  }
                 }
               ]
-            },
-            Children: [
-              [
-                {
-                  Name: argument,
-                  NameNode: {
-                    Name: argument
-                  },
-                  Value: {
-                    Value: argumentValue
-                  },
-                  Children: [
-                    {
-                      Value: argumentValue
-                    }
-                  ]
-                }
-              ],
-              {
-                Selections: [
-                  {
-                    Name: argument,
-                    NameNode: {
-                      Name: argument
-                    },
-                    SelectionSet: {
-                      Children: []
-                    },
-                    Children: [
-                      {
-                        Children: []
-                      }
-                    ]
-                  }
-                ],
-                Children: [
-                  {
-                    Name: argument,
-                    NameNode: {
-                      Name: argument
-                    },
-                    SelectionSet: {
-                      Children: []
-                    },
-                    Children: [
-                      {
-                        Children: []
-                      }
-                    ]
-                  }
-                ]
-              }
-            ]
+            }
           },
           FieldDefinition: {
             Name: withAttachment,
@@ -598,15 +416,9 @@
       Path: [],
       ResponsePath: []
     },
-    Query:
-
-mutation
-{
-  withAttachment (argument: "argumentValue")
-  {
-    argument
-  }
-}
+    Query: {
+      Length: 86
+    }
   },
   Attachments: {
     HasPendingAttachments: true,

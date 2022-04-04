@@ -11,7 +11,7 @@ public static class ResponseWriter
     /// <summary>
     /// Writes <paramref name="result"/> to <paramref name="response"/>.
     /// </summary>
-    public static Task WriteResult(IDocumentWriter writer, HttpResponse response, AttachmentExecutionResult result, CancellationToken cancellation = default)
+    public static Task WriteResult(IGraphQLSerializer writer, HttpResponse response, AttachmentExecutionResult result, CancellationToken cancellation = default)
     {
         var executionResult = result.ExecutionResult;
         var attachments = (OutgoingAttachments) result.Attachments;
@@ -29,7 +29,7 @@ public static class ResponseWriter
     }
 
     static async Task WriteMultipart(
-        IDocumentWriter writer,
+        IGraphQLSerializer writer,
         HttpResponse response,
         ExecutionResult result,
         OutgoingAttachments attachments,
@@ -38,10 +38,12 @@ public static class ResponseWriter
         List<HttpContent> httpContents = new();
         try
         {
-            using MultipartFormDataContent multipart = new()
+            var contentStream = new MemoryStream();
+            await writer.WriteAsync(contentStream,result, cancellation);
+            contentStream.Position = 0;
+            using var multipart = new MultipartFormDataContent
             {
-                //TODO: no point doing ToString
-                {new StringContent(await writer.WriteToStringAsync(result)), "result"}
+                {new StreamContent(contentStream), "result"}
             };
 
             foreach (var attachment in attachments.Inner)
@@ -87,13 +89,12 @@ public static class ResponseWriter
     }
 
     static async Task WriteStream(
-        IDocumentWriter writer,
+        IGraphQLSerializer writer,
         ExecutionResult result,
         HttpResponse response,
         CancellationToken cancellation)
     {
         response.Headers.Add("Content-Type", "application/json");
-        //TODO: no point doing ToString
-        await response.WriteAsync(await writer.WriteToStringAsync(result), cancellation);
+        await writer.WriteAsync(response.Body, result, cancellation);
     }
 }

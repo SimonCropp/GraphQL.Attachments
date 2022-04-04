@@ -1,6 +1,6 @@
 ﻿using GraphQL;
 using GraphQL.Attachments;
-using GraphQL.NewtonsoftJson;
+using GraphQL.SystemTextJson;
 using GraphQL.Types;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,7 +13,7 @@ public class GraphQlController :
 {
     IDocumentExecuter executer;
     ISchema schema;
-    static DocumentWriter writer = new(indent: true);
+    static GraphQLSerializer writer = new(indent: true);
 
     public GraphQlController(ISchema schema, IDocumentExecuter executer)
     {
@@ -60,7 +60,7 @@ public class GraphQlController :
             Schema = schema,
             Query = query,
             OperationName = operation,
-            Inputs = inputs,
+            Variables = inputs,
             CancellationToken = cancellation,
 #if (DEBUG)
             ThrowOnUnhandledException = true,

@@ -5,8 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-    <PackageReference Include="GraphQL" Version="4.8.0" />
+    <PackageReference Include="GraphQL" Version="5.0.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0" />
     <ProjectReference Include="..\GraphQL.Attachments\GraphQL.Attachments.csproj" />
   </ItemGroup>
