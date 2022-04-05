@@ -148,7 +148,7 @@ As with RequestReader for the incoming data, the outgoing data needs to be writt
 <!-- snippet: ResponseWriter -->
 <a id='snippet-responsewriter'></a>
 ```cs
-await ResponseWriter.WriteResult(writer, Response, result, cancellation);
+await ResponseWriter.WriteResult(serializer, Response, result, cancellation);
 ```
 <sup><a href='/src/SampleWeb/GraphQlController.cs#L79-L83' title='Snippet source file'>snippet source</a> | <a href='#snippet-responsewriter' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
