@@ -13,7 +13,7 @@ public class GraphQlController :
 {
     IDocumentExecuter executer;
     ISchema schema;
-    static GraphQLSerializer writer = new(indent: true);
+    static GraphQLSerializer serializer = new(indent: true);
 
     public GraphQlController(ISchema schema, IDocumentExecuter executer)
     {
@@ -78,7 +78,7 @@ public class GraphQlController :
 
         #region ResponseWriter
 
-        await ResponseWriter.WriteResult(writer, Response, result, cancellation);
+        await ResponseWriter.WriteResult(serializer, Response, result, cancellation);
 
         #endregion
     }
