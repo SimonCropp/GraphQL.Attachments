@@ -4,8 +4,7 @@
     {
         using StringReader reader = new(builder.ToString());
         builder.Clear();
-        string? line;
-        while ((line = reader.ReadLine()) != null)
+        while (reader.ReadLine() is { } line)
         {
             var split = line.Split(stringToMatch);
             builder.AppendLine(split[0]);
