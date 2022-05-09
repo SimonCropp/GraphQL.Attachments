@@ -25,6 +25,7 @@ static class StringExtensions
         {
             return new(new Dictionary<string, object?>());
         }
+
         var dictionary = json.ToDictionary();
         return dictionary.ToInputs();
     }
@@ -40,6 +41,7 @@ static class StringExtensions
         {
             return new();
         }
+
         return JsonSerializer.Deserialize<Dictionary<string, object>>(json, _jsonOptions)!;
     }
 }
