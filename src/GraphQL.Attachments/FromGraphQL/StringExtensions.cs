@@ -1,10 +1,9 @@
 using System.Text.Json;
 using GraphQL;
-using GraphQL.SystemTextJson;
 
 static class StringExtensions
 {
-    private static readonly JsonSerializerOptions _jsonOptions = new()
+    static JsonSerializerOptions jsonOptions = new()
     {
         PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
         Converters =
@@ -42,6 +41,6 @@ static class StringExtensions
             return new();
         }
 
-        return JsonSerializer.Deserialize<Dictionary<string, object>>(json, _jsonOptions)!;
+        return JsonSerializer.Deserialize<Dictionary<string, object>>(json, jsonOptions)!;
     }
 }

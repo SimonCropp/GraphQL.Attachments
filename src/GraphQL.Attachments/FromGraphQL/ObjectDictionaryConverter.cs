@@ -1,8 +1,7 @@
 using System.Buffers;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-
-namespace GraphQL.SystemTextJson;
+using GraphQL;
 
 /// <summary>
 /// A custom JsonConverter for reading a dictionary of objects of their real underlying type.
@@ -10,16 +9,14 @@ namespace GraphQL.SystemTextJson;
 /// </summary>
 class ObjectDictionaryConverter : JsonConverter<Dictionary<string, object?>>
 {
-    /// <inheritdoc/>
     public override void Write(Utf8JsonWriter writer, Dictionary<string, object?> value, JsonSerializerOptions options)
         => throw new NotImplementedException(
             "This converter currently is only intended to be used to read a JSON object into a strongly-typed representation.");
 
-    /// <inheritdoc/>
     public override Dictionary<string, object?> Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         => ReadDictionary(ref reader);
 
-    private static Dictionary<string, object?> ReadDictionary(ref Utf8JsonReader reader)
+    static Dictionary<string, object?> ReadDictionary(ref Utf8JsonReader reader)
     {
         if (reader.TokenType != JsonTokenType.StartObject)
         {
@@ -54,7 +51,7 @@ class ObjectDictionaryConverter : JsonConverter<Dictionary<string, object?>>
         return result;
     }
 
-    private static object? ReadValue(ref Utf8JsonReader reader)
+    static object? ReadValue(ref Utf8JsonReader reader)
         => reader.TokenType switch
         {
             JsonTokenType.StartArray => ReadArray(ref reader),
@@ -68,7 +65,7 @@ class ObjectDictionaryConverter : JsonConverter<Dictionary<string, object?>>
             _ => throw new InvalidOperationException($"Unexpected token type: {reader.TokenType}")
         };
 
-    private static List<object?> ReadArray(ref Utf8JsonReader reader)
+    static List<object?> ReadArray(ref Utf8JsonReader reader)
     {
         if (reader.TokenType != JsonTokenType.StartArray)
         {
@@ -90,7 +87,7 @@ class ObjectDictionaryConverter : JsonConverter<Dictionary<string, object?>>
         return result;
     }
 
-    private static object ReadNumber(ref Utf8JsonReader reader)
+    static object ReadNumber(ref Utf8JsonReader reader)
     {
         if (reader.TryGetInt32(out var i))
         {
@@ -118,12 +115,6 @@ class ObjectDictionaryConverter : JsonConverter<Dictionary<string, object?>>
         }
 
         var span = reader.HasValueSequence ? reader.ValueSequence.ToArray() : reader.ValueSpan;
-#if NETSTANDARD2_0
-            var data = span.ToArray();
-#else
-        var data = span;
-#endif
-
-        throw new NotImplementedException($"Unexpected Number value. Raw text was: {Encoding.UTF8.GetString(data)}");
+        throw new NotImplementedException($"Unexpected Number value. Raw text was: {Encoding.UTF8.GetString(span)}");
     }
 }
