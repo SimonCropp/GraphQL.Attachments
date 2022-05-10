@@ -3,31 +3,27 @@ using Microsoft.Extensions.Primitives;
 
 namespace GraphQL.Attachments;
 
-/// <summary>
-/// Handles parsing a <see cref="HttpRequest"/> into the corresponding query, <see cref="Inputs"/>, operation, and <see cref="IIncomingAttachments"/>.
-/// </summary>
-public static class RequestReader
+public partial class HttpReaderWriter
 {
     /// <summary>
     /// Parse a <see cref="HttpRequest"/> Get into the corresponding query, <see cref="Inputs"/>, and operation.
     /// </summary>
-    public static (string query, Inputs? inputs, string? operation) ReadGet(IGraphQLTextSerializer serializer, HttpRequest request) =>
-        ReadParams(serializer, request.Query.TryGetValue);
+    public (string query, Inputs? inputs, string? operation) ReadGet(HttpRequest request) =>
+        ReadParams(request.Query.TryGetValue);
 
     /// <summary>
     /// Parse a <see cref="HttpRequest"/> Post into the corresponding query, <see cref="Inputs"/>, operation, and <see cref="IIncomingAttachments"/>.
     /// </summary>
-    public static async Task<(string query, Inputs? inputs, IIncomingAttachments attachments, string? operation)> ReadPost(
-        IGraphQLTextSerializer serializer,
+    public async Task<(string query, Inputs? inputs, IIncomingAttachments attachments, string? operation)> ReadPost(
         HttpRequest request,
         CancellationToken cancellation = default)
     {
         if (request.HasFormContentType)
         {
-            return await ReadForm(serializer, request, cancellation);
+            return await ReadForm(request, cancellation);
         }
 
-        var (query, inputs, operation) = await ReadBody(serializer, request.Body, cancellation);
+        var (query, inputs, operation) = await ReadBody(request.Body, cancellation);
         return (query, inputs, new IncomingAttachments(), operation);
     }
 
@@ -38,8 +34,7 @@ public static class RequestReader
         public Inputs? variables { get; set; }
     }
 
-    internal static async Task<(string query, Inputs? inputs, string operation)> ReadBody(
-        IGraphQLTextSerializer serializer,
+    internal async Task<(string query, Inputs? inputs, string operation)> ReadBody(
         Stream stream,
         CancellationToken cancellation)
     {
@@ -47,13 +42,12 @@ public static class RequestReader
         return (postBody.query, postBody.variables, postBody.operationName);
     }
 
-    static async Task<(string query, Inputs? inputs, IIncomingAttachments attachments, string? operation)> ReadForm(
-        IGraphQLTextSerializer serializer,
+    async Task<(string query, Inputs? inputs, IIncomingAttachments attachments, string? operation)> ReadForm(
         HttpRequest request,
         CancellationToken cancellation)
     {
         var form = await request.ReadFormAsync(cancellation);
-        var (query, inputs, operation) = ReadParams(serializer, form.TryGetValue);
+        var (query, inputs, operation) = ReadParams(form.TryGetValue);
 
         var streams = form.Files.ToDictionary(
             x => x.FileName,
@@ -63,7 +57,7 @@ public static class RequestReader
 
     delegate bool TryGetValue(string key, out StringValues value);
 
-    static (string query, Inputs? inputs, string? operation) ReadParams(IGraphQLTextSerializer serializer, TryGetValue tryGetValue)
+    (string query, Inputs? inputs, string? operation) ReadParams(TryGetValue tryGetValue)
     {
         if (!tryGetValue("query", out var queryValues))
         {
@@ -77,7 +71,7 @@ public static class RequestReader
 
         var operation = ReadOperation(tryGetValue);
 
-        return (queryValues.ToString(), GetInputs(serializer, tryGetValue), operation);
+        return (queryValues.ToString(), GetInputs(tryGetValue), operation);
     }
 
     static string? ReadOperation(TryGetValue tryGetValue)
@@ -95,7 +89,7 @@ public static class RequestReader
         throw new("Expected 'operation' to have a single value.");
     }
 
-    static Inputs? GetInputs(IGraphQLTextSerializer serializer, TryGetValue tryGetValue)
+    Inputs? GetInputs(TryGetValue tryGetValue)
     {
         if (!tryGetValue("variables", out var values))
         {

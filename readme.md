@@ -72,14 +72,14 @@ public async Task InvokeAsync(HttpContext context, RequestDelegate next)
 
     if (isGet)
     {
-        var (query, inputs, operation) = RequestReader.ReadGet(serializer, request);
+        var (query, inputs, operation) = readerWriter.ReadGet(request);
         await Execute(response, query, operation, null, inputs, cancellation);
         return;
     }
 
     if (isPost)
     {
-        var (query, inputs, attachments, operation) = await RequestReader.ReadPost(serializer, request, cancellation);
+        var (query, inputs, attachments, operation) = await readerWriter.ReadPost(request, cancellation);
         await Execute(response, query, operation, attachments, inputs, cancellation);
         return;
     }
@@ -112,7 +112,7 @@ As with RequestReader for the incoming data, the outgoing data needs to be writt
 <!-- snippet: ResponseWriter -->
 <a id='snippet-responsewriter'></a>
 ```cs
-await ResponseWriter.WriteResult(serializer, response, result, cancellation);
+await readerWriter.WriteResult(response, result, cancellation);
 ```
 <sup><a href='/src/SampleWeb/GraphQlMiddleware.cs#L77-L81' title='Snippet source file'>snippet source</a> | <a href='#snippet-responsewriter' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->

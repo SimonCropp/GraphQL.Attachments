@@ -9,7 +9,7 @@ public class GraphQlMiddleware :
 {
     IDocumentExecuter executer;
     ISchema schema;
-    static GraphQLSerializer serializer = new(indent: true);
+    static HttpReaderWriter readerWriter = new(new GraphQLSerializer(indent: true));
 
     public GraphQlMiddleware(ISchema schema, IDocumentExecuter executer)
     {
@@ -29,14 +29,14 @@ public class GraphQlMiddleware :
 
         if (isGet)
         {
-            var (query, inputs, operation) = RequestReader.ReadGet(serializer, request);
+            var (query, inputs, operation) = readerWriter.ReadGet(request);
             await Execute(response, query, operation, null, inputs, cancellation);
             return;
         }
 
         if (isPost)
         {
-            var (query, inputs, attachments, operation) = await RequestReader.ReadPost(serializer, request, cancellation);
+            var (query, inputs, attachments, operation) = await readerWriter.ReadPost(request, cancellation);
             await Execute(response, query, operation, attachments, inputs, cancellation);
             return;
         }
@@ -76,7 +76,7 @@ public class GraphQlMiddleware :
 
         #region ResponseWriter
 
-        await ResponseWriter.WriteResult(serializer, response, result, cancellation);
+        await readerWriter.WriteResult(response, result, cancellation);
 
         #endregion
     }

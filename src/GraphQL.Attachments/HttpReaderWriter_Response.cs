@@ -3,33 +3,30 @@ using System.Net;
 
 namespace GraphQL.Attachments;
 
-/// <summary>
-/// Handles writing a <see cref="AttachmentExecutionResult"/> to a <see cref="HttpResponse"/>.
-/// </summary>
-public static class ResponseWriter
+public partial class HttpReaderWriter
 {
     /// <summary>
     /// Writes <paramref name="result"/> to <paramref name="response"/>.
     /// </summary>
-    public static Task WriteResult(IGraphQLSerializer writer, HttpResponse response, AttachmentExecutionResult result, CancellationToken cancellation = default)
+    public Task WriteResult(HttpResponse response, AttachmentExecutionResult result, CancellationToken cancellation = default)
     {
         var executionResult = result.ExecutionResult;
         var attachments = (OutgoingAttachments) result.Attachments;
         if (response.StatusCode == (int) HttpStatusCode.OK && executionResult.Errors?.Count > 0)
         {
             response.StatusCode = (int) HttpStatusCode.BadRequest;
-            return WriteStream(writer, executionResult, response, cancellation);
+            return WriteStream(executionResult, response, cancellation);
         }
 
         if (attachments.HasPendingAttachments)
         {
-            return WriteMultipart(writer, response, executionResult, attachments, cancellation);
+            return WriteMultipart(response, executionResult, attachments, cancellation);
         }
-        return WriteStream(writer, executionResult, response, cancellation);
+
+        return WriteStream(executionResult, response, cancellation);
     }
 
-    static async Task WriteMultipart(
-        IGraphQLSerializer writer,
+    async Task WriteMultipart(
         HttpResponse response,
         ExecutionResult result,
         OutgoingAttachments attachments,
@@ -39,7 +36,7 @@ public static class ResponseWriter
         try
         {
             var contentStream = new MemoryStream();
-            await writer.WriteAsync(contentStream,result, cancellation);
+            await serializer.WriteAsync(contentStream,result, cancellation);
             contentStream.Position = 0;
             using var multipart = new MultipartFormDataContent
             {
@@ -88,13 +85,12 @@ public static class ResponseWriter
         return content;
     }
 
-    static async Task WriteStream(
-        IGraphQLSerializer writer,
+    Task WriteStream(
         ExecutionResult result,
         HttpResponse response,
         CancellationToken cancellation)
     {
         response.Headers.Add("Content-Type", "application/json");
-        await writer.WriteAsync(response.Body, result, cancellation);
+        return serializer.WriteAsync(response.Body, result, cancellation);
     }
 }

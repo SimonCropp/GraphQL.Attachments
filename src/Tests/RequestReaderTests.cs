@@ -9,7 +9,7 @@ using Newtonsoft.Json;
 [UsesVerify]
 public class RequestReaderTests
 {
-    static GraphQLSerializer serializer = new(indent: true);
+    static HttpReaderWriter readerWriter = new(new GraphQLSerializer(indent: true));
 
     [Fact]
     public Task Parsing() =>
@@ -33,7 +33,7 @@ public class RequestReaderTests
         {
             Position = 0
         };
-        var (query, inputs, operation) = await RequestReader.ReadBody(serializer, stream, CancellationToken.None);
+        var (query, inputs, operation) = await readerWriter.ReadBody(stream, CancellationToken.None);
         await Verify(new
         {
             query, inputs, operation
@@ -55,7 +55,7 @@ public class RequestReaderTests
                 },
                 new FormFileCollection()),
         };
-        var result = await RequestReader.ReadPost(serializer, mockHttpRequest);
+        var result = await readerWriter.ReadPost(mockHttpRequest);
         await Verify(new
         {
             result.attachments,
@@ -79,7 +79,7 @@ public class RequestReaderTests
                     }
                 })
         };
-        var result = RequestReader.ReadGet(serializer, mockHttpRequest);
+        var result = readerWriter.ReadGet(mockHttpRequest);
         await Verify(new
         {
             result.inputs,
@@ -114,7 +114,7 @@ public class RequestReaderTests
                     }
                 })
         };
-        var result = RequestReader.ReadGet(serializer, mockHttpRequest);
+        var result = readerWriter.ReadGet(mockHttpRequest);
         await Verify(new
         {
             result.inputs,
@@ -168,7 +168,7 @@ public class RequestReaderTests
                     },
                 }),
         };
-        var result = await RequestReader.ReadPost(serializer,mockHttpRequest);
+        var result = await readerWriter.ReadPost(mockHttpRequest);
         await Verify(new
         {
             result.attachments,
