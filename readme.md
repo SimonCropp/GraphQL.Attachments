@@ -53,7 +53,7 @@ Field<ResultGraph>(
 <!-- endSnippet -->
 
 
-## Server-side Controller
+## Server-side Middleware
 
 
 ### Non Attachments scenario
@@ -85,37 +85,38 @@ public Task<ExecutionResult> Post(
 
 #### RequestReader instead of binding
 
-When using Attachments the incoming request also requires the incoming form data to be parse. To facilitate this [RequestReader](/src/GraphQL.Attachments/RequestReader.cs) is used. This removes the requirement for model binding. The resulting Post and Get become:
+When using Attachments the incoming request also requires the incoming form data to be parse. To facilitate this [RequestReader](/src/GraphQL.Attachments/RequestReader.cs) is used.:
 
-<!-- snippet: ControllerPost -->
-<a id='snippet-controllerpost'></a>
+<!-- snippet: Invoke -->
+<a id='snippet-invoke'></a>
 ```cs
-[HttpPost]
-public async Task Post(CancellationToken cancellation)
+public async Task InvokeAsync(HttpContext context, RequestDelegate next)
 {
-    var result = await RequestReader.ReadPost(Request, cancellation);
-    await Execute(
-        result.query,
-        result.operation,
-        result.attachments,
-        result.inputs,
-        cancellation);
+    var cancellation = context.RequestAborted;
+    var response = context.Response;
+    var request = context.Request;
+    var isGet = HttpMethods.IsGet(request.Method);
+    var isPost = HttpMethods.IsPost(request.Method);
+
+    if (isGet)
+    {
+        var (query, inputs, operation) = RequestReader.ReadGet(request);
+        await Execute(response, query, operation, null, inputs, cancellation);
+        return;
+    }
+
+    if (isPost)
+    {
+        var (query, inputs, attachments, operation) = await RequestReader.ReadPost(request, cancellation);
+        await Execute(response, query, operation, attachments, inputs, cancellation);
+        return;
+    }
+
+    response.Headers["Allow"] = "GET, POST";
+    response.StatusCode = (int) HttpStatusCode.BadRequest;
 }
 ```
-<sup><a href='/src/SampleWeb/GraphQlController.cs#L24-L38' title='Snippet source file'>snippet source</a> | <a href='#snippet-controllerpost' title='Start of snippet'>anchor</a></sup>
-<!-- endSnippet -->
-
-<!-- snippet: ControllerGet -->
-<a id='snippet-controllerget'></a>
-```cs
-[HttpGet]
-public Task Get(CancellationToken cancellation)
-{
-    var (query, inputs, operation) = RequestReader.ReadGet(Request);
-    return Execute(query, operation, null, inputs, cancellation);
-}
-```
-<sup><a href='/src/SampleWeb/GraphQlController.cs#L40-L49' title='Snippet source file'>snippet source</a> | <a href='#snippet-controllerget' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/src/SampleWeb/GraphQlMiddleware.cs#L25-L53' title='Snippet source file'>snippet source</a> | <a href='#snippet-invoke' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 
@@ -130,7 +131,7 @@ var result = await executer.ExecuteWithAttachments(
     executionOptions,
     incomingAttachments);
 ```
-<sup><a href='/src/SampleWeb/GraphQlController.cs#L71-L77' title='Snippet source file'>snippet source</a> | <a href='#snippet-executewithattachments' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/src/SampleWeb/GraphQlMiddleware.cs#L76-L82' title='Snippet source file'>snippet source</a> | <a href='#snippet-executewithattachments' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 
@@ -141,9 +142,9 @@ As with RequestReader for the incoming data, the outgoing data needs to be writt
 <!-- snippet: ResponseWriter -->
 <a id='snippet-responsewriter'></a>
 ```cs
-await ResponseWriter.WriteResult(serializer, Response, result, cancellation);
+await ResponseWriter.WriteResult(serializer, response, result, cancellation);
 ```
-<sup><a href='/src/SampleWeb/GraphQlController.cs#L79-L83' title='Snippet source file'>snippet source</a> | <a href='#snippet-responsewriter' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/src/SampleWeb/GraphQlMiddleware.cs#L84-L88' title='Snippet source file'>snippet source</a> | <a href='#snippet-responsewriter' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 

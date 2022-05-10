@@ -22,6 +22,8 @@ public class GraphQlMiddleware :
         this.executer = executer;
     }
 
+    #region Invoke
+
     public async Task InvokeAsync(HttpContext context, RequestDelegate next)
     {
         var cancellation = context.RequestAborted;
@@ -47,6 +49,8 @@ public class GraphQlMiddleware :
         response.Headers["Allow"] = "GET, POST";
         response.StatusCode = (int) HttpStatusCode.BadRequest;
     }
+
+    #endregion
 
     async Task Execute(
         HttpResponse response,
@@ -83,7 +87,6 @@ public class GraphQlMiddleware :
 
         #endregion
     }
-
 }
 
 #endregion
