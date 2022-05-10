@@ -1,5 +1,4 @@
-﻿using System.Text.Json;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Primitives;
 
 namespace GraphQL.Attachments;
@@ -12,22 +11,23 @@ public static class RequestReader
     /// <summary>
     /// Parse a <see cref="HttpRequest"/> Get into the corresponding query, <see cref="Inputs"/>, and operation.
     /// </summary>
-    public static (string query, Inputs inputs, string? operation) ReadGet(HttpRequest request) =>
-        ReadParams(request.Query.TryGetValue);
+    public static (string query, Inputs? inputs, string? operation) ReadGet(IGraphQLTextSerializer serializer, HttpRequest request) =>
+        ReadParams(serializer, request.Query.TryGetValue);
 
     /// <summary>
     /// Parse a <see cref="HttpRequest"/> Post into the corresponding query, <see cref="Inputs"/>, operation, and <see cref="IIncomingAttachments"/>.
     /// </summary>
-    public static async Task<(string query, Inputs inputs, IIncomingAttachments attachments, string? operation)> ReadPost(
+    public static async Task<(string query, Inputs? inputs, IIncomingAttachments attachments, string? operation)> ReadPost(
+        IGraphQLTextSerializer serializer,
         HttpRequest request,
         CancellationToken cancellation = default)
     {
         if (request.HasFormContentType)
         {
-            return await ReadForm(request, cancellation);
+            return await ReadForm(serializer, request, cancellation);
         }
 
-        var (query, inputs, operation) = await ReadBody(request.Body, cancellation);
+        var (query, inputs, operation) = await ReadBody(serializer, request.Body, cancellation);
         return (query, inputs, new IncomingAttachments(), operation);
     }
 
@@ -35,26 +35,25 @@ public static class RequestReader
     {
         public string operationName { get; set; } = null!;
         public string query { get; set; } = null!;
-        public object? variables { get; set; }
+        public Inputs? variables { get; set; }
     }
 
-    internal static async Task<(string query, Inputs inputs, string operation)> ReadBody(
+    internal static async Task<(string query, Inputs? inputs, string operation)> ReadBody(
+        IGraphQLTextSerializer serializer,
         Stream stream,
         CancellationToken cancellation)
     {
-        var postBody = (await JsonSerializer.DeserializeAsync<PostBody>(stream, cancellationToken: cancellation))!;
-
-        var variables = postBody.variables?.ToString();
-
-        return (postBody.query, variables.ToInputs(), postBody.operationName);
+        var postBody = (await serializer.ReadAsync<PostBody>(stream, cancellationToken: cancellation))!;
+        return (postBody.query, postBody.variables, postBody.operationName);
     }
 
-    static async Task<(string query, Inputs inputs, IIncomingAttachments attachments, string? operation)> ReadForm(
+    static async Task<(string query, Inputs? inputs, IIncomingAttachments attachments, string? operation)> ReadForm(
+        IGraphQLTextSerializer serializer,
         HttpRequest request,
         CancellationToken cancellation)
     {
         var form = await request.ReadFormAsync(cancellation);
-        var (query, inputs, operation) = ReadParams(form.TryGetValue);
+        var (query, inputs, operation) = ReadParams(serializer, form.TryGetValue);
 
         var streams = form.Files.ToDictionary(
             x => x.FileName,
@@ -64,7 +63,7 @@ public static class RequestReader
 
     delegate bool TryGetValue(string key, out StringValues value);
 
-    static (string query, Inputs inputs, string? operation) ReadParams(TryGetValue tryGetValue)
+    static (string query, Inputs? inputs, string? operation) ReadParams(IGraphQLTextSerializer serializer, TryGetValue tryGetValue)
     {
         if (!tryGetValue("query", out var queryValues))
         {
@@ -78,7 +77,7 @@ public static class RequestReader
 
         var operation = ReadOperation(tryGetValue);
 
-        return (queryValues.ToString(), GetInputs(tryGetValue), operation);
+        return (queryValues.ToString(), GetInputs(serializer, tryGetValue), operation);
     }
 
     static string? ReadOperation(TryGetValue tryGetValue)
@@ -96,11 +95,11 @@ public static class RequestReader
         throw new("Expected 'operation' to have a single value.");
     }
 
-    static Inputs GetInputs(TryGetValue tryGetValue)
+    static Inputs? GetInputs(IGraphQLTextSerializer serializer, TryGetValue tryGetValue)
     {
         if (!tryGetValue("variables", out var values))
         {
-            return Inputs.Empty;
+            return null;
         }
 
         if (values.Count != 1)
@@ -111,10 +110,9 @@ public static class RequestReader
         var json = values.ToString();
         if (json.Length == 0)
         {
-            return Inputs.Empty;
+            return null;
         }
 
-        var variables = json.ToDictionary();
-        return variables.ToInputs();
+        return serializer.Deserialize<Inputs>(json);
     }
 }

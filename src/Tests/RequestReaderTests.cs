@@ -1,5 +1,6 @@
 ﻿using GraphQL;
 using GraphQL.Attachments;
+using GraphQL.SystemTextJson;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Internal;
 using Microsoft.Extensions.Primitives;
@@ -8,6 +9,8 @@ using Newtonsoft.Json;
 [UsesVerify]
 public class RequestReaderTests
 {
+    static GraphQLSerializer serializer = new(indent: true);
+
     [Fact]
     public Task Parsing() =>
         Parse("{\"query\":\"{\\n  noAttachment\\n  {\\n    argument\\n  }\\n}\",\"variables\":null,\"operationName\":\"theOperation\"}");
@@ -26,11 +29,11 @@ public class RequestReaderTests
 
     static async Task Parse(string chars)
     {
-        await using MemoryStream stream = new(Encoding.UTF8.GetBytes(chars))
+        await using MemoryStream stream = new MemoryStream(Encoding.UTF8.GetBytes(chars))
         {
             Position = 0
         };
-        var (query, inputs, operation) = await RequestReader.ReadBody(stream, CancellationToken.None);
+        var (query, inputs, operation) = await RequestReader.ReadBody(serializer, stream, CancellationToken.None);
         await Verify(new
         {
             query, inputs, operation
@@ -40,7 +43,7 @@ public class RequestReaderTests
     [Fact]
     public async Task ReadPostMinimal()
     {
-        MockHttpRequest mockHttpRequest = new()
+        MockHttpRequest mockHttpRequest = new MockHttpRequest
         {
             Form = new FormCollection(
                 new()
@@ -52,7 +55,7 @@ public class RequestReaderTests
                 },
                 new FormFileCollection()),
         };
-        var result = await RequestReader.ReadPost(mockHttpRequest);
+        var result = await RequestReader.ReadPost(serializer, mockHttpRequest);
         await Verify(new
         {
             result.attachments,
@@ -65,18 +68,18 @@ public class RequestReaderTests
     [Fact]
     public async Task ReadGetMinimal()
     {
-        MockHttpRequest mockHttpRequest = new()
+        MockHttpRequest mockHttpRequest = new MockHttpRequest
         {
             Query = new QueryCollection(
                 new Dictionary<string, StringValues>
                 {
                     {
                         "query",
-                        new("theQuery")
+                        new StringValues("theQuery")
                     }
                 })
         };
-        var result = RequestReader.ReadGet(mockHttpRequest);
+        var result = RequestReader.ReadGet(serializer, mockHttpRequest);
         await Verify(new
         {
             result.inputs,
@@ -88,22 +91,22 @@ public class RequestReaderTests
     [Fact]
     public async Task ReadGet()
     {
-        MockHttpRequest mockHttpRequest = new()
+        var mockHttpRequest = new MockHttpRequest
         {
             Query = new QueryCollection(
                 new Dictionary<string, StringValues>
                 {
                     {
                         "query",
-                        new("theQuery")
+                        new StringValues("theQuery")
                     },
                     {
                         "operation",
-                        new("theOperation")
+                        new StringValues("theOperation")
                     },
                     {
                         "variables",
-                        new(JsonConvert.SerializeObject(
+                        new StringValues(JsonConvert.SerializeObject(
                             new Inputs(new Dictionary<string, object?>
                             {
                                 {"key", "value"}
@@ -111,7 +114,7 @@ public class RequestReaderTests
                     }
                 })
         };
-        var result = RequestReader.ReadGet(mockHttpRequest);
+        var result = RequestReader.ReadGet(serializer, mockHttpRequest);
         await Verify(new
         {
             result.inputs,
@@ -125,7 +128,7 @@ public class RequestReaderTests
     {
         var attachment1Bytes = Encoding.UTF8.GetBytes("Attachment1 Text");
         var attachment2Bytes = Encoding.UTF8.GetBytes("Attachment2 Text");
-        MockHttpRequest mockHttpRequest = new()
+        MockHttpRequest mockHttpRequest = new MockHttpRequest
         {
             Form = new FormCollection(
                 new()
@@ -165,7 +168,7 @@ public class RequestReaderTests
                     },
                 }),
         };
-        var result = await RequestReader.ReadPost(mockHttpRequest);
+        var result = await RequestReader.ReadPost(serializer,mockHttpRequest);
         await Verify(new
         {
             result.attachments,

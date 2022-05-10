@@ -29,14 +29,14 @@ public class GraphQlMiddleware :
 
         if (isGet)
         {
-            var (query, inputs, operation) = RequestReader.ReadGet(request);
+            var (query, inputs, operation) = RequestReader.ReadGet(serializer, request);
             await Execute(response, query, operation, null, inputs, cancellation);
             return;
         }
 
         if (isPost)
         {
-            var (query, inputs, attachments, operation) = await RequestReader.ReadPost(request, cancellation);
+            var (query, inputs, attachments, operation) = await RequestReader.ReadPost(serializer, request, cancellation);
             await Execute(response, query, operation, attachments, inputs, cancellation);
             return;
         }
@@ -52,10 +52,10 @@ public class GraphQlMiddleware :
         string query,
         string operation,
         IIncomingAttachments attachments,
-        Inputs inputs,
+        Inputs? inputs,
         CancellationToken cancellation)
     {
-        ExecutionOptions options = new()
+        var options = new ExecutionOptions
         {
             Schema = schema,
             Query = query,

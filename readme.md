@@ -72,14 +72,14 @@ public async Task InvokeAsync(HttpContext context, RequestDelegate next)
 
     if (isGet)
     {
-        var (query, inputs, operation) = RequestReader.ReadGet(request);
+        var (query, inputs, operation) = RequestReader.ReadGet(serializer, request);
         await Execute(response, query, operation, null, inputs, cancellation);
         return;
     }
 
     if (isPost)
     {
-        var (query, inputs, attachments, operation) = await RequestReader.ReadPost(request, cancellation);
+        var (query, inputs, attachments, operation) = await RequestReader.ReadPost(serializer, request, cancellation);
         await Execute(response, query, operation, attachments, inputs, cancellation);
         return;
     }
