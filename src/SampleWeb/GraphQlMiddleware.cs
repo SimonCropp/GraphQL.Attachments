@@ -51,11 +51,11 @@ public class GraphQlMiddleware :
         HttpResponse response,
         string query,
         string operation,
-        IIncomingAttachments incomingAttachments,
+        IIncomingAttachments attachments,
         Inputs inputs,
         CancellationToken cancellation)
     {
-        ExecutionOptions executionOptions = new()
+        ExecutionOptions options = new()
         {
             Schema = schema,
             Query = query,
@@ -70,9 +70,7 @@ public class GraphQlMiddleware :
 
         #region ExecuteWithAttachments
 
-        var result = await executer.ExecuteWithAttachments(
-            executionOptions,
-            incomingAttachments);
+        var result = await executer.ExecuteWithAttachments(options, attachments);
 
         #endregion
 

@@ -127,11 +127,9 @@ To expose the attachments to the queries, the attachment context needs to be add
 <!-- snippet: ExecuteWithAttachments -->
 <a id='snippet-executewithattachments'></a>
 ```cs
-var result = await executer.ExecuteWithAttachments(
-    executionOptions,
-    incomingAttachments);
+var result = await executer.ExecuteWithAttachments(options, attachments);
 ```
-<sup><a href='/src/SampleWeb/GraphQlMiddleware.cs#L71-L77' title='Snippet source file'>snippet source</a> | <a href='#snippet-executewithattachments' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/src/SampleWeb/GraphQlMiddleware.cs#L71-L75' title='Snippet source file'>snippet source</a> | <a href='#snippet-executewithattachments' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 
@@ -144,7 +142,7 @@ As with RequestReader for the incoming data, the outgoing data needs to be writt
 ```cs
 await ResponseWriter.WriteResult(serializer, response, result, cancellation);
 ```
-<sup><a href='/src/SampleWeb/GraphQlMiddleware.cs#L79-L83' title='Snippet source file'>snippet source</a> | <a href='#snippet-responsewriter' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/src/SampleWeb/GraphQlMiddleware.cs#L77-L81' title='Snippet source file'>snippet source</a> | <a href='#snippet-responsewriter' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 
