@@ -55,35 +55,7 @@ Field<ResultGraph>(
 
 ## Server-side Middleware
 
-
-### Non Attachments scenario
-
-In the usual usage scenario of graphQL in a Controller the query is passed in via a model object:
-
-```cs
-public class PostBody
-{
-    public string? OperationName;
-    public string Query = null!;
-    public JObject? Variables;
-}
-```
-
-Which is then extracted using model binding:
-
-```cs
-[HttpPost]
-public Task<ExecutionResult> Post(
-    [BindRequired, FromBody] PostBody body)
-{
-    // run graphQL query
-```
-
-
-### With Attachments scenario
-
-
-#### RequestReader instead of binding
+### RequestReader instead of binding
 
 When using Attachments the incoming request also requires the incoming form data to be parse. To facilitate this [RequestReader](/src/GraphQL.Attachments/RequestReader.cs) is used.:
 
@@ -120,7 +92,7 @@ public async Task InvokeAsync(HttpContext context, RequestDelegate next)
 <!-- endSnippet -->
 
 
-#### Query Execution
+### Query Execution
 
 To expose the attachments to the queries, the attachment context needs to be added to the `IDocumentExecuter`. This is done using `AttachmentsExtensions.ExecuteWithAttachments`:
 
@@ -133,7 +105,7 @@ var result = await executer.ExecuteWithAttachments(options, attachments);
 <!-- endSnippet -->
 
 
-#### Result Writing
+### Result Writing
 
 As with RequestReader for the incoming data, the outgoing data needs to be written with any resulting attachments. To facilitate this [ResponseWriter](/src/GraphQL.Attachments/ResponseWriter.cs) is used.
 
@@ -144,11 +116,6 @@ await ResponseWriter.WriteResult(serializer, response, result, cancellation);
 ```
 <sup><a href='/src/SampleWeb/GraphQlMiddleware.cs#L77-L81' title='Snippet source file'>snippet source</a> | <a href='#snippet-responsewriter' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
-
-
-### Full Controller
-
-[Full sample GraphQlController](https://github.com/SimonCropp/GraphQL.Attachments/blob/master/src/SampleWeb/GraphQlController.cs).
 
 
 ## Client - JavaScript
