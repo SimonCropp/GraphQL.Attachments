@@ -3,12 +3,7 @@ using GraphQL;
 using GraphQL.Attachments;
 using GraphQL.SystemTextJson;
 using GraphQL.Types;
-using Microsoft.AspNetCore.Mvc;
 
-#region Controller
-
-[Route("[controller]")]
-[ApiController]
 public class GraphQlMiddleware :
     IMiddleware
 {
@@ -88,5 +83,3 @@ public class GraphQlMiddleware :
         #endregion
     }
 }
-
-#endregion

@@ -116,7 +116,7 @@ public async Task InvokeAsync(HttpContext context, RequestDelegate next)
     response.StatusCode = (int) HttpStatusCode.BadRequest;
 }
 ```
-<sup><a href='/src/SampleWeb/GraphQlMiddleware.cs#L25-L53' title='Snippet source file'>snippet source</a> | <a href='#snippet-invoke' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/src/SampleWeb/GraphQlMiddleware.cs#L20-L48' title='Snippet source file'>snippet source</a> | <a href='#snippet-invoke' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 
@@ -131,7 +131,7 @@ var result = await executer.ExecuteWithAttachments(
     executionOptions,
     incomingAttachments);
 ```
-<sup><a href='/src/SampleWeb/GraphQlMiddleware.cs#L76-L82' title='Snippet source file'>snippet source</a> | <a href='#snippet-executewithattachments' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/src/SampleWeb/GraphQlMiddleware.cs#L71-L77' title='Snippet source file'>snippet source</a> | <a href='#snippet-executewithattachments' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 
@@ -144,7 +144,7 @@ As with RequestReader for the incoming data, the outgoing data needs to be writt
 ```cs
 await ResponseWriter.WriteResult(serializer, response, result, cancellation);
 ```
-<sup><a href='/src/SampleWeb/GraphQlMiddleware.cs#L84-L88' title='Snippet source file'>snippet source</a> | <a href='#snippet-responsewriter' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/src/SampleWeb/GraphQlMiddleware.cs#L79-L83' title='Snippet source file'>snippet source</a> | <a href='#snippet-responsewriter' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 
