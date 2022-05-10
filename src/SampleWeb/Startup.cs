@@ -9,8 +9,7 @@ public class Startup
 
         services.AddSingleton<IDocumentExecuter, DocumentExecuter>();
         services.AddSingleton<ISchema, Schema>();
-        var mvc = services.AddMvc(option => option.EnableEndpointRouting = false);
-        mvc.AddNewtonsoftJson();
+        services.AddMvc(option => option.EnableEndpointRouting = false);
     }
 
     public void Configure(IApplicationBuilder builder)
