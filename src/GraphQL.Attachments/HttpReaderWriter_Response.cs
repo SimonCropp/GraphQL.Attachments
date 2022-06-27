@@ -36,7 +36,7 @@ public partial class HttpReaderWriter
         try
         {
             var contentStream = new MemoryStream();
-            await serializer.WriteAsync(contentStream,result, cancellation);
+            await serializer.WriteAsync(contentStream, result, cancellation);
             contentStream.Position = 0;
             using var multipart = new MultipartFormDataContent
             {
