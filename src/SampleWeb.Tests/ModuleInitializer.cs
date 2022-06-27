@@ -8,16 +8,13 @@ public static class ModuleInitializer
     {
         VerifyHttp.Enable();
         VerifierSettings.AddScrubber(x => x.RemoveLineSuffix("boundary="));
-        VerifierSettings.ModifySerialization(settings =>
+        VerifierSettings.IgnoreMember<ExecutionResult>(result => result.Perf);
+        VerifierSettings.IgnoreMember<ExecutionResult>(result => result.Document);
+        VerifierSettings.IgnoreMember<ExecutionResult>(result => result.Operation);
+        VerifierSettings.AddExtraSettings(serializerSettings =>
         {
-            settings.IgnoreMember<ExecutionResult>(result => result.Perf);
-            settings.IgnoreMember<ExecutionResult>(result => result.Document);
-            settings.IgnoreMember<ExecutionResult>(result => result.Operation);
-            settings.AddExtraSettings(serializerSettings =>
-            {
-                serializerSettings.Converters.Add(new AttachmentConverter());
-                serializerSettings.Converters.Add(new QueryResultConverter());
-            });
+            serializerSettings.Converters.Add(new AttachmentConverter());
+            serializerSettings.Converters.Add(new QueryResultConverter());
         });
     }
 }
