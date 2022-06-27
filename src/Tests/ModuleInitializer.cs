@@ -7,18 +7,17 @@ public static class ModuleInitializer
     public static void Initialize()
     {
         VerifyHttp.Enable();
-        VerifierSettings.ModifySerialization(settings =>
+        VerifierSettings.IgnoreMembers<ExecutionResult>(
+            _ => _.Perf,
+            _ => _.Document,
+            _ => _.Operation);
+        VerifierSettings.IgnoreMember("SourceLocation");
+        VerifierSettings.AddExtraSettings(serializerSettings =>
         {
-            settings.IgnoreMember<ExecutionResult>(result => result.Perf);
-            settings.IgnoreMember<ExecutionResult>(result => result.Document);
-            settings.IgnoreMember<ExecutionResult>(result => result.Operation);
-            settings.IgnoreMember("SourceLocation");
-            settings.AddExtraSettings(serializerSettings =>
-            {
-                serializerSettings.Converters.Add(new OutgoingConverter());
-                serializerSettings.Converters.Add(new AttachmentStreamConverter());
-                serializerSettings.Converters.Add(new OutgoingAttachmentsConverter());
-            });
+            var converters = serializerSettings.Converters;
+            converters.Add(new OutgoingConverter());
+            converters.Add(new AttachmentStreamConverter());
+            converters.Add(new OutgoingAttachmentsConverter());
         });
     }
 }
