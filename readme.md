@@ -258,7 +258,7 @@ public class QueryExecutor
         var variablesString = RequestAppender.ToJson(request.Variables);
         var getUri = UriBuilder.GetUri(uri, variablesString, compressed, request.OperationName);
 
-        using HttpRequestMessage getRequest = new(HttpMethod.Get, getUri);
+        using var getRequest = new HttpRequestMessage(HttpMethod.Get, getUri);
         request.HeadersAction?.Invoke(getRequest.Headers);
         var response = await client.SendAsync(getRequest, cancellation);
         return await response.ProcessResponse(cancellation);
