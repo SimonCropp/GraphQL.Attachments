@@ -7,7 +7,8 @@
         while (reader.ReadLine() is { } line)
         {
             var split = line.Split(stringToMatch);
-            builder.AppendLine(split[0]);
+            builder.Append(split[0]);
+            builder.Append('\n');
         }
 
         builder.Length -= 1;

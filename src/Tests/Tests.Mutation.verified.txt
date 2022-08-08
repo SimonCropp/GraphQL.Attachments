@@ -21,7 +21,8 @@
                 End: 31
               },
               Value: {
-                Length: 14
+                Length: 14,
+                IsEmpty: false
               },
               StringValue: withAttachment
             },
@@ -38,7 +39,8 @@
                     End: 41
                   },
                   Value: {
-                    Length: 8
+                    Length: 8,
+                    IsEmpty: false
                   },
                   StringValue: argument
                 },
@@ -49,7 +51,8 @@
                   },
                   Kind: StringValue,
                   Value: {
-                    Length: 13
+                    Length: 13,
+                    IsEmpty: false
                   }
                 }
               }
@@ -73,7 +76,8 @@
                       End: 78
                     },
                     Value: {
-                      Length: 8
+                      Length: 8,
+                      IsEmpty: false
                     },
                     StringValue: argument
                   }
@@ -90,6 +94,378 @@
               GraphType: {
                 Name: String
               },
+              Parent: {
+                SubFields: [],
+                SelectionSet: {
+                  Location: {
+                    Start: 63,
+                    End: 83
+                  },
+                  Kind: SelectionSet,
+                  Selections: [
+                    {
+                      Location: {
+                        Start: 70,
+                        End: 78
+                      },
+                      Kind: Field,
+                      Name: {
+                        Location: {
+                          Start: 70,
+                          End: 78
+                        },
+                        Value: {
+                          Length: 8,
+                          IsEmpty: false
+                        },
+                        StringValue: argument
+                      }
+                    }
+                  ]
+                },
+                Parent: {
+                  SelectionSet: {
+                    Location: {
+                      Start: 12,
+                      End: 86
+                    },
+                    Kind: SelectionSet,
+                    Selections: [
+                      {
+                        Location: {
+                          Start: 17,
+                          End: 83
+                        },
+                        Kind: Field,
+                        Name: {
+                          Location: {
+                            Start: 17,
+                            End: 31
+                          },
+                          Value: {
+                            Length: 14,
+                            IsEmpty: false
+                          },
+                          StringValue: withAttachment
+                        },
+                        Arguments: [
+                          {
+                            Location: {
+                              Start: 33,
+                              End: 58
+                            },
+                            Kind: Argument,
+                            Name: {
+                              Location: {
+                                Start: 33,
+                                End: 41
+                              },
+                              Value: {
+                                Length: 8,
+                                IsEmpty: false
+                              },
+                              StringValue: argument
+                            },
+                            Value: {
+                              Location: {
+                                Start: 43,
+                                End: 58
+                              },
+                              Kind: StringValue,
+                              Value: {
+                                Length: 13,
+                                IsEmpty: false
+                              }
+                            }
+                          }
+                        ],
+                        SelectionSet: {
+                          Location: {
+                            Start: 63,
+                            End: 83
+                          },
+                          Kind: SelectionSet,
+                          Selections: [
+                            {
+                              Location: {
+                                Start: 70,
+                                End: 78
+                              },
+                              Kind: Field,
+                              Name: {
+                                Location: {
+                                  Start: 70,
+                                  End: 78
+                                },
+                                Value: {
+                                  Length: 8,
+                                  IsEmpty: false
+                                },
+                                StringValue: argument
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  SubFields: [],
+                  GraphType: {
+                    Interfaces: [],
+                    ResolvedInterfaces: [],
+                    Fields: [
+                      {
+                        Name: noAttachment,
+                        Type: ResultGraph,
+                        ResolvedType: {
+                          IsTypeOf: {
+                            Type: Func<object, bool>,
+                            Target: ObjectGraphType<Result>.<>c,
+                            Method: Boolean .ctor(System.Object)
+                          },
+                          Interfaces: [],
+                          ResolvedInterfaces: [],
+                          Fields: [
+                            {
+                              Name: argument,
+                              Type: NonNullGraphType<StringGraphType>,
+                              ResolvedType: {
+                                Type: StringGraphType,
+                                ResolvedType: {
+                                  Name: String
+                                }
+                              },
+                              Arguments: [],
+                              Resolver: {},
+                              Metadata: {
+                                ORIGINAL_EXPRESSION_PROPERTY_NAME: Argument
+                              }
+                            }
+                          ],
+                          Name: ResultGraph
+                        },
+                        Arguments: [
+                          {
+                            Name: argument,
+                            ResolvedType: {
+                              Type: StringGraphType,
+                              ResolvedType: {
+                                Name: String
+                              }
+                            },
+                            Type: NonNullGraphType<StringGraphType>
+                          }
+                        ],
+                        Resolver: {}
+                      },
+                      {
+                        Name: withAttachment,
+                        Type: ResultGraph,
+                        ResolvedType: {
+                          IsTypeOf: {
+                            Type: Func<object, bool>,
+                            Target: ObjectGraphType<Result>.<>c,
+                            Method: Boolean .ctor(System.Object)
+                          },
+                          Interfaces: [],
+                          ResolvedInterfaces: [],
+                          Fields: [
+                            {
+                              Name: argument,
+                              Type: NonNullGraphType<StringGraphType>,
+                              ResolvedType: {
+                                Type: StringGraphType,
+                                ResolvedType: {
+                                  Name: String
+                                }
+                              },
+                              Arguments: [],
+                              Resolver: {},
+                              Metadata: {
+                                ORIGINAL_EXPRESSION_PROPERTY_NAME: Argument
+                              }
+                            }
+                          ],
+                          Name: ResultGraph
+                        },
+                        Arguments: [
+                          {
+                            Name: argument,
+                            ResolvedType: {
+                              Type: StringGraphType,
+                              ResolvedType: {
+                                Name: String
+                              }
+                            },
+                            Type: NonNullGraphType<StringGraphType>
+                          }
+                        ],
+                        Resolver: {}
+                      }
+                    ],
+                    Name: Mutation
+                  },
+                  Path: [],
+                  ResponsePath: []
+                },
+                GraphType: {
+                  IsTypeOf: {
+                    Type: Func<object, bool>,
+                    Target: ObjectGraphType<Result>.<>c,
+                    Method: Boolean .ctor(System.Object)
+                  },
+                  Interfaces: [],
+                  ResolvedInterfaces: [],
+                  Fields: [
+                    {
+                      Name: argument,
+                      Type: NonNullGraphType<StringGraphType>,
+                      ResolvedType: {
+                        Type: StringGraphType,
+                        ResolvedType: {
+                          Name: String
+                        }
+                      },
+                      Arguments: [],
+                      Resolver: {},
+                      Metadata: {
+                        ORIGINAL_EXPRESSION_PROPERTY_NAME: Argument
+                      }
+                    }
+                  ],
+                  Name: ResultGraph
+                },
+                Field: {
+                  Location: {
+                    Start: 17,
+                    End: 83
+                  },
+                  Kind: Field,
+                  Name: {
+                    Location: {
+                      Start: 17,
+                      End: 31
+                    },
+                    Value: {
+                      Length: 14,
+                      IsEmpty: false
+                    },
+                    StringValue: withAttachment
+                  },
+                  Arguments: [
+                    {
+                      Location: {
+                        Start: 33,
+                        End: 58
+                      },
+                      Kind: Argument,
+                      Name: {
+                        Location: {
+                          Start: 33,
+                          End: 41
+                        },
+                        Value: {
+                          Length: 8,
+                          IsEmpty: false
+                        },
+                        StringValue: argument
+                      },
+                      Value: {
+                        Location: {
+                          Start: 43,
+                          End: 58
+                        },
+                        Kind: StringValue,
+                        Value: {
+                          Length: 13,
+                          IsEmpty: false
+                        }
+                      }
+                    }
+                  ],
+                  SelectionSet: {
+                    Location: {
+                      Start: 63,
+                      End: 83
+                    },
+                    Kind: SelectionSet,
+                    Selections: [
+                      {
+                        Location: {
+                          Start: 70,
+                          End: 78
+                        },
+                        Kind: Field,
+                        Name: {
+                          Location: {
+                            Start: 70,
+                            End: 78
+                          },
+                          Value: {
+                            Length: 8,
+                            IsEmpty: false
+                          },
+                          StringValue: argument
+                        }
+                      }
+                    ]
+                  }
+                },
+                FieldDefinition: {
+                  Name: withAttachment,
+                  Type: ResultGraph,
+                  ResolvedType: {
+                    IsTypeOf: {
+                      Type: Func<object, bool>,
+                      Target: ObjectGraphType<Result>.<>c,
+                      Method: Boolean .ctor(System.Object)
+                    },
+                    Interfaces: [],
+                    ResolvedInterfaces: [],
+                    Fields: [
+                      {
+                        Name: argument,
+                        Type: NonNullGraphType<StringGraphType>,
+                        ResolvedType: {
+                          Type: StringGraphType,
+                          ResolvedType: {
+                            Name: String
+                          }
+                        },
+                        Arguments: [],
+                        Resolver: {},
+                        Metadata: {
+                          ORIGINAL_EXPRESSION_PROPERTY_NAME: Argument
+                        }
+                      }
+                    ],
+                    Name: ResultGraph
+                  },
+                  Arguments: [
+                    {
+                      Name: argument,
+                      ResolvedType: {
+                        Type: StringGraphType,
+                        ResolvedType: {
+                          Name: String
+                        }
+                      },
+                      Type: NonNullGraphType<StringGraphType>
+                    }
+                  ],
+                  Resolver: {}
+                },
+                Name: withAttachment,
+                Result: {
+                  Argument: argumentValue
+                },
+                Path: [
+                  withAttachment
+                ],
+                ResponsePath: [
+                  withAttachment
+                ]
+              },
               Field: {
                 Location: {
                   Start: 70,
@@ -102,7 +478,8 @@
                     End: 78
                   },
                   Value: {
-                    Length: 8
+                    Length: 8,
+                    IsEmpty: false
                   },
                   StringValue: argument
                 }
@@ -156,12 +533,198 @@
                     End: 78
                   },
                   Value: {
-                    Length: 8
+                    Length: 8,
+                    IsEmpty: false
                   },
                   StringValue: argument
                 }
               }
             ]
+          },
+          Parent: {
+            SelectionSet: {
+              Location: {
+                Start: 12,
+                End: 86
+              },
+              Kind: SelectionSet,
+              Selections: [
+                {
+                  Location: {
+                    Start: 17,
+                    End: 83
+                  },
+                  Kind: Field,
+                  Name: {
+                    Location: {
+                      Start: 17,
+                      End: 31
+                    },
+                    Value: {
+                      Length: 14,
+                      IsEmpty: false
+                    },
+                    StringValue: withAttachment
+                  },
+                  Arguments: [
+                    {
+                      Location: {
+                        Start: 33,
+                        End: 58
+                      },
+                      Kind: Argument,
+                      Name: {
+                        Location: {
+                          Start: 33,
+                          End: 41
+                        },
+                        Value: {
+                          Length: 8,
+                          IsEmpty: false
+                        },
+                        StringValue: argument
+                      },
+                      Value: {
+                        Location: {
+                          Start: 43,
+                          End: 58
+                        },
+                        Kind: StringValue,
+                        Value: {
+                          Length: 13,
+                          IsEmpty: false
+                        }
+                      }
+                    }
+                  ],
+                  SelectionSet: {
+                    Location: {
+                      Start: 63,
+                      End: 83
+                    },
+                    Kind: SelectionSet,
+                    Selections: [
+                      {
+                        Location: {
+                          Start: 70,
+                          End: 78
+                        },
+                        Kind: Field,
+                        Name: {
+                          Location: {
+                            Start: 70,
+                            End: 78
+                          },
+                          Value: {
+                            Length: 8,
+                            IsEmpty: false
+                          },
+                          StringValue: argument
+                        }
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            SubFields: [],
+            GraphType: {
+              Interfaces: [],
+              ResolvedInterfaces: [],
+              Fields: [
+                {
+                  Name: noAttachment,
+                  Type: ResultGraph,
+                  ResolvedType: {
+                    IsTypeOf: {
+                      Type: Func<object, bool>,
+                      Target: ObjectGraphType<Result>.<>c,
+                      Method: Boolean .ctor(System.Object)
+                    },
+                    Interfaces: [],
+                    ResolvedInterfaces: [],
+                    Fields: [
+                      {
+                        Name: argument,
+                        Type: NonNullGraphType<StringGraphType>,
+                        ResolvedType: {
+                          Type: StringGraphType,
+                          ResolvedType: {
+                            Name: String
+                          }
+                        },
+                        Arguments: [],
+                        Resolver: {},
+                        Metadata: {
+                          ORIGINAL_EXPRESSION_PROPERTY_NAME: Argument
+                        }
+                      }
+                    ],
+                    Name: ResultGraph
+                  },
+                  Arguments: [
+                    {
+                      Name: argument,
+                      ResolvedType: {
+                        Type: StringGraphType,
+                        ResolvedType: {
+                          Name: String
+                        }
+                      },
+                      Type: NonNullGraphType<StringGraphType>
+                    }
+                  ],
+                  Resolver: {}
+                },
+                {
+                  Name: withAttachment,
+                  Type: ResultGraph,
+                  ResolvedType: {
+                    IsTypeOf: {
+                      Type: Func<object, bool>,
+                      Target: ObjectGraphType<Result>.<>c,
+                      Method: Boolean .ctor(System.Object)
+                    },
+                    Interfaces: [],
+                    ResolvedInterfaces: [],
+                    Fields: [
+                      {
+                        Name: argument,
+                        Type: NonNullGraphType<StringGraphType>,
+                        ResolvedType: {
+                          Type: StringGraphType,
+                          ResolvedType: {
+                            Name: String
+                          }
+                        },
+                        Arguments: [],
+                        Resolver: {},
+                        Metadata: {
+                          ORIGINAL_EXPRESSION_PROPERTY_NAME: Argument
+                        }
+                      }
+                    ],
+                    Name: ResultGraph
+                  },
+                  Arguments: [
+                    {
+                      Name: argument,
+                      ResolvedType: {
+                        Type: StringGraphType,
+                        ResolvedType: {
+                          Name: String
+                        }
+                      },
+                      Type: NonNullGraphType<StringGraphType>
+                    }
+                  ],
+                  Resolver: {}
+                }
+              ],
+              Name: Mutation
+            },
+            Path: [],
+            ResponsePath: []
           },
           GraphType: {
             IsTypeOf: {
@@ -202,7 +765,8 @@
                 End: 31
               },
               Value: {
-                Length: 14
+                Length: 14,
+                IsEmpty: false
               },
               StringValue: withAttachment
             },
@@ -219,7 +783,8 @@
                     End: 41
                   },
                   Value: {
-                    Length: 8
+                    Length: 8,
+                    IsEmpty: false
                   },
                   StringValue: argument
                 },
@@ -230,7 +795,8 @@
                   },
                   Kind: StringValue,
                   Value: {
-                    Length: 13
+                    Length: 13,
+                    IsEmpty: false
                   }
                 }
               }
@@ -254,7 +820,8 @@
                       End: 78
                     },
                     Value: {
-                      Length: 8
+                      Length: 8,
+                      IsEmpty: false
                     },
                     StringValue: argument
                   }
@@ -417,7 +984,8 @@
       ResponsePath: []
     },
     Query: {
-      Length: 86
+      Length: 86,
+      IsEmpty: false
     }
   },
   Attachments: {

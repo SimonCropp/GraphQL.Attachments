@@ -1,6 +1,5 @@
 ﻿{
   query:
-
     query IntrospectionQuery {
       __schema {
         queryType { name }
