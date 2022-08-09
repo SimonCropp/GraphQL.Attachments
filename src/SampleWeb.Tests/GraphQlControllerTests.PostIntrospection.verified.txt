@@ -1,6 +1,7 @@
 ﻿{
   Status: OK,
-  ResultStream: {
+  ResultStream:
+{
   "data": {
     "__schema": {
       "description": null,

@@ -15,7 +15,7 @@ public class QueryResultConverter :
         serializer.Serialize(writer, result.Status);
         writer.WritePropertyName("ResultStream");
         var json = new StreamReader(result.Stream).ReadToEnd();
-        writer.WriteRawValue(PrettyJson(json));
+        writer.WriteValue(PrettyJson(json));
         writer.WritePropertyName("ContentHeaders");
         serializer.Serialize(writer, result.ContentHeaders);
         writer.WritePropertyName("Attachments");
