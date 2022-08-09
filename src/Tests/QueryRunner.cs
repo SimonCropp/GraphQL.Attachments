@@ -13,8 +13,8 @@ static class QueryRunner
     {
         query = query.Replace("'", "\"");
         await using var provider = services.BuildServiceProvider();
-        using Schema schema = new(provider);
-        ExecutionOptions options = new()
+        using var schema = new Schema(provider);
+        var options = new ExecutionOptions
         {
             Schema = schema,
             Query = query

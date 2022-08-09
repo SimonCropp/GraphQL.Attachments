@@ -60,7 +60,7 @@ public class GraphQlControllerTests
     argument
   }
 }";
-        using MultipartFormDataContent content = new();
+        using var content = new MultipartFormDataContent();
         content.AddQueryAndVariables(mutation);
         using var response = await client.PostAsync("graphql", content);
         await Verify(response.ProcessResponse());
@@ -77,7 +77,7 @@ public class GraphQlControllerTests
   }
 }";
 
-        using MultipartFormDataContent content = new();
+        using var content = new MultipartFormDataContent();
         content.AddQueryAndVariables(mutation);
         content.AddContent("key", "foo");
         using var response = await client.PostAsync("graphql", content);
@@ -95,7 +95,7 @@ public class GraphQlControllerTests
   }
 }";
 
-        using MultipartFormDataContent content = new();
+        using var content = new MultipartFormDataContent();
         content.AddQueryAndVariables(mutation);
         content.AddContent("key1", "foo1");
         content.AddContent("key2", "foo2");
@@ -105,7 +105,7 @@ public class GraphQlControllerTests
 
     static TestServer GetTestServer()
     {
-        WebHostBuilder hostBuilder = new();
+        var hostBuilder = new WebHostBuilder();
         hostBuilder.UseStartup<Startup>();
         return new(hostBuilder);
     }

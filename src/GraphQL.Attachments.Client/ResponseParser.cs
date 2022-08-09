@@ -10,7 +10,7 @@ public static class ResponseParser
         }
 
         var multipart = await response.Content.ReadAsMultipartAsync(cancellation);
-        Dictionary<string, Attachment> attachments = new();
+        var attachments = new Dictionary<string, Attachment>();
 
         await foreach (var attachment in ReadAttachments(multipart).WithCancellation(cancellation))
         {
@@ -26,8 +26,7 @@ public static class ResponseParser
         {
             var name = content.Headers.ContentDisposition!.Name!;
             var stream = await content.ReadAsStreamAsync();
-            yield return new
-            (
+            yield return new(
                 name: name,
                 stream: stream,
                 headers: content.Headers

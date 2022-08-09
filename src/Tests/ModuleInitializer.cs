@@ -12,7 +12,7 @@ public static class ModuleInitializer
             _ => _.Perf,
             _ => _.Document,
             _ => _.Operation);
-        VerifierSettings.IgnoreMember("SourceLocation");
+        VerifierSettings.IgnoreMember("Location");
         VerifierSettings.AddExtraSettings(serializerSettings =>
         {
             var converters = serializerSettings.Converters;

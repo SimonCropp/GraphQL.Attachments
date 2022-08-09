@@ -37,7 +37,7 @@ Field<ResultGraph>(
         {
             // For sample purpose echo the incoming request
             // stream to the outgoing response stream
-            MemoryStream memoryStream = new();
+            var memoryStream = new MemoryStream();
             incoming.CopyTo(memoryStream);
             memoryStream.Position = 0;
             outgoingAttachments.AddStream(incoming.Name, memoryStream);
@@ -231,12 +231,12 @@ public class QueryExecutor
 
     public async Task<QueryResult> ExecutePost(PostRequest request, CancellationToken cancellation = default)
     {
-        using MultipartFormDataContent content = new();
+        using var content = new MultipartFormDataContent();
         content.AddQueryAndVariables(request.Query, request.Variables, request.OperationName);
 
         if (request.Action != null)
         {
-            PostContext postContext = new(content);
+            var postContext = new PostContext(content);
             request.Action?.Invoke(postContext);
             postContext.HeadersAction?.Invoke(content.Headers);
         }

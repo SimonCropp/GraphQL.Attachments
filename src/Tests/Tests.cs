@@ -1,4 +1,5 @@
 ﻿using GraphQL;
+using GraphQL.Attachments;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 [UsesVerify]
@@ -28,19 +29,20 @@ mutation
     argument
   }
 }";
+
         return Verify(RunQuery(queryString));
     }
 
     static Task<AttachmentExecutionResult> RunQuery(string queryString)
     {
-        IncomingAttachments incomingAttachments = new();
+        var incomingAttachments = new IncomingAttachments();
         var stream = BuildStream();
-        HeaderDictionary metadata = new()
+        var metadata = new HeaderDictionary
         {
             {"header1", "headerValue"}
         };
         incomingAttachments.Add("key", new("key", stream, 3, metadata));
-        ServiceCollection services = new();
+        var services = new ServiceCollection();
 
         TestServices.AddGraphQlTestTypes(services);
 
@@ -49,8 +51,8 @@ mutation
 
     static MemoryStream BuildStream()
     {
-        MemoryStream stream = new();
-        StreamWriter writer = new(stream);
+        var stream = new MemoryStream();
+        var writer = new StreamWriter(stream);
         writer.Write("Incoming");
         writer.Flush();
         stream.Position = 0;

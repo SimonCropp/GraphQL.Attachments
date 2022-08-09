@@ -17,8 +17,7 @@ class OutgoingAttachments :
     public void AddStream<T>(string name, Func<CancellationToken, Task<T>> streamFactory, Action? cleanup = null, HttpContentHeaders? headers = null)
         where T : Stream =>
         Inner.Add(name,
-            new
-            (
+            new(
                 contentBuilder: async cancellation =>
                 {
                     streamFactory = streamFactory.WrapFuncTaskInCheck(name);
@@ -37,8 +36,7 @@ class OutgoingAttachments :
 
     public void AddStream(string name, Func<Stream> streamFactory, Action? cleanup = null, HttpContentHeaders? headers = null) =>
         Inner.Add(name,
-            new
-            (
+            new(
                 contentBuilder: _ =>
                 {
                     streamFactory = streamFactory.WrapFuncInCheck(name);
@@ -51,8 +49,7 @@ class OutgoingAttachments :
 
     public void AddStream(string name, Stream stream, Action? cleanup = null, HttpContentHeaders? headers = null) =>
         Inner.Add(name,
-            new
-            (
+            new(
                 contentBuilder: _ => Task.FromResult<HttpContent>(new StreamContent(stream)),
                 cleanup: cleanup.WrapCleanupInCheck(name),
                 headers: headers
@@ -66,8 +63,7 @@ class OutgoingAttachments :
 
     public void AddBytes(string name, Func<byte[]> bytesFactory, Action? cleanup = null, HttpContentHeaders? headers = null) =>
         Inner.Add(name,
-            new
-            (
+            new(
                 contentBuilder: _ =>
                 {
                     bytesFactory = bytesFactory.WrapFuncInCheck(name);
@@ -80,8 +76,7 @@ class OutgoingAttachments :
 
     public void AddBytes(string name, byte[] bytes, Action? cleanup = null, HttpContentHeaders? headers = null) =>
         Inner.Add(name,
-            new
-            (
+            new(
                 contentBuilder: _ => Task.FromResult<HttpContent>(new ByteArrayContent(bytes)),
                 cleanup: cleanup.WrapCleanupInCheck(name),
                 headers: headers
@@ -92,8 +87,7 @@ class OutgoingAttachments :
 
     public void AddBytes(string name, Func<CancellationToken, Task<byte[]>> bytesFactory, Action? cleanup = null, HttpContentHeaders? headers = null) =>
         Inner.Add(name,
-            new
-            (
+            new(
                 contentBuilder: async cancellation =>
                 {
                     bytesFactory = bytesFactory.WrapFuncTaskInCheck(name);
@@ -112,8 +106,7 @@ class OutgoingAttachments :
 
     public void AddString(string name, Func<string> valueFactory, Action? cleanup = null, HttpContentHeaders? headers = null) =>
         Inner.Add(name,
-            new
-            (
+            new(
                 contentBuilder: _ =>
                 {
                     valueFactory = valueFactory.WrapFuncInCheck(name);
@@ -126,8 +119,7 @@ class OutgoingAttachments :
 
     public void AddString(string name, string value, Action? cleanup = null, HttpContentHeaders? headers = null) =>
         Inner.Add(name,
-            new
-            (
+            new(
                 contentBuilder: _ => Task.FromResult<HttpContent>(new StringContent(value)),
                 cleanup: cleanup.WrapCleanupInCheck(name),
                 headers: headers
@@ -138,8 +130,7 @@ class OutgoingAttachments :
 
     public void AddString(string name, Func<CancellationToken, Task<string>> valueFactory, Action? cleanup = null, HttpContentHeaders? headers = null) =>
         Inner.Add(name,
-            new
-            (
+            new(
                 contentBuilder: async cancellation =>
                 {
                     valueFactory = valueFactory.WrapFuncTaskInCheck(name);

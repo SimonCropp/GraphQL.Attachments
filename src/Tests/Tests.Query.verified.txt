@@ -3,23 +3,11 @@
     Executed: true,
     Data: {
       SelectionSet: {
-        Location: {
-          Start: 2,
-          End: 76
-        },
         Kind: SelectionSet,
         Selections: [
           {
-            Location: {
-              Start: 7,
-              End: 73
-            },
             Kind: Field,
             Name: {
-              Location: {
-                Start: 7,
-                End: 21
-              },
               Value: {
                 Length: 14,
                 IsEmpty: false
@@ -28,16 +16,8 @@
             },
             Arguments: [
               {
-                Location: {
-                  Start: 23,
-                  End: 48
-                },
                 Kind: Argument,
                 Name: {
-                  Location: {
-                    Start: 23,
-                    End: 31
-                  },
                   Value: {
                     Length: 8,
                     IsEmpty: false
@@ -45,10 +25,6 @@
                   StringValue: argument
                 },
                 Value: {
-                  Location: {
-                    Start: 33,
-                    End: 48
-                  },
                   Kind: StringValue,
                   Value: {
                     Length: 13,
@@ -58,23 +34,11 @@
               }
             ],
             SelectionSet: {
-              Location: {
-                Start: 53,
-                End: 73
-              },
               Kind: SelectionSet,
               Selections: [
                 {
-                  Location: {
-                    Start: 60,
-                    End: 68
-                  },
                   Kind: Field,
                   Name: {
-                    Location: {
-                      Start: 60,
-                      End: 68
-                    },
                     Value: {
                       Length: 8,
                       IsEmpty: false
@@ -97,23 +61,11 @@
               Parent: {
                 SubFields: [],
                 SelectionSet: {
-                  Location: {
-                    Start: 53,
-                    End: 73
-                  },
                   Kind: SelectionSet,
                   Selections: [
                     {
-                      Location: {
-                        Start: 60,
-                        End: 68
-                      },
                       Kind: Field,
                       Name: {
-                        Location: {
-                          Start: 60,
-                          End: 68
-                        },
                         Value: {
                           Length: 8,
                           IsEmpty: false
@@ -125,23 +77,11 @@
                 },
                 Parent: {
                   SelectionSet: {
-                    Location: {
-                      Start: 2,
-                      End: 76
-                    },
                     Kind: SelectionSet,
                     Selections: [
                       {
-                        Location: {
-                          Start: 7,
-                          End: 73
-                        },
                         Kind: Field,
                         Name: {
-                          Location: {
-                            Start: 7,
-                            End: 21
-                          },
                           Value: {
                             Length: 14,
                             IsEmpty: false
@@ -150,16 +90,8 @@
                         },
                         Arguments: [
                           {
-                            Location: {
-                              Start: 23,
-                              End: 48
-                            },
                             Kind: Argument,
                             Name: {
-                              Location: {
-                                Start: 23,
-                                End: 31
-                              },
                               Value: {
                                 Length: 8,
                                 IsEmpty: false
@@ -167,10 +99,6 @@
                               StringValue: argument
                             },
                             Value: {
-                              Location: {
-                                Start: 33,
-                                End: 48
-                              },
                               Kind: StringValue,
                               Value: {
                                 Length: 13,
@@ -180,23 +108,11 @@
                           }
                         ],
                         SelectionSet: {
-                          Location: {
-                            Start: 53,
-                            End: 73
-                          },
                           Kind: SelectionSet,
                           Selections: [
                             {
-                              Location: {
-                                Start: 60,
-                                End: 68
-                              },
                               Kind: Field,
                               Name: {
-                                Location: {
-                                  Start: 60,
-                                  End: 68
-                                },
                                 Value: {
                                   Length: 8,
                                   IsEmpty: false
@@ -336,16 +252,8 @@
                   Name: ResultGraph
                 },
                 Field: {
-                  Location: {
-                    Start: 7,
-                    End: 73
-                  },
                   Kind: Field,
                   Name: {
-                    Location: {
-                      Start: 7,
-                      End: 21
-                    },
                     Value: {
                       Length: 14,
                       IsEmpty: false
@@ -354,16 +262,8 @@
                   },
                   Arguments: [
                     {
-                      Location: {
-                        Start: 23,
-                        End: 48
-                      },
                       Kind: Argument,
                       Name: {
-                        Location: {
-                          Start: 23,
-                          End: 31
-                        },
                         Value: {
                           Length: 8,
                           IsEmpty: false
@@ -371,10 +271,6 @@
                         StringValue: argument
                       },
                       Value: {
-                        Location: {
-                          Start: 33,
-                          End: 48
-                        },
                         Kind: StringValue,
                         Value: {
                           Length: 13,
@@ -384,23 +280,11 @@
                     }
                   ],
                   SelectionSet: {
-                    Location: {
-                      Start: 53,
-                      End: 73
-                    },
                     Kind: SelectionSet,
                     Selections: [
                       {
-                        Location: {
-                          Start: 60,
-                          End: 68
-                        },
                         Kind: Field,
                         Name: {
-                          Location: {
-                            Start: 60,
-                            End: 68
-                          },
                           Value: {
                             Length: 8,
                             IsEmpty: false
@@ -467,16 +351,8 @@
                 ]
               },
               Field: {
-                Location: {
-                  Start: 60,
-                  End: 68
-                },
                 Kind: Field,
                 Name: {
-                  Location: {
-                    Start: 60,
-                    End: 68
-                  },
                   Value: {
                     Length: 8,
                     IsEmpty: false
@@ -515,23 +391,11 @@
             }
           ],
           SelectionSet: {
-            Location: {
-              Start: 53,
-              End: 73
-            },
             Kind: SelectionSet,
             Selections: [
               {
-                Location: {
-                  Start: 60,
-                  End: 68
-                },
                 Kind: Field,
                 Name: {
-                  Location: {
-                    Start: 60,
-                    End: 68
-                  },
                   Value: {
                     Length: 8,
                     IsEmpty: false
@@ -543,23 +407,11 @@
           },
           Parent: {
             SelectionSet: {
-              Location: {
-                Start: 2,
-                End: 76
-              },
               Kind: SelectionSet,
               Selections: [
                 {
-                  Location: {
-                    Start: 7,
-                    End: 73
-                  },
                   Kind: Field,
                   Name: {
-                    Location: {
-                      Start: 7,
-                      End: 21
-                    },
                     Value: {
                       Length: 14,
                       IsEmpty: false
@@ -568,16 +420,8 @@
                   },
                   Arguments: [
                     {
-                      Location: {
-                        Start: 23,
-                        End: 48
-                      },
                       Kind: Argument,
                       Name: {
-                        Location: {
-                          Start: 23,
-                          End: 31
-                        },
                         Value: {
                           Length: 8,
                           IsEmpty: false
@@ -585,10 +429,6 @@
                         StringValue: argument
                       },
                       Value: {
-                        Location: {
-                          Start: 33,
-                          End: 48
-                        },
                         Kind: StringValue,
                         Value: {
                           Length: 13,
@@ -598,23 +438,11 @@
                     }
                   ],
                   SelectionSet: {
-                    Location: {
-                      Start: 53,
-                      End: 73
-                    },
                     Kind: SelectionSet,
                     Selections: [
                       {
-                        Location: {
-                          Start: 60,
-                          End: 68
-                        },
                         Kind: Field,
                         Name: {
-                          Location: {
-                            Start: 60,
-                            End: 68
-                          },
                           Value: {
                             Length: 8,
                             IsEmpty: false
@@ -754,16 +582,8 @@
             Name: ResultGraph
           },
           Field: {
-            Location: {
-              Start: 7,
-              End: 73
-            },
             Kind: Field,
             Name: {
-              Location: {
-                Start: 7,
-                End: 21
-              },
               Value: {
                 Length: 14,
                 IsEmpty: false
@@ -772,16 +592,8 @@
             },
             Arguments: [
               {
-                Location: {
-                  Start: 23,
-                  End: 48
-                },
                 Kind: Argument,
                 Name: {
-                  Location: {
-                    Start: 23,
-                    End: 31
-                  },
                   Value: {
                     Length: 8,
                     IsEmpty: false
@@ -789,10 +601,6 @@
                   StringValue: argument
                 },
                 Value: {
-                  Location: {
-                    Start: 33,
-                    End: 48
-                  },
                   Kind: StringValue,
                   Value: {
                     Length: 13,
@@ -802,23 +610,11 @@
               }
             ],
             SelectionSet: {
-              Location: {
-                Start: 53,
-                End: 73
-              },
               Kind: SelectionSet,
               Selections: [
                 {
-                  Location: {
-                    Start: 60,
-                    End: 68
-                  },
                   Kind: Field,
                   Name: {
-                    Location: {
-                      Start: 60,
-                      End: 68
-                    },
                     Value: {
                       Length: 8,
                       IsEmpty: false

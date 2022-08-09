@@ -39,7 +39,7 @@ public abstract class BaseRootGraph :
                 {
                     // For sample purpose echo the incoming request
                     // stream to the outgoing response stream
-                    MemoryStream memoryStream = new();
+                    var memoryStream = new MemoryStream();
                     incoming.CopyTo(memoryStream);
                     memoryStream.Position = 0;
                     outgoingAttachments.AddStream(incoming.Name, memoryStream);

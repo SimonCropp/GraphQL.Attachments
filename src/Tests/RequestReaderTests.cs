@@ -29,7 +29,7 @@ public class RequestReaderTests
 
     static async Task Parse(string chars)
     {
-        await using MemoryStream stream = new MemoryStream(Encoding.UTF8.GetBytes(chars))
+        await using var stream = new MemoryStream(Encoding.UTF8.GetBytes(chars))
         {
             Position = 0
         };
@@ -43,7 +43,7 @@ public class RequestReaderTests
     [Fact]
     public async Task ReadPostMinimal()
     {
-        MockHttpRequest mockHttpRequest = new MockHttpRequest
+        var mockHttpRequest = new MockHttpRequest
         {
             Form = new FormCollection(
                 new()
@@ -68,7 +68,7 @@ public class RequestReaderTests
     [Fact]
     public async Task ReadGetMinimal()
     {
-        MockHttpRequest mockHttpRequest = new MockHttpRequest
+        var mockHttpRequest = new MockHttpRequest
         {
             Query = new QueryCollection(
                 new Dictionary<string, StringValues>
@@ -128,7 +128,7 @@ public class RequestReaderTests
     {
         var attachment1Bytes = Encoding.UTF8.GetBytes("Attachment1 Text");
         var attachment2Bytes = Encoding.UTF8.GetBytes("Attachment2 Text");
-        MockHttpRequest mockHttpRequest = new MockHttpRequest
+        var mockHttpRequest = new MockHttpRequest
         {
             Form = new FormCollection(
                 new()

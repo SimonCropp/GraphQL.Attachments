@@ -32,7 +32,7 @@ public partial class HttpReaderWriter
         OutgoingAttachments attachments,
         CancellationToken cancellation)
     {
-        List<HttpContent> httpContents = new();
+        var httpContents = new List<HttpContent>();
         try
         {
             var contentStream = new MemoryStream();

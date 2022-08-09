@@ -2,7 +2,7 @@
 {
     public static void RemoveLineSuffix(this StringBuilder builder, string stringToMatch)
     {
-        using StringReader reader = new(builder.ToString());
+        using var reader = new StringReader(builder.ToString());
         builder.Clear();
         while (reader.ReadLine() is { } line)
         {

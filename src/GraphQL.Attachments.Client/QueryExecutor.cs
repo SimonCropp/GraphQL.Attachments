@@ -21,12 +21,12 @@ public class QueryExecutor
 
     public async Task<QueryResult> ExecutePost(PostRequest request, CancellationToken cancellation = default)
     {
-        using MultipartFormDataContent content = new();
+        using var content = new MultipartFormDataContent();
         content.AddQueryAndVariables(request.Query, request.Variables, request.OperationName);
 
         if (request.Action != null)
         {
-            PostContext postContext = new(content);
+            var postContext = new PostContext(content);
             request.Action?.Invoke(postContext);
             postContext.HeadersAction?.Invoke(content.Headers);
         }

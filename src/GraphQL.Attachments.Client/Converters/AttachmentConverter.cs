@@ -14,7 +14,7 @@ public class AttachmentConverter :
         writer.WritePropertyName("Metadata");
         serializer.Serialize(writer, attachment.Headers);
         writer.WritePropertyName("Value");
-        using (StreamReader reader = new(attachment.Stream))
+        using (var reader = new StreamReader(attachment.Stream))
         {
             serializer.Serialize(writer, reader.ReadToEnd());
         }
