@@ -1,7 +1,7 @@
 ﻿using GraphQL;
-using GraphQL.Attachments;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
+
 [UsesVerify]
 public class Tests
 {
