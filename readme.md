@@ -20,15 +20,9 @@ Incoming and Outgoing attachments can be accessed via the `ResolveFieldContext`:
 <!-- snippet: UsageInGraphs -->
 <a id='snippet-usageingraphs'></a>
 ```cs
-Field<ResultGraph>(
-    "withAttachment",
-    arguments: new(
-        new QueryArgument<NonNullGraphType<StringGraphType>>
-        {
-            Name = "argument"
-        }
-    ),
-    resolve: context =>
+Field<ResultGraph>("withAttachment")
+    .Argument<NonNullGraphType<StringGraphType>>("argument")
+    .Resolve(context =>
     {
         var incomingAttachments = context.IncomingAttachments();
         var outgoingAttachments = context.OutgoingAttachments();
@@ -49,7 +43,7 @@ Field<ResultGraph>(
         };
     });
 ```
-<sup><a href='/src/Shared/Graphs/BaseRootGraph.cs#L24-L54' title='Snippet source file'>snippet source</a> | <a href='#snippet-usageingraphs' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/src/Shared/Graphs/BaseRootGraph.cs#L19-L44' title='Snippet source file'>snippet source</a> | <a href='#snippet-usageingraphs' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 
