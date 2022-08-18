@@ -9,28 +9,18 @@ public abstract class BaseRootGraph :
     {
         Name = GetType().Name;
 
-        Field<ResultGraph>(
-            "noAttachment",
-            arguments: new(
-                new QueryArgument<NonNullGraphType<StringGraphType>>
-                {
-                    Name = "argument"
-                }
-            ),
-            resolve: context => new Result
+        Field<ResultGraph>("noAttachment")
+            .Argument<NonNullGraphType<StringGraphType>>("argument")
+            .Resolve(context => new Result
             {
                 Argument = context.GetArgument<string>("argument"),
             });
+
         #region UsageInGraphs
-        Field<ResultGraph>(
-            "withAttachment",
-            arguments: new(
-                new QueryArgument<NonNullGraphType<StringGraphType>>
-                {
-                    Name = "argument"
-                }
-            ),
-            resolve: context =>
+
+        Field<ResultGraph>("withAttachment")
+            .Argument<NonNullGraphType<StringGraphType>>("argument")
+            .Resolve(context =>
             {
                 var incomingAttachments = context.IncomingAttachments();
                 var outgoingAttachments = context.OutgoingAttachments();
