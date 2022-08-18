@@ -142,7 +142,6 @@
                                   Name: String
                                 }
                               },
-                              Arguments: [],
                               Resolver: {},
                               Metadata: {
                                 ORIGINAL_EXPRESSION_PROPERTY_NAME: Argument
@@ -186,7 +185,6 @@
                                   Name: String
                                 }
                               },
-                              Arguments: [],
                               Resolver: {},
                               Metadata: {
                                 ORIGINAL_EXPRESSION_PROPERTY_NAME: Argument
@@ -233,7 +231,6 @@
                           Name: String
                         }
                       },
-                      Arguments: [],
                       Resolver: {},
                       Metadata: {
                         ORIGINAL_EXPRESSION_PROPERTY_NAME: Argument
@@ -303,7 +300,6 @@
                             Name: String
                           }
                         },
-                        Arguments: [],
                         Resolver: {},
                         Metadata: {
                           ORIGINAL_EXPRESSION_PROPERTY_NAME: Argument
@@ -355,7 +351,6 @@
                     Name: String
                   }
                 },
-                Arguments: [],
                 Resolver: {},
                 Metadata: {
                   ORIGINAL_EXPRESSION_PROPERTY_NAME: Argument
@@ -462,7 +457,6 @@
                             Name: String
                           }
                         },
-                        Arguments: [],
                         Resolver: {},
                         Metadata: {
                           ORIGINAL_EXPRESSION_PROPERTY_NAME: Argument
@@ -506,7 +500,6 @@
                             Name: String
                           }
                         },
-                        Arguments: [],
                         Resolver: {},
                         Metadata: {
                           ORIGINAL_EXPRESSION_PROPERTY_NAME: Argument
@@ -553,7 +546,6 @@
                     Name: String
                   }
                 },
-                Arguments: [],
                 Resolver: {},
                 Metadata: {
                   ORIGINAL_EXPRESSION_PROPERTY_NAME: Argument
@@ -623,7 +615,6 @@
                       Name: String
                     }
                   },
-                  Arguments: [],
                   Resolver: {},
                   Metadata: {
                     ORIGINAL_EXPRESSION_PROPERTY_NAME: Argument
@@ -683,7 +674,6 @@
                       Name: String
                     }
                   },
-                  Arguments: [],
                   Resolver: {},
                   Metadata: {
                     ORIGINAL_EXPRESSION_PROPERTY_NAME: Argument
@@ -727,7 +717,6 @@
                       Name: String
                     }
                   },
-                  Arguments: [],
                   Resolver: {},
                   Metadata: {
                     ORIGINAL_EXPRESSION_PROPERTY_NAME: Argument

@@ -5,8 +5,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="GraphQL" Version="5.3.3" />
-    <PackageReference Include="GraphQL.SystemTextJson" Version="5.3.3" />
+    <PackageReference Include="GraphQL" Version="7.0.1" />
+    <PackageReference Include="GraphQL.SystemTextJson" Version="7.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.2" />
     <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="5.0.17" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0" />
