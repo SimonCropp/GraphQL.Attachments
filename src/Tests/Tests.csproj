@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Argon" Version="0.1.0-beta.17" />
     <PackageReference Include="GraphQL" Version="7.0.1" />
     <PackageReference Include="GraphQL.SystemTextJson" Version="7.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.2" />
