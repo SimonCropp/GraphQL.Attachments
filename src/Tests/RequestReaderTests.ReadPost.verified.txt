@@ -1,4 +1,4 @@
-{
+﻿{
   attachments: {
     attachment1.txt: {
       Name: attachment1.txt,
