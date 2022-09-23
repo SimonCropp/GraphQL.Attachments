@@ -50,8 +50,8 @@ public class GraphQlMiddleware :
     async Task Execute(
         HttpResponse response,
         string query,
-        string operation,
-        IIncomingAttachments attachments,
+        string? operation,
+        IIncomingAttachments? attachments,
         Inputs? inputs,
         CancellationToken cancellation)
     {
