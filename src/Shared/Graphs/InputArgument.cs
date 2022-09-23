@@ -1,4 +1,4 @@
 ﻿public class InputArgument
 {
-    public string Value { get; set; }
+    public string Value { get; set; } = null!;
 }

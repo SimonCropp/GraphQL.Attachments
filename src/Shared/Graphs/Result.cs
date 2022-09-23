@@ -1,4 +1,4 @@
 ﻿public class Result
 {
-    public string Argument { get; set; }
+    public string Argument { get; set; } = null!;
 }
