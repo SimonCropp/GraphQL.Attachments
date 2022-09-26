@@ -1,7 +1,8 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-using GraphQL.Attachments;
 
-class IncomingAttachments :
+namespace GraphQL.Attachments;
+
+public class IncomingAttachments :
     Dictionary<string, AttachmentStream>,
     IIncomingAttachments
 {

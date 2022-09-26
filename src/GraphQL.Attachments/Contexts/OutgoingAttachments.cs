@@ -1,7 +1,8 @@
 ﻿using System.Net.Http.Headers;
-using GraphQL.Attachments;
 
-class OutgoingAttachments :
+namespace GraphQL.Attachments;
+
+public class OutgoingAttachments :
     IOutgoingAttachments
 {
     internal Dictionary<string, Outgoing> Inner = new(StringComparer.OrdinalIgnoreCase);
