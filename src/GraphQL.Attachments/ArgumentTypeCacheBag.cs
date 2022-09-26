@@ -26,7 +26,7 @@ static class ArgumentTypeCacheBag
         throw new($"Could not extract {nameof(AttachmentContext)} from ResolveFieldContext.UserContext. It is possible {nameof(AttachmentsExtensions)}.{nameof(AttachmentsExtensions.ExecuteWithAttachments)} was not used.");
     }
 
-    static IDictionary<string, object> UserContextAsDictionary(object userContext)
+    public static IDictionary<string, object> UserContextAsDictionary(object userContext)
     {
         if (userContext is IDictionary<string, object> dictionary)
         {

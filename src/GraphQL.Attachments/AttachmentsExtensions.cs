@@ -21,6 +21,9 @@ public static class AttachmentsExtensions
         return new(result, attachmentContext.Outgoing);
     }
 
+    public static void AddAttachmentContext(this ExecutionOptions options, AttachmentContext attachmentContext) =>
+        options.SetAttachmentContext(attachmentContext);
+
     static AttachmentContext BuildAttachmentContext(IIncomingAttachments? incoming)
     {
         if (incoming == null)
