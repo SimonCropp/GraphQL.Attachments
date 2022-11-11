@@ -6,8 +6,8 @@
 
   <ItemGroup>
     <PackageReference Include="GraphQL" Version="7.1.1" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.1" />
-    <PackageReference Include="ProjectDefaults" Version="1.0.80" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
+    <PackageReference Include="ProjectDefaults" Version="1.0.82" PrivateAssets="all" />
     <ProjectReference Include="..\GraphQL.Attachments\GraphQL.Attachments.csproj" />
   </ItemGroup>
 
