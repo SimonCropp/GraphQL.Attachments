@@ -6,7 +6,7 @@ public static class ResponseParser
     {
         if (!response.IsMultipart())
         {
-            return new(await response.Content.ReadAsStreamAsync(), new Dictionary<string, Attachment>(), response.Content.Headers, response.StatusCode);
+            return new(await response.Content.ReadAsStreamAsync(cancellation), new Dictionary<string, Attachment>(), response.Content.Headers, response.StatusCode);
         }
 
         var multipart = await response.Content.ReadAsMultipartAsync(cancellation);
