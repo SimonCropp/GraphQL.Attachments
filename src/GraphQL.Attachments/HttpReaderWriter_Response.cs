@@ -90,7 +90,8 @@ public partial class HttpReaderWriter
         HttpResponse response,
         CancellationToken cancellation)
     {
-        response.Headers.Add("Content-Type", "application/json");
+        response.Headers["Content-Type"] = "application/json; charset=utf-8";
+        response.Headers["X-Content-Type-Options"] = "nosniff";
         return serializer.WriteAsync(response.Body, result, cancellation);
     }
 }

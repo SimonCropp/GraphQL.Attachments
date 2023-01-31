@@ -33,7 +33,7 @@ public class QueryExecutor
 
         var response = await client.PostAsync(uri, content, cancellation);
         var result = await response.ProcessResponse(cancellation);
-        return new(result.Stream, result.Attachments, response.Content.Headers, response.StatusCode);
+        return new(result.Stream, result.Attachments, response.Content.Headers, response.Headers, response.StatusCode);
     }
 
     public Task<QueryResult> ExecuteGet(string query, CancellationToken cancellation = default)

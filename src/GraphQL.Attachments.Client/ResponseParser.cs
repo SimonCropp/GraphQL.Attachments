@@ -6,7 +6,7 @@ public static class ResponseParser
     {
         if (!response.IsMultipart())
         {
-            return new(await response.Content.ReadAsStreamAsync(cancellation), new Dictionary<string, Attachment>(), response.Content.Headers, response.StatusCode);
+            return new(await response.Content.ReadAsStreamAsync(cancellation), new Dictionary<string, Attachment>(), response.Content.Headers, response.Headers, response.StatusCode);
         }
 
         var multipart = await response.Content.ReadAsMultipartAsync(cancellation);
@@ -17,7 +17,7 @@ public static class ResponseParser
             attachments.Add(attachment.Name, attachment);
         }
 
-        return new(await ProcessBody(multipart), attachments, response.Content.Headers, response.StatusCode);
+        return new(await ProcessBody(multipart), attachments, response.Content.Headers, response.Headers, response.StatusCode);
     }
 
     static async IAsyncEnumerable<Attachment> ReadAttachments(MultipartMemoryStreamProvider multipart)

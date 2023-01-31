@@ -15,8 +15,18 @@ public class QueryResultConverter :
         writer.WritePropertyName("ResultStream");
         var json = new StreamReader(result.Stream).ReadToEnd();
         writer.WriteValue(PrettyJson(json));
-        writer.WritePropertyName("ContentHeaders");
-        serializer.Serialize(writer, result.ContentHeaders);
+        if (result.ContentHeaders.Any())
+        {
+            writer.WritePropertyName("ContentHeaders");
+            serializer.Serialize(writer, result.ContentHeaders);
+        }
+
+        if (result.Headers.Any())
+        {
+            writer.WritePropertyName("Headers");
+            serializer.Serialize(writer, result.Headers);
+        }
+
         writer.WritePropertyName("Attachments");
         serializer.Serialize(writer, result.Attachments);
         writer.WriteEndObject();

@@ -9,13 +9,15 @@ public class QueryResult :
     public Stream Stream { get; }
     public IReadOnlyDictionary<string, Attachment> Attachments { get; }
     public HttpContentHeaders ContentHeaders { get; }
+    public HttpHeaders Headers { get; }
     public HttpStatusCode Status { get; }
 
-    public QueryResult(Stream stream, IReadOnlyDictionary<string, Attachment> attachments, HttpContentHeaders contentHeaders, HttpStatusCode status)
+    public QueryResult(Stream stream, IReadOnlyDictionary<string, Attachment> attachments, HttpContentHeaders contentHeaders, HttpHeaders headers, HttpStatusCode status)
     {
         Stream = stream;
         Attachments = attachments;
         ContentHeaders = contentHeaders;
+        Headers = headers;
         Status = status;
     }
 
