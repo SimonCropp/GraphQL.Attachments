@@ -12,6 +12,7 @@
     Content-Type: application/json; charset=utf-8
   },
   Headers: {
+    Cache-Control: no-store, max-age=0,
     X-Content-Type-Options: nosniff
   },
   Attachments: {}
