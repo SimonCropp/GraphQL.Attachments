@@ -34,6 +34,11 @@ public class QueryResultConverter :
 
     static string PrettyJson(string json)
     {
+        if (json == string.Empty)
+        {
+            return string.Empty;
+        }
+
         var token = JToken.Parse(json);
         using var stringWriter = new StringWriter(CultureInfo.InvariantCulture)
         {
