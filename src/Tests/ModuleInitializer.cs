@@ -6,8 +6,7 @@ public static class ModuleInitializer
     [ModuleInitializer]
     public static void Initialize()
     {
-        VerifyDiffPlex.Initialize();
-        VerifyHttp.Enable();
+        VerifierSettings.InitializePlugins();
         VerifierSettings.IgnoreMembers<ExecutionResult>(
             _ => _.Perf,
             _ => _.Document,
