@@ -12,9 +12,9 @@ public static class ModuleInitializer
             _ => _.Document,
             _ => _.Operation);
         VerifierSettings.IgnoreMembers("Location", "Length");
-        VerifierSettings.AddExtraSettings(serializerSettings =>
+        VerifierSettings.AddExtraSettings(serializer =>
         {
-            var converters = serializerSettings.Converters;
+            var converters = serializer.Converters;
             converters.Add(new OutgoingConverter());
             converters.Add(new AttachmentStreamConverter());
             converters.Add(new OutgoingAttachmentsConverter());
