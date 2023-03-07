@@ -53,7 +53,7 @@ public class GraphQlMiddleware :
         string? operation,
         IIncomingAttachments? attachments,
         Inputs? inputs,
-        CancellationToken cancellation)
+        Cancellation cancellation)
     {
         var options = new ExecutionOptions
         {

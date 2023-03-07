@@ -16,7 +16,7 @@ public partial class HttpReaderWriter
     /// </summary>
     public async Task<(string query, Inputs? inputs, IIncomingAttachments attachments, string? operation)> ReadPost(
         HttpRequest request,
-        CancellationToken cancellation = default)
+        Cancellation cancellation = default)
     {
         if (request.HasFormContentType)
         {
@@ -36,7 +36,7 @@ public partial class HttpReaderWriter
 
     internal async Task<(string query, Inputs? inputs, string operation)> ReadBody(
         Stream stream,
-        CancellationToken cancellation)
+        Cancellation cancellation)
     {
         var postBody = (await serializer.ReadAsync<PostBody>(stream, cancellationToken: cancellation))!;
         return (postBody.query, postBody.variables, postBody.operationName);
@@ -44,7 +44,7 @@ public partial class HttpReaderWriter
 
     async Task<(string query, Inputs? inputs, IIncomingAttachments attachments, string? operation)> ReadForm(
         HttpRequest request,
-        CancellationToken cancellation)
+        Cancellation cancellation)
     {
         var form = await request.ReadFormAsync(cancellation);
         var (query, inputs, operation) = ReadParams(form.TryGetValue);

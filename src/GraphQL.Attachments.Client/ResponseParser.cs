@@ -2,7 +2,7 @@
 
 public static class ResponseParser
 {
-    public static async Task<QueryResult> ProcessResponse(this HttpResponseMessage response, CancellationToken cancellation = default)
+    public static async Task<QueryResult> ProcessResponse(this HttpResponseMessage response, Cancellation cancellation = default)
     {
         if (!response.IsMultipart())
         {

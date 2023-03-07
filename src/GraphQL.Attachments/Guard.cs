@@ -39,7 +39,7 @@ static class Guard
     static async Task<T> EvaluateAndCheck<T>(
         this Func<CancellationToken, Task<T>> func,
         string attachment,
-        CancellationToken cancellation)
+        Cancellation cancellation)
     {
         var message = $"Provided delegate threw an exception. Attachment: {attachment}.";
         T value;

@@ -13,13 +13,13 @@ public class QueryExecutor
         this.uri = uri;
     }
 
-    public Task<QueryResult> ExecutePost(string query, CancellationToken cancellation = default)
+    public Task<QueryResult> ExecutePost(string query, Cancellation cancellation = default)
     {
         Guard.AgainstNullWhiteSpace(nameof(query), query);
         return ExecutePost(new PostRequest(query), cancellation);
     }
 
-    public async Task<QueryResult> ExecutePost(PostRequest request, CancellationToken cancellation = default)
+    public async Task<QueryResult> ExecutePost(PostRequest request, Cancellation cancellation = default)
     {
         using var content = new MultipartFormDataContent();
         content.AddQueryAndVariables(request.Query, request.Variables, request.OperationName);
@@ -36,13 +36,13 @@ public class QueryExecutor
         return new(result.Stream, result.Attachments, response.Content.Headers, response.Headers, response.StatusCode);
     }
 
-    public Task<QueryResult> ExecuteGet(string query, CancellationToken cancellation = default)
+    public Task<QueryResult> ExecuteGet(string query, Cancellation cancellation = default)
     {
         Guard.AgainstNullWhiteSpace(nameof(query), query);
         return ExecuteGet(new GetRequest(query), cancellation);
     }
 
-    public async Task<QueryResult> ExecuteGet(GetRequest request, CancellationToken cancellation = default)
+    public async Task<QueryResult> ExecuteGet(GetRequest request, Cancellation cancellation = default)
     {
         var compressed = Compress.Query(request.Query);
         var variablesString = RequestAppender.ToJson(request.Variables);

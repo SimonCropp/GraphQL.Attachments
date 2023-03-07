@@ -8,7 +8,7 @@ public partial class HttpReaderWriter
     /// <summary>
     /// Writes <paramref name="result"/> to <paramref name="response"/>.
     /// </summary>
-    public Task WriteResult(HttpResponse response, AttachmentExecutionResult result, CancellationToken cancellation = default)
+    public Task WriteResult(HttpResponse response, AttachmentExecutionResult result, Cancellation cancellation = default)
     {
         var executionResult = result.ExecutionResult;
         var attachments = (OutgoingAttachments) result.Attachments;
@@ -30,7 +30,7 @@ public partial class HttpReaderWriter
         HttpResponse response,
         ExecutionResult result,
         OutgoingAttachments attachments,
-        CancellationToken cancellation)
+        Cancellation cancellation)
     {
         var httpContents = new List<HttpContent>();
         try
@@ -69,7 +69,7 @@ public partial class HttpReaderWriter
     static async Task<HttpContent> AddAttachment(
         KeyValuePair<string, Outgoing> attachment,
         MultipartFormDataContent multipart,
-        CancellationToken cancellation)
+        Cancellation cancellation)
     {
         var outgoing = attachment.Value;
         var content = await outgoing.ContentBuilder(cancellation);
@@ -88,7 +88,7 @@ public partial class HttpReaderWriter
     Task WriteStream(
         ExecutionResult result,
         HttpResponse response,
-        CancellationToken cancellation)
+        Cancellation cancellation)
     {
         var readOnlySpan = result.Query.Span.Slice(0, 8);
         if (readOnlySpan.SequenceEqual("mutation".AsSpan()))
