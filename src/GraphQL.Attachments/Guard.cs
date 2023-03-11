@@ -37,7 +37,7 @@ static class Guard
     }
 
     static async Task<T> EvaluateAndCheck<T>(
-        this Func<CancellationToken, Task<T>> func,
+        this Func<Cancellation, Task<T>> func,
         string attachment,
         Cancellation cancellation)
     {
@@ -76,8 +76,8 @@ static class Guard
         };
     }
 
-    public static Func<CancellationToken, Task<T>> WrapFuncTaskInCheck<T>(
-        this Func<CancellationToken, Task<T>> func,
+    public static Func<Cancellation, Task<T>> WrapFuncTaskInCheck<T>(
+        this Func<Cancellation, Task<T>> func,
         string attachment) =>
         async cancellation =>
         {
@@ -88,8 +88,8 @@ static class Guard
             return value;
         };
 
-    public static Func<CancellationToken, Task<Stream>> WrapStreamFuncTaskInCheck<T>(
-        this Func<CancellationToken, Task<T>> func,
+    public static Func<Cancellation, Task<Stream>> WrapStreamFuncTaskInCheck<T>(
+        this Func<Cancellation, Task<T>> func,
         string attachment)
         where T : Stream =>
         async cancellation =>

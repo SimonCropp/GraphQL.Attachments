@@ -2,11 +2,11 @@
 
 class Outgoing
 {
-    public Func<CancellationToken, Task<HttpContent>> ContentBuilder { get; }
+    public Func<Cancellation, Task<HttpContent>> ContentBuilder { get; }
     public Action? Cleanup { get; }
     public HttpContentHeaders? Headers { get; }
 
-    public Outgoing(Func<CancellationToken, Task<HttpContent>> contentBuilder, Action? cleanup, HttpContentHeaders? headers)
+    public Outgoing(Func<Cancellation, Task<HttpContent>> contentBuilder, Action? cleanup, HttpContentHeaders? headers)
     {
         ContentBuilder = contentBuilder;
         Cleanup = cleanup;

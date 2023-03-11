@@ -33,7 +33,7 @@ public class RequestReaderTests
         {
             Position = 0
         };
-        var (query, inputs, operation) = await readerWriter.ReadBody(stream, CancellationToken.None);
+        var (query, inputs, operation) = await readerWriter.ReadBody(stream, Cancellation.None);
         await Verify(new
         {
             query, inputs, operation

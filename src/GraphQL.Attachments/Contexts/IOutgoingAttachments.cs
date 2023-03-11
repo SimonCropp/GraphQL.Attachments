@@ -20,7 +20,7 @@ public interface IOutgoingAttachments
     /// <summary>
     /// Add an attachment with <paramref name="name"/> to the current outgoing pipeline.
     /// </summary>
-    void AddStream<T>(string name, Func<CancellationToken, Task<T>> streamFactory, Action? cleanup = null, HttpContentHeaders? headers = null)
+    void AddStream<T>(string name, Func<Cancellation, Task<T>> streamFactory, Action? cleanup = null, HttpContentHeaders? headers = null)
         where T : Stream;
 
     /// <summary>
@@ -36,7 +36,7 @@ public interface IOutgoingAttachments
     /// <summary>
     /// Add an attachment with the default name of <see cref="string.Empty"/> to the current outgoing pipeline.
     /// </summary>
-    void AddStream<T>(Func<CancellationToken, Task<T>> streamFactory, Action? cleanup = null, HttpContentHeaders? headers = null)
+    void AddStream<T>(Func<Cancellation, Task<T>> streamFactory, Action? cleanup = null, HttpContentHeaders? headers = null)
         where T : Stream;
 
     /// <summary>
@@ -71,7 +71,7 @@ public interface IOutgoingAttachments
     /// <remarks>
     /// This should only be used when the data size is know to be small as it causes the full size of the attachment to be allocated in memory.
     /// </remarks>
-    void AddBytes(Func<CancellationToken, Task<byte[]>> bytesFactory, Action? cleanup = null, HttpContentHeaders? headers = null);
+    void AddBytes(Func<Cancellation, Task<byte[]>> bytesFactory, Action? cleanup = null, HttpContentHeaders? headers = null);
 
     /// <summary>
     /// Add an attachment with <paramref name="name"/> to the current outgoing pipeline.
@@ -79,7 +79,7 @@ public interface IOutgoingAttachments
     /// <remarks>
     /// This should only be used when the data size is know to be small as it causes the full size of the attachment to be allocated in memory.
     /// </remarks>
-    void AddBytes(string name, Func<CancellationToken, Task<byte[]>> bytesFactory, Action? cleanup = null, HttpContentHeaders? headers = null);
+    void AddBytes(string name, Func<Cancellation, Task<byte[]>> bytesFactory, Action? cleanup = null, HttpContentHeaders? headers = null);
 
     /// <summary>
     /// Add an attachment with the default name of <see cref="string.Empty"/> to the current outgoing pipeline.
@@ -119,7 +119,7 @@ public interface IOutgoingAttachments
     /// <remarks>
     /// This should only be used when the data size is know to be small as it causes the full size of the attachment to be allocated in memory.
     /// </remarks>
-    void AddString(Func<CancellationToken, Task<string>> valueFactory, Action? cleanup = null, HttpContentHeaders? headers = null);
+    void AddString(Func<Cancellation, Task<string>> valueFactory, Action? cleanup = null, HttpContentHeaders? headers = null);
 
     /// <summary>
     /// Add an attachment with <paramref name="name"/> to the current outgoing pipeline.
@@ -127,7 +127,7 @@ public interface IOutgoingAttachments
     /// <remarks>
     /// This should only be used when the data size is know to be small as it causes the full size of the attachment to be allocated in memory.
     /// </remarks>
-    void AddString(string name, Func<CancellationToken, Task<string>> valueFactory, Action? cleanup = null, HttpContentHeaders? headers = null);
+    void AddString(string name, Func<Cancellation, Task<string>> valueFactory, Action? cleanup = null, HttpContentHeaders? headers = null);
 
     /// <summary>
     /// Add an attachment with the default name of <see cref="string.Empty"/> to the current outgoing pipeline.

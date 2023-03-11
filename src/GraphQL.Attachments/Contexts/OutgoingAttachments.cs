@@ -11,11 +11,11 @@ public class OutgoingAttachments :
 
     public IReadOnlyList<string> Names => Inner.Keys.ToList();
 
-    public void AddStream<T>(Func<CancellationToken, Task<T>> streamFactory, Action? cleanup = null, HttpContentHeaders? headers = null)
+    public void AddStream<T>(Func<Cancellation, Task<T>> streamFactory, Action? cleanup = null, HttpContentHeaders? headers = null)
         where T : Stream =>
         AddStream("default", streamFactory, cleanup, headers);
 
-    public void AddStream<T>(string name, Func<CancellationToken, Task<T>> streamFactory, Action? cleanup = null, HttpContentHeaders? headers = null)
+    public void AddStream<T>(string name, Func<Cancellation, Task<T>> streamFactory, Action? cleanup = null, HttpContentHeaders? headers = null)
         where T : Stream =>
         Inner.Add(name,
             new(
@@ -83,10 +83,10 @@ public class OutgoingAttachments :
                 headers: headers
             ));
 
-    public void AddBytes(Func<CancellationToken, Task<byte[]>> bytesFactory, Action? cleanup = null, HttpContentHeaders? headers = null) =>
+    public void AddBytes(Func<Cancellation, Task<byte[]>> bytesFactory, Action? cleanup = null, HttpContentHeaders? headers = null) =>
         AddBytes("default", bytesFactory, cleanup, headers);
 
-    public void AddBytes(string name, Func<CancellationToken, Task<byte[]>> bytesFactory, Action? cleanup = null, HttpContentHeaders? headers = null) =>
+    public void AddBytes(string name, Func<Cancellation, Task<byte[]>> bytesFactory, Action? cleanup = null, HttpContentHeaders? headers = null) =>
         Inner.Add(name,
             new(
                 contentBuilder: async cancellation =>
@@ -126,10 +126,10 @@ public class OutgoingAttachments :
                 headers: headers
             ));
 
-    public void AddString(Func<CancellationToken, Task<string>> valueFactory, Action? cleanup = null, HttpContentHeaders? headers = null) =>
+    public void AddString(Func<Cancellation, Task<string>> valueFactory, Action? cleanup = null, HttpContentHeaders? headers = null) =>
         AddString("default", valueFactory, cleanup, headers);
 
-    public void AddString(string name, Func<CancellationToken, Task<string>> valueFactory, Action? cleanup = null, HttpContentHeaders? headers = null) =>
+    public void AddString(string name, Func<Cancellation, Task<string>> valueFactory, Action? cleanup = null, HttpContentHeaders? headers = null) =>
         Inner.Add(name,
             new(
                 contentBuilder: async cancellation =>
