@@ -6,7 +6,7 @@
 
   <ItemGroup>
     <PackageReference Include="GraphQL" Version="7.3.0" />
-    <PackageReference Include="Polyfill" Version="0.10.0" PrivateAssets="All" />
+    <PackageReference Include="Polyfill" Version="0.14.0" PrivateAssets="All" />
     <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
     <PackageReference Include="ProjectDefaults" Version="1.0.90" PrivateAssets="all" />
     <PackageReference Include="System.Text.Json" Version="7.0.2" />
