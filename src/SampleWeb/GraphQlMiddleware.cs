@@ -61,7 +61,7 @@ public class GraphQlMiddleware :
             Query = query,
             OperationName = operation,
             Variables = inputs,
-            Cancellation = cancellation,
+            CancellationToken = cancellation,
 #if (DEBUG)
             ThrowOnUnhandledException = true,
             EnableMetrics = true,

@@ -38,7 +38,7 @@ public partial class HttpReaderWriter
         Stream stream,
         Cancellation cancellation)
     {
-        var postBody = (await serializer.ReadAsync<PostBody>(stream, cancellation: cancellation))!;
+        var postBody = (await serializer.ReadAsync<PostBody>(stream, cancellationToken: cancellation))!;
         return (postBody.query, postBody.variables, postBody.operationName);
     }
 
