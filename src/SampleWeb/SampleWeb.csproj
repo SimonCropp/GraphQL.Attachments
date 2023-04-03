@@ -10,7 +10,7 @@
     </Content>
     <Folder Include="wwwroot\" />
     <PackageReference Include="GraphQL" Version="7.3.1" />
-    <PackageReference Include="GraphQL.SystemTextJson" Version="7.3.0" />
+    <PackageReference Include="GraphQL.SystemTextJson" Version="7.3.1" />
     <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
     <ProjectReference Include="..\GraphQL.Attachments\GraphQL.Attachments.csproj" />
     <ProjectReference Include="..\Shared\Shared.csproj" />
