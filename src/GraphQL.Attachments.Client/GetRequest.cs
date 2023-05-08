@@ -8,7 +8,7 @@ public class GetRequest
 
     public GetRequest(string query)
     {
-        Guard.AgainstNullWhiteSpace(nameof(query), query);
+        Guard.AgainstNullWhiteSpace(query);
         Query = query;
     }
 

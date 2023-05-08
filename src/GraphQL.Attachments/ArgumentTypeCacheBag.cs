@@ -32,6 +32,7 @@ static class ArgumentTypeCacheBag
         {
             return dictionary;
         }
+
         throw NotDictionary();
     }
 

@@ -4,8 +4,8 @@ public static class UriBuilder
 {
     public static string GetUri(string root, string? variables, string compressed, string? operationName)
     {
-        Guard.AgainstNullWhiteSpace(nameof(root), root);
-        Guard.AgainstNullWhiteSpace(nameof(compressed), compressed);
+        Guard.AgainstNullWhiteSpace(root);
+        Guard.AgainstNullWhiteSpace(compressed);
         var getUri = $"{root}?query={compressed}";
 
         if (variables != null)

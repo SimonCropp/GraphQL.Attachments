@@ -4,5 +4,5 @@ public class InputArgumentGraph :
     InputObjectGraphType<InputArgument>
 {
     public InputArgumentGraph() =>
-        Field(x => x.Value);
+        Field(_ => _.Value);
 }

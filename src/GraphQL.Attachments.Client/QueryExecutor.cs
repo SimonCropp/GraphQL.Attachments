@@ -7,7 +7,7 @@ public class QueryExecutor
 
     public QueryExecutor(HttpClient client, string uri = "graphql")
     {
-        Guard.AgainstNullWhiteSpace(nameof(uri), uri);
+        Guard.AgainstNullWhiteSpace(uri);
 
         this.client = client;
         this.uri = uri;
@@ -15,7 +15,7 @@ public class QueryExecutor
 
     public Task<QueryResult> ExecutePost(string query, Cancellation cancellation = default)
     {
-        Guard.AgainstNullWhiteSpace(nameof(query), query);
+        Guard.AgainstNullWhiteSpace(query);
         return ExecutePost(new PostRequest(query), cancellation);
     }
 
@@ -38,7 +38,7 @@ public class QueryExecutor
 
     public Task<QueryResult> ExecuteGet(string query, Cancellation cancellation = default)
     {
-        Guard.AgainstNullWhiteSpace(nameof(query), query);
+        Guard.AgainstNullWhiteSpace(query);
         return ExecuteGet(new GetRequest(query), cancellation);
     }
 

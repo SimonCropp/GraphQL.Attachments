@@ -6,7 +6,7 @@ public class PostRequest
 
     public PostRequest(string query)
     {
-        Guard.AgainstNullWhiteSpace(nameof(query), query);
+        Guard.AgainstNullWhiteSpace(query);
         Query = query;
     }
 

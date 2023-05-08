@@ -19,7 +19,7 @@ public class AttachmentStream :
     /// <param name="metadata">The attachment metadata.</param>
     public AttachmentStream(string name, Stream inner, long length, IHeaderDictionary metadata)
     {
-        Guard.AgainstNullWhiteSpace(nameof(name), name);
+        Guard.AgainstNullWhiteSpace(name);
         this.inner = inner;
         Name = name;
         Length = length;

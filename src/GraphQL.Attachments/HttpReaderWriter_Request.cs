@@ -50,8 +50,8 @@ public partial class HttpReaderWriter
         var (query, inputs, operation) = ReadParams(form.TryGetValue);
 
         var streams = form.Files.ToDictionary(
-            x => x.FileName,
-            x => new AttachmentStream(x.FileName, x.OpenReadStream(), x.Length, x.Headers));
+            _ => _.FileName,
+            _ => new AttachmentStream(_.FileName, _.OpenReadStream(), _.Length, _.Headers));
         return (query, inputs, new IncomingAttachments(streams), operation);
     }
 

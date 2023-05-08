@@ -4,5 +4,5 @@ public class ResultGraph :
     ObjectGraphType<Result>
 {
     public ResultGraph() =>
-        Field(x => x.Argument);
+        Field(_ => _.Argument);
 }

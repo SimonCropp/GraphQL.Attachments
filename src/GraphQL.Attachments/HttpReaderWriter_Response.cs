@@ -59,7 +59,7 @@ public partial class HttpReaderWriter
                 httpContent.Dispose();
             }
 
-            foreach (var cleanup in attachments.Inner.Select(x => x.Value.Cleanup))
+            foreach (var cleanup in attachments.Inner.Select(_ => _.Value.Cleanup))
             {
                 cleanup?.Invoke();
             }

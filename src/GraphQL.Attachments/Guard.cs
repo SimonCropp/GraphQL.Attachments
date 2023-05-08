@@ -1,16 +1,8 @@
 static class Guard
 {
-    public static void AgainstNullWhiteSpace(string argumentName, string value)
+    public static void AgainstNullWhiteSpace(string value, [CallerArgumentExpression("value")]  string argumentName = "")
     {
         if (string.IsNullOrWhiteSpace(value))
-        {
-            throw new ArgumentNullException(argumentName);
-        }
-    }
-
-    public static void AgainstNegative(string argumentName, int value)
-    {
-        if (value < 0)
         {
             throw new ArgumentNullException(argumentName);
         }

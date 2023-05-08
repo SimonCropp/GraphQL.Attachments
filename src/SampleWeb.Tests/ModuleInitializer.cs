@@ -7,7 +7,7 @@ public static class ModuleInitializer
     public static void Initialize()
     {
         VerifierSettings.InitializePlugins();
-        VerifierSettings.AddScrubber(x => x.RemoveLineSuffix("boundary="));
+        VerifierSettings.AddScrubber(_ => _.RemoveLineSuffix("boundary="));
         VerifierSettings.IgnoreMembers<ExecutionResult>(
             _ => _.Perf,
             _ => _.Document,

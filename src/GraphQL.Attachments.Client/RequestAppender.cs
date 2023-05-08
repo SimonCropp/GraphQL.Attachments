@@ -21,21 +21,21 @@ public static class RequestAppender
 
     public static void AddContent(this MultipartFormDataContent content, string name, Stream value)
     {
-        Guard.AgainstNullWhiteSpace(nameof(name), name);
+        Guard.AgainstNullWhiteSpace(name);
         var file = new StreamContent(value);
         content.Add(file, name, name);
     }
 
     public static void AddContent(this MultipartFormDataContent content, string name, byte[] value)
     {
-        Guard.AgainstNullWhiteSpace(nameof(name), name);
+        Guard.AgainstNullWhiteSpace(name);
         var file = new ByteArrayContent(value);
         content.Add(file, name, name);
     }
 
     public static void AddContent(this MultipartFormDataContent content, string name, string value)
     {
-        Guard.AgainstNullWhiteSpace(nameof(name), name);
+        Guard.AgainstNullWhiteSpace(name);
         var file = new StringContent(value);
         content.Add(file, name, name);
     }
