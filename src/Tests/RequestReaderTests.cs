@@ -126,8 +126,8 @@ public class RequestReaderTests
     [Fact]
     public async Task ReadPost()
     {
-        var attachment1Bytes = Encoding.UTF8.GetBytes("Attachment1 Text");
-        var attachment2Bytes = Encoding.UTF8.GetBytes("Attachment2 Text");
+        var attachment1Bytes = "Attachment1 Text"u8.ToArray();
+        var attachment2Bytes = "Attachment2 Text"u8.ToArray();
         var mockHttpRequest = new MockHttpRequest
         {
             Form = new FormCollection(
