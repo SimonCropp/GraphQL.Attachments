@@ -90,17 +90,17 @@ public partial class HttpReaderWriter
         HttpResponse response,
         Cancellation cancellation)
     {
-        var readOnlySpan = result.Query.Span.Slice(0, 8);
-        if (readOnlySpan.SequenceEqual("mutation".AsSpan()))
+        var headers = response.Headers;
+        if (result.Query.Span.StartsWith("mutation"))
         {
-            response.Headers["Cache-Control"] = "no-store, max-age=0";
+            headers["Cache-Control"] = "no-store, max-age=0";
         }
         else
         {
-            response.Headers["Cache-Control"] = "no-cache";
+            headers["Cache-Control"] = "no-cache";
         }
-        response.Headers["Content-Type"] = "application/json; charset=utf-8";
-        response.Headers["X-Content-Type-Options"] = "nosniff";
+        headers["Content-Type"] = "application/json; charset=utf-8";
+        headers["X-Content-Type-Options"] = "nosniff";
         return serializer.WriteAsync(response.Body, result, cancellation);
     }
 }
