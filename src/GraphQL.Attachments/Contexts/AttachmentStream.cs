@@ -26,6 +26,13 @@ public class AttachmentStream :
         Metadata = metadata;
     }
 
+    public async Task<byte[]> ToArray()
+    {
+        using var stream = new MemoryStream();
+        await CopyToAsync(stream);
+        return stream.ToArray();
+    }
+
     public override void EndWrite(IAsyncResult asyncResult) =>
         inner.EndWrite(asyncResult);
 
