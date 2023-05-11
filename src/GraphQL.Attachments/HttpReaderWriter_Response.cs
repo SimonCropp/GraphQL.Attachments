@@ -50,7 +50,7 @@ public partial class HttpReaderWriter
             }
 
             response.ContentLength = multipart.Headers.ContentLength;
-            response.ContentType = multipart.Headers.ContentType?.ToString();
+            response.ContentType = multipart.Headers.ContentType?.ToString()!;
             await multipart.CopyToAsync(response.Body, cancellation);
         }
         finally
