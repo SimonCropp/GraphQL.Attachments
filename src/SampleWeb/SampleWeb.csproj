@@ -11,7 +11,6 @@
     <Folder Include="wwwroot\" />
     <PackageReference Include="GraphQL" Version="7.4.1" />
     <PackageReference Include="GraphQL.SystemTextJson" Version="7.4.1" />
-    <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
     <ProjectReference Include="..\GraphQL.Attachments\GraphQL.Attachments.csproj" />
     <ProjectReference Include="..\Shared\Shared.csproj" />
     <PackageReference Include="ProjectDefaults" Version="1.0.90" PrivateAssets="all" />
