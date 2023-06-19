@@ -12,7 +12,7 @@ public class OutgoingConverter :
         writer.WritePropertyName("Headers");
         serializer.Serialize(writer, outgoing.Headers);
         writer.WritePropertyName("Value");
-        var content = outgoing.ContentBuilder(Cancellation.None).GetAwaiter().GetResult();
+        var content = outgoing.ContentBuilder(Cancel.None).GetAwaiter().GetResult();
         var result = content.ReadAsStringAsync().GetAwaiter().GetResult();
         serializer.Serialize(writer, result);
         writer.WriteEndObject();

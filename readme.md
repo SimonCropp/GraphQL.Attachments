@@ -58,7 +58,7 @@ When using Attachments the incoming request also requires the incoming form data
 ```cs
 public async Task InvokeAsync(HttpContext context, RequestDelegate next)
 {
-    var cancellation = context.RequestAborted;
+    var cancel = context.RequestAborted;
     var response = context.Response;
     var request = context.Request;
     var isGet = HttpMethods.IsGet(request.Method);
@@ -67,14 +67,14 @@ public async Task InvokeAsync(HttpContext context, RequestDelegate next)
     if (isGet)
     {
         var (query, inputs, operation) = readerWriter.ReadGet(request);
-        await Execute(response, query, operation, null, inputs, cancellation);
+        await Execute(response, query, operation, null, inputs, cancel);
         return;
     }
 
     if (isPost)
     {
-        var (query, inputs, attachments, operation) = await readerWriter.ReadPost(request, cancellation);
-        await Execute(response, query, operation, attachments, inputs, cancellation);
+        var (query, inputs, attachments, operation) = await readerWriter.ReadPost(request, cancel);
+        await Execute(response, query, operation, attachments, inputs, cancel);
         return;
     }
 
@@ -106,7 +106,7 @@ As with RequestReader for the incoming data, the outgoing data needs to be writt
 <!-- snippet: ResponseWriter -->
 <a id='snippet-responsewriter'></a>
 ```cs
-await readerWriter.WriteResult(response, result, cancellation);
+await readerWriter.WriteResult(response, result, cancel);
 ```
 <sup><a href='/src/SampleWeb/GraphQlMiddleware.cs#L77-L81' title='Snippet source file'>snippet source</a> | <a href='#snippet-responsewriter' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
@@ -217,13 +217,13 @@ public class QueryExecutor
         this.uri = uri;
     }
 
-    public Task<QueryResult> ExecutePost(string query, Cancellation cancellation = default)
+    public Task<QueryResult> ExecutePost(string query, Cancel cancel = default)
     {
         Guard.AgainstNullWhiteSpace(query);
-        return ExecutePost(new PostRequest(query), cancellation);
+        return ExecutePost(new PostRequest(query), cancel);
     }
 
-    public async Task<QueryResult> ExecutePost(PostRequest request, Cancellation cancellation = default)
+    public async Task<QueryResult> ExecutePost(PostRequest request, Cancel cancel = default)
     {
         using var content = new MultipartFormDataContent();
         content.AddQueryAndVariables(request.Query, request.Variables, request.OperationName);
@@ -235,18 +235,18 @@ public class QueryExecutor
             postContext.HeadersAction?.Invoke(content.Headers);
         }
 
-        var response = await client.PostAsync(uri, content, cancellation);
-        var result = await response.ProcessResponse(cancellation);
+        var response = await client.PostAsync(uri, content, cancel);
+        var result = await response.ProcessResponse(cancel);
         return new(result.Stream, result.Attachments, response.Content.Headers, response.Headers, response.StatusCode);
     }
 
-    public Task<QueryResult> ExecuteGet(string query, Cancellation cancellation = default)
+    public Task<QueryResult> ExecuteGet(string query, Cancel cancel = default)
     {
         Guard.AgainstNullWhiteSpace(query);
-        return ExecuteGet(new GetRequest(query), cancellation);
+        return ExecuteGet(new GetRequest(query), cancel);
     }
 
-    public async Task<QueryResult> ExecuteGet(GetRequest request, Cancellation cancellation = default)
+    public async Task<QueryResult> ExecuteGet(GetRequest request, Cancel cancel = default)
     {
         var compressed = Compress.Query(request.Query);
         var variablesString = RequestAppender.ToJson(request.Variables);
@@ -254,8 +254,8 @@ public class QueryExecutor
 
         using var getRequest = new HttpRequestMessage(HttpMethod.Get, getUri);
         request.HeadersAction?.Invoke(getRequest.Headers);
-        var response = await client.SendAsync(getRequest, cancellation);
-        return await response.ProcessResponse(cancellation);
+        var response = await client.SendAsync(getRequest, cancel);
+        return await response.ProcessResponse(cancel);
     }
 }
 ```

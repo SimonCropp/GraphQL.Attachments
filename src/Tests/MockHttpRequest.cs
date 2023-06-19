@@ -3,7 +3,7 @@
 public class MockHttpRequest :
     HttpRequest
 {
-    public override Task<IFormCollection> ReadFormAsync(Cancellation cancellation = default) =>
+    public override Task<IFormCollection> ReadFormAsync(Cancel cancel = default) =>
         Task.FromResult(Form);
 
     public override HttpContext HttpContext { get; } = null!;

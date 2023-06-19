@@ -21,7 +21,7 @@ public class GraphQlMiddleware :
 
     public async Task InvokeAsync(HttpContext context, RequestDelegate next)
     {
-        var cancellation = context.RequestAborted;
+        var cancel = context.RequestAborted;
         var response = context.Response;
         var request = context.Request;
         var isGet = HttpMethods.IsGet(request.Method);
@@ -30,14 +30,14 @@ public class GraphQlMiddleware :
         if (isGet)
         {
             var (query, inputs, operation) = readerWriter.ReadGet(request);
-            await Execute(response, query, operation, null, inputs, cancellation);
+            await Execute(response, query, operation, null, inputs, cancel);
             return;
         }
 
         if (isPost)
         {
-            var (query, inputs, attachments, operation) = await readerWriter.ReadPost(request, cancellation);
-            await Execute(response, query, operation, attachments, inputs, cancellation);
+            var (query, inputs, attachments, operation) = await readerWriter.ReadPost(request, cancel);
+            await Execute(response, query, operation, attachments, inputs, cancel);
             return;
         }
 
@@ -53,7 +53,7 @@ public class GraphQlMiddleware :
         string? operation,
         IIncomingAttachments? attachments,
         Inputs? inputs,
-        Cancellation cancellation)
+        Cancel cancel)
     {
         var options = new ExecutionOptions
         {
@@ -61,7 +61,7 @@ public class GraphQlMiddleware :
             Query = query,
             OperationName = operation,
             Variables = inputs,
-            CancellationToken = cancellation,
+            CancellationToken = cancel,
 #if (DEBUG)
             ThrowOnUnhandledException = true,
             EnableMetrics = true,
@@ -76,7 +76,7 @@ public class GraphQlMiddleware :
 
         #region ResponseWriter
 
-        await readerWriter.WriteResult(response, result, cancellation);
+        await readerWriter.WriteResult(response, result, cancel);
 
         #endregion
     }

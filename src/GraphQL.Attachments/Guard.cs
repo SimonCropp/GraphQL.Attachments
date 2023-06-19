@@ -29,15 +29,15 @@ static class Guard
     }
 
     static async Task<T> EvaluateAndCheck<T>(
-        this Func<Cancellation, Task<T>> func,
+        this Func<Cancel, Task<T>> func,
         string attachment,
-        Cancellation cancellation)
+        Cancel cancel)
     {
         var message = $"Provided delegate threw an exception. Attachment: {attachment}.";
         T value;
         try
         {
-            value = await func(cancellation);
+            value = await func(cancel);
         }
         catch (Exception exception)
         {
@@ -68,25 +68,25 @@ static class Guard
         };
     }
 
-    public static Func<Cancellation, Task<T>> WrapFuncTaskInCheck<T>(
-        this Func<Cancellation, Task<T>> func,
+    public static Func<Cancel, Task<T>> WrapFuncTaskInCheck<T>(
+        this Func<Cancel, Task<T>> func,
         string attachment) =>
-        async cancellation =>
+        async cancel =>
         {
-            var task = func.EvaluateAndCheck(attachment, cancellation);
+            var task = func.EvaluateAndCheck(attachment, cancel);
             ThrowIfNullReturned(null, attachment, task);
             var value = await task;
             ThrowIfNullReturned(null, attachment, value);
             return value;
         };
 
-    public static Func<Cancellation, Task<Stream>> WrapStreamFuncTaskInCheck<T>(
-        this Func<Cancellation, Task<T>> func,
+    public static Func<Cancel, Task<Stream>> WrapStreamFuncTaskInCheck<T>(
+        this Func<Cancel, Task<T>> func,
         string attachment)
         where T : Stream =>
-        async cancellation =>
+        async cancel =>
         {
-            var task = func.EvaluateAndCheck(attachment, cancellation);
+            var task = func.EvaluateAndCheck(attachment, cancel);
             ThrowIfNullReturned(null, attachment, task);
             var value = await task;
             ThrowIfNullReturned(null, attachment, value);

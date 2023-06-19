@@ -11,18 +11,18 @@ public class OutgoingAttachments :
 
     public IReadOnlyList<string> Names => Inner.Keys.ToList();
 
-    public void AddStream<T>(Func<Cancellation, Task<T>> streamFactory, Action? cleanup = null, HttpContentHeaders? headers = null)
+    public void AddStream<T>(Func<Cancel, Task<T>> streamFactory, Action? cleanup = null, HttpContentHeaders? headers = null)
         where T : Stream =>
         AddStream("default", streamFactory, cleanup, headers);
 
-    public void AddStream<T>(string name, Func<Cancellation, Task<T>> streamFactory, Action? cleanup = null, HttpContentHeaders? headers = null)
+    public void AddStream<T>(string name, Func<Cancel, Task<T>> streamFactory, Action? cleanup = null, HttpContentHeaders? headers = null)
         where T : Stream =>
         Inner.Add(name,
             new(
-                contentBuilder: async cancellation =>
+                contentBuilder: async cancel =>
                 {
                     streamFactory = streamFactory.WrapFuncTaskInCheck(name);
-                    var value = await streamFactory(cancellation);
+                    var value = await streamFactory(cancel);
                     return new StreamContent(value);
                 },
                 cleanup: cleanup.WrapCleanupInCheck(name),
@@ -83,16 +83,16 @@ public class OutgoingAttachments :
                 headers: headers
             ));
 
-    public void AddBytes(Func<Cancellation, Task<byte[]>> bytesFactory, Action? cleanup = null, HttpContentHeaders? headers = null) =>
+    public void AddBytes(Func<Cancel, Task<byte[]>> bytesFactory, Action? cleanup = null, HttpContentHeaders? headers = null) =>
         AddBytes("default", bytesFactory, cleanup, headers);
 
-    public void AddBytes(string name, Func<Cancellation, Task<byte[]>> bytesFactory, Action? cleanup = null, HttpContentHeaders? headers = null) =>
+    public void AddBytes(string name, Func<Cancel, Task<byte[]>> bytesFactory, Action? cleanup = null, HttpContentHeaders? headers = null) =>
         Inner.Add(name,
             new(
-                contentBuilder: async cancellation =>
+                contentBuilder: async cancel =>
                 {
                     bytesFactory = bytesFactory.WrapFuncTaskInCheck(name);
-                    var value = await bytesFactory(cancellation);
+                    var value = await bytesFactory(cancel);
                     return new ByteArrayContent(value);
                 },
                 cleanup: cleanup.WrapCleanupInCheck(name),
@@ -126,16 +126,16 @@ public class OutgoingAttachments :
                 headers: headers
             ));
 
-    public void AddString(Func<Cancellation, Task<string>> valueFactory, Action? cleanup = null, HttpContentHeaders? headers = null) =>
+    public void AddString(Func<Cancel, Task<string>> valueFactory, Action? cleanup = null, HttpContentHeaders? headers = null) =>
         AddString("default", valueFactory, cleanup, headers);
 
-    public void AddString(string name, Func<Cancellation, Task<string>> valueFactory, Action? cleanup = null, HttpContentHeaders? headers = null) =>
+    public void AddString(string name, Func<Cancel, Task<string>> valueFactory, Action? cleanup = null, HttpContentHeaders? headers = null) =>
         Inner.Add(name,
             new(
-                contentBuilder: async cancellation =>
+                contentBuilder: async cancel =>
                 {
                     valueFactory = valueFactory.WrapFuncTaskInCheck(name);
-                    var value = await valueFactory(cancellation);
+                    var value = await valueFactory(cancel);
                     return new StringContent(value);
                 },
                 cleanup: cleanup.WrapCleanupInCheck(name),

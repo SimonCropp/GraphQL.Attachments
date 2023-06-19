@@ -16,14 +16,14 @@ public partial class HttpReaderWriter
     /// </summary>
     public async Task<(string query, Inputs? inputs, IIncomingAttachments attachments, string? operation)> ReadPost(
         HttpRequest request,
-        Cancellation cancellation = default)
+        Cancel cancel = default)
     {
         if (request.HasFormContentType)
         {
-            return await ReadForm(request, cancellation);
+            return await ReadForm(request, cancel);
         }
 
-        var (query, inputs, operation) = await ReadBody(request.Body, cancellation);
+        var (query, inputs, operation) = await ReadBody(request.Body, cancel);
         return (query, inputs, new IncomingAttachments(), operation);
     }
 
@@ -36,17 +36,17 @@ public partial class HttpReaderWriter
 
     internal async Task<(string query, Inputs? inputs, string operation)> ReadBody(
         Stream stream,
-        Cancellation cancellation)
+        Cancel cancel)
     {
-        var postBody = (await serializer.ReadAsync<PostBody>(stream, cancellationToken: cancellation))!;
+        var postBody = (await serializer.ReadAsync<PostBody>(stream, cancellationToken: cancel))!;
         return (postBody.query, postBody.variables, postBody.operationName);
     }
 
     async Task<(string query, Inputs? inputs, IIncomingAttachments attachments, string? operation)> ReadForm(
         HttpRequest request,
-        Cancellation cancellation)
+        Cancel cancel)
     {
-        var form = await request.ReadFormAsync(cancellation);
+        var form = await request.ReadFormAsync(cancel);
         var (query, inputs, operation) = ReadParams(form.TryGetValue);
 
         var streams = form.Files.ToDictionary(

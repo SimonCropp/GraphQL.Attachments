@@ -8,7 +8,7 @@ public partial class HttpReaderWriter
     /// <summary>
     /// Writes <paramref name="result"/> to <paramref name="response"/>.
     /// </summary>
-    public Task WriteResult(HttpResponse response, AttachmentExecutionResult result, Cancellation cancellation = default)
+    public Task WriteResult(HttpResponse response, AttachmentExecutionResult result, Cancel cancel = default)
     {
         var executionResult = result.ExecutionResult;
         var attachments = (OutgoingAttachments) result.Attachments;
@@ -16,28 +16,28 @@ public partial class HttpReaderWriter
             executionResult.Errors?.Count > 0)
         {
             response.StatusCode = (int) HttpStatusCode.BadRequest;
-            return WriteStream(executionResult, response, cancellation);
+            return WriteStream(executionResult, response, cancel);
         }
 
         if (attachments.HasPendingAttachments)
         {
-            return WriteMultipart(response, executionResult, attachments, cancellation);
+            return WriteMultipart(response, executionResult, attachments, cancel);
         }
 
-        return WriteStream(executionResult, response, cancellation);
+        return WriteStream(executionResult, response, cancel);
     }
 
     async Task WriteMultipart(
         HttpResponse response,
         ExecutionResult result,
         OutgoingAttachments attachments,
-        Cancellation cancellation)
+        Cancel cancel)
     {
         var httpContents = new List<HttpContent>();
         try
         {
             var contentStream = new MemoryStream();
-            await serializer.WriteAsync(contentStream, result, cancellation);
+            await serializer.WriteAsync(contentStream, result, cancel);
             contentStream.Position = 0;
             using var multipart = new MultipartFormDataContent
             {
@@ -46,12 +46,12 @@ public partial class HttpReaderWriter
 
             foreach (var attachment in attachments.Inner)
             {
-                httpContents.Add(await AddAttachment(attachment, multipart, cancellation));
+                httpContents.Add(await AddAttachment(attachment, multipart, cancel));
             }
 
             response.ContentLength = multipart.Headers.ContentLength;
             response.ContentType = multipart.Headers.ContentType?.ToString()!;
-            await multipart.CopyToAsync(response.Body, cancellation);
+            await multipart.CopyToAsync(response.Body, cancel);
         }
         finally
         {
@@ -70,10 +70,10 @@ public partial class HttpReaderWriter
     static async Task<HttpContent> AddAttachment(
         KeyValuePair<string, Outgoing> attachment,
         MultipartFormDataContent multipart,
-        Cancellation cancellation)
+        Cancel cancel)
     {
         var outgoing = attachment.Value;
-        var content = await outgoing.ContentBuilder(cancellation);
+        var content = await outgoing.ContentBuilder(cancel);
         if (outgoing.Headers != null)
         {
             foreach (var (key, value) in outgoing.Headers)
@@ -89,7 +89,7 @@ public partial class HttpReaderWriter
     Task WriteStream(
         ExecutionResult result,
         HttpResponse response,
-        Cancellation cancellation)
+        Cancel cancel)
     {
         var headers = response.Headers;
         if (result.Query.Span.StartsWith("mutation"))
@@ -102,6 +102,6 @@ public partial class HttpReaderWriter
         }
         headers["Content-Type"] = "application/json; charset=utf-8";
         headers["X-Content-Type-Options"] = "nosniff";
-        return serializer.WriteAsync(response.Body, result, cancellation);
+        return serializer.WriteAsync(response.Body, result, cancel);
     }
 }

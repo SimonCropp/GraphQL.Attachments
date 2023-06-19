@@ -2,17 +2,17 @@
 
 public static class ResponseParser
 {
-    public static async Task<QueryResult> ProcessResponse(this HttpResponseMessage response, Cancellation cancellation = default)
+    public static async Task<QueryResult> ProcessResponse(this HttpResponseMessage response, Cancel cancel = default)
     {
         if (!response.IsMultipart())
         {
-            return new(await response.Content.ReadAsStreamAsync(cancellation), new Dictionary<string, Attachment>(), response.Content.Headers, response.Headers, response.StatusCode);
+            return new(await response.Content.ReadAsStreamAsync(cancel), new Dictionary<string, Attachment>(), response.Content.Headers, response.Headers, response.StatusCode);
         }
 
-        var multipart = await response.Content.ReadAsMultipartAsync(cancellation);
+        var multipart = await response.Content.ReadAsMultipartAsync(cancel);
         var attachments = new Dictionary<string, Attachment>();
 
-        await foreach (var attachment in ReadAttachments(multipart).WithCancellation(cancellation))
+        await foreach (var attachment in ReadAttachments(multipart).WithCancellation(cancel))
         {
             attachments.Add(attachment.Name, attachment);
         }
