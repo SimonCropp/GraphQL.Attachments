@@ -9,7 +9,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Folder Include="wwwroot\" />
-    <PackageReference Include="GraphQL" Version="7.5.0" />
+    <PackageReference Include="GraphQL" Version="7.6.0" />
     <PackageReference Include="GraphQL.SystemTextJson" Version="7.5.0" />
     <ProjectReference Include="..\GraphQL.Attachments\GraphQL.Attachments.csproj" />
     <ProjectReference Include="..\Shared\Shared.csproj" />
