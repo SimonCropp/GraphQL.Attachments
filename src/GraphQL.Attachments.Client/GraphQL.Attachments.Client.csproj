@@ -6,7 +6,7 @@
 
   <ItemGroup>
     <Compile Include="..\GraphQL.Attachments\Guard.cs" Link="Guard.cs" />
-    <PackageReference Include="Argon" Version="0.7.2" />
+    <PackageReference Include="Argon" Version="0.9.0" />
     <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.9" />
     <PackageReference Include="ProjectDefaults" Version="1.0.94" PrivateAssets="all" />
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All" Condition="$(Configuration) == 'Release'" />
