@@ -1,4 +1,2 @@
 ﻿public class Query :
-    BaseRootGraph
-{
-}
+    BaseRootGraph;

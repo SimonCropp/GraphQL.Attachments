@@ -9,27 +9,29 @@ public class Tests
     [Fact]
     public Task Mutation()
     {
-        var mutation = @"
-mutation
-{
-  withAttachment (argument: 'argumentValue')
-  {
-    argument
-  }
-}";
+        var mutation = """
+                       mutation
+                       {
+                         withAttachment (argument: 'argumentValue')
+                         {
+                           argument
+                         }
+                       }
+                       """;
         return Verify(RunQuery(mutation));
     }
 
     [Fact]
     public Task Query()
     {
-        var queryString = @"
-{
-  withAttachment (argument: 'argumentValue')
-  {
-    argument
-  }
-}";
+        var queryString = """
+                          {
+                            withAttachment (argument: 'argumentValue')
+                            {
+                              argument
+                            }
+                          }
+                          """;
 
         return Verify(RunQuery(queryString));
     }
