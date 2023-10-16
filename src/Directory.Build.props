@@ -8,5 +8,6 @@
     <PackageTags>GraphQL, Attachments</PackageTags>
     <ImplicitUsings>enable</ImplicitUsings>
     <Description>Add attachment support to GraphQL</Description>
+    <ResolveAssemblyReferencesSilent>true</ResolveAssemblyReferencesSilent>
   </PropertyGroup>
 </Project>
