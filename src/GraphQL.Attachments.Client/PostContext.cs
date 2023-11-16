@@ -2,13 +2,8 @@
 
 namespace GraphQL.Attachments;
 
-public class PostContext
+public class PostContext(MultipartFormDataContent content)
 {
-    MultipartFormDataContent content;
-
-    public PostContext(MultipartFormDataContent content) =>
-        this.content = content;
-
     public void SetHeadersAction(Action<HttpContentHeaders> headerAction) =>
         HeadersAction = headerAction;
 
