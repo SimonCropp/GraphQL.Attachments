@@ -6,9 +6,9 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="6.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="7.0.13" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="8.0.0" />
     <PackageReference Include="Verify.DiffPlex" Version="2.3.0" />
-    <PackageReference Include="Verify.Xunit" Version="22.6.0" />
+    <PackageReference Include="Verify.Xunit" Version="22.8.0" />
     <PackageReference Include="Verify.Http" Version="5.0.1" />
     <PackageReference Include="xunit" Version="2.6.2" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.5.4" PrivateAssets="all" />
@@ -16,7 +16,7 @@
     <ProjectReference Include="..\GraphQL.Attachments.Client\GraphQL.Attachments.Client.csproj" />
     <ProjectReference Include="..\SampleWeb\SampleWeb.csproj" />
     <ProjectReference Include="..\Shared\Shared.csproj" />
-    <PackageReference Include="ProjectDefaults" Version="1.0.102" PrivateAssets="all" />
+    <PackageReference Include="ProjectDefaults" Version="1.0.106" PrivateAssets="all" />
   </ItemGroup>
 
 </Project>
