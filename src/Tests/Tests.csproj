@@ -7,7 +7,7 @@
   <ItemGroup>
     <PackageReference Include="Argon" Version="0.14.0" />
     <PackageReference Include="GraphQL" Version="7.7.2" />
-    <PackageReference Include="GraphQL.SystemTextJson" Version="7.7.1" />
+    <PackageReference Include="GraphQL.SystemTextJson" Version="7.7.2" />
     <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.2" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
     <PackageReference Include="Microsoft.Extensions.Primitives" Version="8.0.0" />
