@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
 
-[UsesVerify]
 public class GraphQlControllerTests
 {
     static QueryExecutor executor;

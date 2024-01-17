@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Primitives;
 using Newtonsoft.Json;
 
-[UsesVerify]
 public class RequestReaderTests
 {
     static HttpReaderWriter readerWriter = new(new GraphQLSerializer(indent: true));
