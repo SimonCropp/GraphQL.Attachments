@@ -8,7 +8,7 @@
     <Compile Include="..\GraphQL.Attachments\Guard.cs" Link="Guard.cs" />
     <PackageReference Include="Argon" Version="0.15.0" />
     <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="6.0.0" />
-    <PackageReference Include="ProjectDefaults" Version="1.0.108" PrivateAssets="all" />
+    <PackageReference Include="ProjectDefaults" Version="1.0.109" PrivateAssets="all" />
   </ItemGroup>
 
 </Project>
