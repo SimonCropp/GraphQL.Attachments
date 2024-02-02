@@ -1,18 +1,10 @@
-﻿using GraphQL.Attachments;
-
-namespace GraphQL;
+﻿namespace GraphQL;
 
 /// <summary>
 /// The result of a query execution by <see cref="AttachmentsExtensions.ExecuteWithAttachments"/>.
 /// </summary>
-public class AttachmentExecutionResult
+public class AttachmentExecutionResult(ExecutionResult executionResult, IOutgoingAttachments attachments)
 {
-    public ExecutionResult ExecutionResult { get; }
-    public IOutgoingAttachments Attachments { get; }
-
-    public AttachmentExecutionResult(ExecutionResult executionResult, IOutgoingAttachments attachments)
-    {
-        ExecutionResult = executionResult;
-        Attachments = attachments;
-    }
+    public ExecutionResult ExecutionResult { get; } = executionResult;
+    public IOutgoingAttachments Attachments { get; } = attachments;
 }

@@ -1,7 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using System.Net;
-
-namespace GraphQL.Attachments;
+﻿namespace GraphQL.Attachments;
 
 public partial class HttpReaderWriter
 {

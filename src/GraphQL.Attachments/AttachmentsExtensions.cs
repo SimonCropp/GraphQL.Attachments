@@ -1,6 +1,4 @@
-﻿using GraphQL.Attachments;
-
-namespace GraphQL;
+﻿namespace GraphQL;
 
 /// <summary>
 /// Extensions to GraphQL to enable Attachments.

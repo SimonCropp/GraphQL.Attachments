@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Primitives;
+﻿// ReSharper disable AutoPropertyCanBeMadeGetOnly.Local
 
 namespace GraphQL.Attachments;
 

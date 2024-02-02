@@ -1,16 +1,11 @@
-﻿using GraphQL.Attachments;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.TestHost;
-
-public class GraphQlControllerTests
+﻿public class GraphQlControllerTests
 {
     static QueryExecutor executor;
-    static TestServer server;
     static HttpClient client;
 
     static GraphQlControllerTests()
     {
-        server = GetTestServer();
+        var server = GetTestServer();
         client = server.CreateClient();
         executor = new(client);
     }

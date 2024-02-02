@@ -1,6 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-
-namespace GraphQL.Attachments;
+﻿namespace GraphQL.Attachments;
 
 public interface IIncomingAttachments:
     IReadOnlyDictionary<string, AttachmentStream>,

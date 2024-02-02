@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-
-namespace GraphQL.Attachments;
+﻿namespace GraphQL.Attachments;
 
 /// <summary>
 /// Wraps a <see cref="Stream"/> to provide extra information when reading.

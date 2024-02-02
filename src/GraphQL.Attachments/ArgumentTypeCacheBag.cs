@@ -1,7 +1,4 @@
-﻿using GraphQL;
-using GraphQL.Attachments;
-
-static class ArgumentTypeCacheBag
+﻿static class ArgumentTypeCacheBag
 {
     const string key = "GraphQL.Attachments.AttachmentContext";
 
