@@ -5,9 +5,9 @@ namespace GraphQL.Attachments;
 public class AttachmentStreamConverter :
     JsonConverter
 {
-    public override void WriteJson(JsonWriter writer, object? value, JsonSerializer serializer)
+    public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
     {
-        var attachment = (AttachmentStream) value!;
+        var attachment = (AttachmentStream) value;
         writer.WriteStartObject();
         writer.WritePropertyName("Name");
         serializer.Serialize(writer, attachment.Name);
