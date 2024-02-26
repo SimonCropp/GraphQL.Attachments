@@ -99,7 +99,7 @@ public class RequestReaderTests
                         new StringValues("theQuery")
                     },
                     {
-                        "operation",
+                        "operationName",
                         new StringValues("theOperation")
                     },
                     {
@@ -136,7 +136,7 @@ public class RequestReaderTests
                         new("theQuery")
                     },
                     {
-                        "operation",
+                        "operationName",
                         new("theOperation")
                     },
                     {

@@ -75,7 +75,7 @@ public partial class HttpReaderWriter
 
     static string? ReadOperation(TryGetValue tryGetValue)
     {
-        if (!tryGetValue("operation", out var operationValues))
+        if (!tryGetValue("operationName", out var operationValues))
         {
             return null;
         }
