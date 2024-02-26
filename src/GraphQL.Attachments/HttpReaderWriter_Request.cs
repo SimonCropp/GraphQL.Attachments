@@ -85,7 +85,7 @@ public partial class HttpReaderWriter
             return operationValues.ToString();
         }
 
-        throw new("Expected 'operation' to have a single value.");
+        throw new("Expected 'operationName' to have a single value.");
     }
 
     Inputs? GetInputs(TryGetValue tryGetValue)
