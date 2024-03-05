@@ -22,7 +22,7 @@ static class QueryRunner
 
         var result = await executer.ExecuteWithAttachments(options, incomingAttachments);
         var executionResult = result.ExecutionResult;
-        if (executionResult.Errors == null || !executionResult.Errors.Any())
+        if (executionResult.Errors == null || executionResult.Errors.Count == 0)
         {
             return result;
         }

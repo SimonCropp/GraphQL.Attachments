@@ -5,7 +5,7 @@ public class OutgoingAttachments :
 {
     internal Dictionary<string, Outgoing> Inner = new(StringComparer.OrdinalIgnoreCase);
 
-    public bool HasPendingAttachments => Inner.Any();
+    public bool HasPendingAttachments => Inner.Count != 0;
 
     public IReadOnlyList<string> Names => Inner.Keys.ToList();
 
