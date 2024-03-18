@@ -9,5 +9,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Description>Add attachment support to GraphQL</Description>
     <ResolveAssemblyReferencesSilent>true</ResolveAssemblyReferencesSilent>
+    <NuGetAuditMode>all</NuGetAuditMode>
+    <NuGetAuditLevel>low</NuGetAuditLevel>
   </PropertyGroup>
 </Project>
