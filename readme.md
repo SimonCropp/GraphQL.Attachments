@@ -20,7 +20,7 @@ https://nuget.org/packages/GraphQL.Attachments/
 Incoming and Outgoing attachments can be accessed via the `ResolveFieldContext`:
 
 <!-- snippet: UsageInGraphs -->
-<a id='snippet-usageingraphs'></a>
+<a id='snippet-UsageInGraphs'></a>
 ```cs
 Field<ResultGraph>("withAttachment")
     .Argument<NonNullGraphType<StringGraphType>>("argument")
@@ -45,7 +45,7 @@ Field<ResultGraph>("withAttachment")
         };
     });
 ```
-<sup><a href='/src/Shared/Graphs/BaseRootGraph.cs#L19-L44' title='Snippet source file'>snippet source</a> | <a href='#snippet-usageingraphs' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/src/Shared/Graphs/BaseRootGraph.cs#L19-L44' title='Snippet source file'>snippet source</a> | <a href='#snippet-UsageInGraphs' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 
@@ -56,7 +56,7 @@ Field<ResultGraph>("withAttachment")
 When using Attachments the incoming request also requires the incoming form data to be parse. To facilitate this [RequestReader](/src/GraphQL.Attachments/RequestReader.cs) is used.:
 
 <!-- snippet: Invoke -->
-<a id='snippet-invoke'></a>
+<a id='snippet-Invoke'></a>
 ```cs
 public async Task InvokeAsync(HttpContext context, RequestDelegate next)
 {
@@ -84,7 +84,7 @@ public async Task InvokeAsync(HttpContext context, RequestDelegate next)
     response.StatusCode = (int) HttpStatusCode.BadRequest;
 }
 ```
-<sup><a href='/src/SampleWeb/GraphQlMiddleware.cs#L20-L48' title='Snippet source file'>snippet source</a> | <a href='#snippet-invoke' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/src/SampleWeb/GraphQlMiddleware.cs#L20-L48' title='Snippet source file'>snippet source</a> | <a href='#snippet-Invoke' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 
@@ -93,11 +93,11 @@ public async Task InvokeAsync(HttpContext context, RequestDelegate next)
 To expose the attachments to the queries, the attachment context needs to be added to the `IDocumentExecuter`. This is done using `AttachmentsExtensions.ExecuteWithAttachments`:
 
 <!-- snippet: ExecuteWithAttachments -->
-<a id='snippet-executewithattachments'></a>
+<a id='snippet-ExecuteWithAttachments'></a>
 ```cs
 var result = await executer.ExecuteWithAttachments(options, attachments);
 ```
-<sup><a href='/src/SampleWeb/GraphQlMiddleware.cs#L71-L75' title='Snippet source file'>snippet source</a> | <a href='#snippet-executewithattachments' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/src/SampleWeb/GraphQlMiddleware.cs#L71-L75' title='Snippet source file'>snippet source</a> | <a href='#snippet-ExecuteWithAttachments' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 
@@ -106,11 +106,11 @@ var result = await executer.ExecuteWithAttachments(options, attachments);
 As with RequestReader for the incoming data, the outgoing data needs to be written with any resulting attachments. To facilitate this [ResponseWriter](/src/GraphQL.Attachments/ResponseWriter.cs) is used.
 
 <!-- snippet: ResponseWriter -->
-<a id='snippet-responsewriter'></a>
+<a id='snippet-ResponseWriter'></a>
 ```cs
 await readerWriter.WriteResult(response, result, cancel);
 ```
-<sup><a href='/src/SampleWeb/GraphQlMiddleware.cs#L77-L81' title='Snippet source file'>snippet source</a> | <a href='#snippet-responsewriter' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/src/SampleWeb/GraphQlMiddleware.cs#L77-L81' title='Snippet source file'>snippet source</a> | <a href='#snippet-ResponseWriter' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 
@@ -121,7 +121,7 @@ The JavaScript that submits the query does so through by building up a [FormData
 #### Helper method for builgin post settings
 
 <!-- snippet: BuildPostSettings -->
-<a id='snippet-buildpostsettings'></a>
+<a id='snippet-BuildPostSettings'></a>
 ```html
 function BuildPostSettings() {
     var data = new FormData();
@@ -140,14 +140,14 @@ function BuildPostSettings() {
     };
 }
 ```
-<sup><a href='/src/SampleWeb/test.html#L44-L61' title='Snippet source file'>snippet source</a> | <a href='#snippet-buildpostsettings' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/src/SampleWeb/test.html#L44-L61' title='Snippet source file'>snippet source</a> | <a href='#snippet-BuildPostSettings' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 
 #### Post mutation and download result
 
 <!-- snippet: PostMutationAndDownloadFile -->
-<a id='snippet-postmutationanddownloadfile'></a>
+<a id='snippet-PostMutationAndDownloadFile'></a>
 ```html
 function PostMutationAndDownloadFile() {
 
@@ -174,14 +174,14 @@ function PostMutationAndDownloadFile() {
         });
 }
 ```
-<sup><a href='/src/SampleWeb/test.html#L17-L42' title='Snippet source file'>snippet source</a> | <a href='#snippet-postmutationanddownloadfile' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/src/SampleWeb/test.html#L17-L42' title='Snippet source file'>snippet source</a> | <a href='#snippet-PostMutationAndDownloadFile' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 
 #### Post mutation and display text result
 
 <!-- snippet: PostMutationWithTextResult -->
-<a id='snippet-postmutationwithtextresult'></a>
+<a id='snippet-PostMutationWithTextResult'></a>
 ```html
 function PostMutationWithTextResult() {
     var postSettings = BuildPostSettings();
@@ -193,7 +193,7 @@ function PostMutationWithTextResult() {
         });
 }
 ```
-<sup><a href='/src/SampleWeb/test.html#L5-L15' title='Snippet source file'>snippet source</a> | <a href='#snippet-postmutationwithtextresult' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/src/SampleWeb/test.html#L5-L15' title='Snippet source file'>snippet source</a> | <a href='#snippet-PostMutationWithTextResult' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 
