@@ -22,5 +22,5 @@ public class AttachmentStreamConverter :
         throw new NotImplementedException();
 
     public override bool CanConvert(Type type) =>
-        typeof(AttachmentStream).IsAssignableFrom(type);
+        type.IsAssignableTo<AttachmentStream>();
 }

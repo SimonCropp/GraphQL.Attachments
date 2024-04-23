@@ -20,5 +20,5 @@ public class OutgoingAttachmentsConverter :
         throw new NotImplementedException();
 
     public override bool CanConvert(Type type) =>
-        typeof(IOutgoingAttachments).IsAssignableFrom(type);
+        type.IsAssignableTo<IOutgoingAttachments>();
 }

@@ -22,5 +22,5 @@ public class OutgoingConverter :
         throw new NotImplementedException();
 
     public override bool CanConvert(Type type) =>
-        typeof(Outgoing).IsAssignableFrom(type);
+        type.IsAssignableTo<Outgoing>();
 }

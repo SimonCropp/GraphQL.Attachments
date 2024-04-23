@@ -26,5 +26,5 @@ public class AttachmentConverter :
         throw new NotImplementedException();
 
     public override bool CanConvert(Type type) =>
-        typeof(Attachment).IsAssignableFrom(type);
+        type.IsAssignableTo<Attachment>();
 }
