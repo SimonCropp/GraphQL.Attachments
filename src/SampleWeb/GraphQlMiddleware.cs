@@ -41,7 +41,7 @@ public class GraphQlMiddleware :
             return;
         }
 
-        response.Headers["Allow"] = "GET, POST";
+        response.Headers.Allow = "GET, POST";
         response.StatusCode = (int) HttpStatusCode.BadRequest;
     }
 

@@ -80,7 +80,7 @@ public async Task InvokeAsync(HttpContext context, RequestDelegate next)
         return;
     }
 
-    response.Headers["Allow"] = "GET, POST";
+    response.Headers.Allow = "GET, POST";
     response.StatusCode = (int) HttpStatusCode.BadRequest;
 }
 ```

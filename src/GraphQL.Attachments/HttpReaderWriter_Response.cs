@@ -91,14 +91,14 @@ public partial class HttpReaderWriter
         var headers = response.Headers;
         if (result.Query.Span.StartsWith("mutation"))
         {
-            headers["Cache-Control"] = "no-store, max-age=0";
+            headers.CacheControl = "no-store, max-age=0";
         }
         else
         {
-            headers["Cache-Control"] = "no-cache";
+            headers.CacheControl = "no-cache";
         }
-        headers["Content-Type"] = "application/json; charset=utf-8";
-        headers["X-Content-Type-Options"] = "nosniff";
+        headers.ContentType = "application/json; charset=utf-8";
+        headers.XContentTypeOptions = "nosniff";
         return serializer.WriteAsync(response.Body, result, cancel);
     }
 }
