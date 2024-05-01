@@ -1,14 +1,11 @@
 <Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
   </PropertyGroup>
-
   <ItemGroup>
     <Compile Include="..\GraphQL.Attachments\Guard.cs" Link="Guard.cs" />
     <PackageReference Include="Argon" Version="0.17.0" />
     <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="6.0.0" />
-    <PackageReference Include="ProjectDefaults" Version="1.0.126" PrivateAssets="all" />
+    <PackageReference Include="ProjectDefaults" Version="1.0.127" PrivateAssets="all" />
   </ItemGroup>
-
 </Project>
