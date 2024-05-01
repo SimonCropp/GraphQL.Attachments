@@ -56,5 +56,5 @@ public class QueryResultConverter :
         throw new NotImplementedException();
 
     public override bool CanConvert(Type type) =>
-        type.IsAssignableTo<QueryResult>();
+        type.IsAssignableTo(typeof(QueryResult));
 }
