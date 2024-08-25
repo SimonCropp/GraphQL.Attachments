@@ -52,7 +52,8 @@
           SubFields: [
             {
               GraphType: {
-                Name: String
+                Name: String,
+                IsPrivate: false
               },
               Field: {
                 Kind: Field,
@@ -69,10 +70,13 @@
                 ResolvedType: {
                   Type: StringGraphType,
                   ResolvedType: {
-                    Name: String
-                  }
+                    Name: String,
+                    IsPrivate: false
+                  },
+                  IsPrivate: false
                 },
                 Resolver: {},
+                IsPrivate: false,
                 Metadata: {
                   ORIGINAL_EXPRESSION_PROPERTY_NAME: Argument
                 }
@@ -112,6 +116,7 @@
               Target: ObjectGraphType<Result>.<>c,
               Method: Boolean .ctor(System.Object)
             },
+            SkipTypeCheck: false,
             Interfaces: [],
             ResolvedInterfaces: [],
             Fields: [
@@ -121,16 +126,20 @@
                 ResolvedType: {
                   Type: StringGraphType,
                   ResolvedType: {
-                    Name: String
-                  }
+                    Name: String,
+                    IsPrivate: false
+                  },
+                  IsPrivate: false
                 },
                 Resolver: {},
+                IsPrivate: false,
                 Metadata: {
                   ORIGINAL_EXPRESSION_PROPERTY_NAME: Argument
                 }
               }
             ],
-            Name: ResultGraph
+            Name: ResultGraph,
+            IsPrivate: false
           },
           Field: {
             Kind: Field,
@@ -181,6 +190,7 @@
                 Target: ObjectGraphType<Result>.<>c,
                 Method: Boolean .ctor(System.Object)
               },
+              SkipTypeCheck: false,
               Interfaces: [],
               ResolvedInterfaces: [],
               Fields: [
@@ -190,16 +200,20 @@
                   ResolvedType: {
                     Type: StringGraphType,
                     ResolvedType: {
-                      Name: String
-                    }
+                      Name: String,
+                      IsPrivate: false
+                    },
+                    IsPrivate: false
                   },
                   Resolver: {},
+                  IsPrivate: false,
                   Metadata: {
                     ORIGINAL_EXPRESSION_PROPERTY_NAME: Argument
                   }
                 }
               ],
-              Name: ResultGraph
+              Name: ResultGraph,
+              IsPrivate: false
             },
             Arguments: [
               {
@@ -207,13 +221,16 @@
                 ResolvedType: {
                   Type: StringGraphType,
                   ResolvedType: {
-                    Name: String
-                  }
+                    Name: String,
+                    IsPrivate: false
+                  },
+                  IsPrivate: false
                 },
                 Type: NonNullGraphType<StringGraphType>
               }
             ],
-            Resolver: {}
+            Resolver: {},
+            IsPrivate: false
           },
           Name: withAttachment,
           Result: {
@@ -228,6 +245,7 @@
         }
       ],
       GraphType: {
+        SkipTypeCheck: false,
         Interfaces: [],
         ResolvedInterfaces: [],
         Fields: [
@@ -240,6 +258,7 @@
                 Target: ObjectGraphType<Result>.<>c,
                 Method: Boolean .ctor(System.Object)
               },
+              SkipTypeCheck: false,
               Interfaces: [],
               ResolvedInterfaces: [],
               Fields: [
@@ -249,16 +268,20 @@
                   ResolvedType: {
                     Type: StringGraphType,
                     ResolvedType: {
-                      Name: String
-                    }
+                      Name: String,
+                      IsPrivate: false
+                    },
+                    IsPrivate: false
                   },
                   Resolver: {},
+                  IsPrivate: false,
                   Metadata: {
                     ORIGINAL_EXPRESSION_PROPERTY_NAME: Argument
                   }
                 }
               ],
-              Name: ResultGraph
+              Name: ResultGraph,
+              IsPrivate: false
             },
             Arguments: [
               {
@@ -266,13 +289,16 @@
                 ResolvedType: {
                   Type: StringGraphType,
                   ResolvedType: {
-                    Name: String
-                  }
+                    Name: String,
+                    IsPrivate: false
+                  },
+                  IsPrivate: false
                 },
                 Type: NonNullGraphType<StringGraphType>
               }
             ],
-            Resolver: {}
+            Resolver: {},
+            IsPrivate: false
           },
           {
             Name: withAttachment,
@@ -283,6 +309,7 @@
                 Target: ObjectGraphType<Result>.<>c,
                 Method: Boolean .ctor(System.Object)
               },
+              SkipTypeCheck: false,
               Interfaces: [],
               ResolvedInterfaces: [],
               Fields: [
@@ -292,16 +319,20 @@
                   ResolvedType: {
                     Type: StringGraphType,
                     ResolvedType: {
-                      Name: String
-                    }
+                      Name: String,
+                      IsPrivate: false
+                    },
+                    IsPrivate: false
                   },
                   Resolver: {},
+                  IsPrivate: false,
                   Metadata: {
                     ORIGINAL_EXPRESSION_PROPERTY_NAME: Argument
                   }
                 }
               ],
-              Name: ResultGraph
+              Name: ResultGraph,
+              IsPrivate: false
             },
             Arguments: [
               {
@@ -309,16 +340,20 @@
                 ResolvedType: {
                   Type: StringGraphType,
                   ResolvedType: {
-                    Name: String
-                  }
+                    Name: String,
+                    IsPrivate: false
+                  },
+                  IsPrivate: false
                 },
                 Type: NonNullGraphType<StringGraphType>
               }
             ],
-            Resolver: {}
+            Resolver: {},
+            IsPrivate: false
           }
         ],
-        Name: Mutation
+        Name: Mutation,
+        IsPrivate: false
       }
     },
     Query: {
