@@ -34,7 +34,9 @@ public class RequestReaderTests
         var (query, inputs, operation) = await readerWriter.ReadBody(stream, Cancel.None);
         await Verify(new
         {
-            query, inputs, operation
+            query,
+            inputs,
+            operation
         });
     }
 
@@ -47,8 +49,7 @@ public class RequestReaderTests
                 new()
                 {
                     {
-                        "query",
-                        new("theQuery")
+                        "query", new("theQuery")
                     }
                 },
                 new FormFileCollection()),
@@ -72,8 +73,7 @@ public class RequestReaderTests
                 new Dictionary<string, StringValues>
                 {
                     {
-                        "query",
-                        new StringValues("theQuery")
+                        "query", new("theQuery")
                     }
                 })
         };
@@ -95,20 +95,20 @@ public class RequestReaderTests
                 new Dictionary<string, StringValues>
                 {
                     {
-                        "query",
-                        new StringValues("theQuery")
+                        "query", new("theQuery")
                     },
                     {
-                        "operationName",
-                        new StringValues("theOperation")
+                        "operationName", new("theOperation")
                     },
                     {
-                        "variables",
-                        new StringValues(JsonConvert.SerializeObject(
-                            new Inputs(new Dictionary<string, object?>
-                            {
-                                {"key", "value"}
-                            })))
+                        "variables", new(JsonConvert.SerializeObject(
+                            new Inputs(
+                                new Dictionary<string, object?>
+                                {
+                                    {
+                                        "key", "value"
+                                    }
+                                })))
                     }
                 })
         };
@@ -132,19 +132,18 @@ public class RequestReaderTests
                 new()
                 {
                     {
-                        "query",
-                        new("theQuery")
+                        "query", new("theQuery")
                     },
                     {
-                        "operationName",
-                        new("theOperation")
+                        "operationName", new("theOperation")
                     },
                     {
-                        "variables",
-                        new(JsonConvert.SerializeObject(
+                        "variables", new(JsonConvert.SerializeObject(
                             new Inputs(new Dictionary<string, object?>
                             {
-                                {"key", "value"}
+                                {
+                                    "key", "value"
+                                }
                             })))
                     }
                 },
@@ -154,14 +153,18 @@ public class RequestReaderTests
                     {
                         Headers = new HeaderDictionary
                         {
-                            {"file1Header", "file1HeaderValue"}
+                            {
+                                "file1Header", "file1HeaderValue"
+                            }
                         }
                     },
                     new FormFile(new MemoryStream(attachment2Bytes), 0, attachment2Bytes.Length, "attachment2", "attachment2.txt")
                     {
                         Headers = new HeaderDictionary
                         {
-                            {"file2Header", "file2HeaderValue"}
+                            {
+                                "file2Header", "file2HeaderValue"
+                            }
                         }
                     },
                 }),
