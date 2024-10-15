@@ -2,16 +2,15 @@
 <Project>
   <PropertyGroup>
     <NoWarn>CS1591;NU5104</NoWarn>
-    <Version>7.1.0</Version>
+    <Version>7.1.1</Version>
     <AssemblyVersion>1.0.0</AssemblyVersion>
     <LangVersion>preview</LangVersion>
     <PackageTags>GraphQL, Attachments</PackageTags>
     <ImplicitUsings>enable</ImplicitUsings>
     <Description>Add attachment support to GraphQL</Description>
     <ResolveAssemblyReferencesSilent>true</ResolveAssemblyReferencesSilent>
-    <NuGetAuditMode>all</NuGetAuditMode>
-    <NuGetAuditLevel>low</NuGetAuditLevel>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+    <SuppressNETCoreSdkPreviewMessage>true</SuppressNETCoreSdkPreviewMessage>
   </PropertyGroup>
 </Project>

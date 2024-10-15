@@ -4,18 +4,10 @@ using GraphQL.Attachments;
 using GraphQL.SystemTextJson;
 using GraphQL.Types;
 
-public class GraphQlMiddleware :
+public class GraphQlMiddleware(ISchema schema, IDocumentExecuter executer) :
     IMiddleware
 {
-    IDocumentExecuter executer;
-    ISchema schema;
     static HttpReaderWriter readerWriter = new(new GraphQLSerializer(indent: true));
-
-    public GraphQlMiddleware(ISchema schema, IDocumentExecuter executer)
-    {
-        this.schema = schema;
-        this.executer = executer;
-    }
 
     #region Invoke
 

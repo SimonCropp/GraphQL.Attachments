@@ -84,7 +84,7 @@ public async Task InvokeAsync(HttpContext context, RequestDelegate next)
     response.StatusCode = (int) HttpStatusCode.BadRequest;
 }
 ```
-<sup><a href='/src/SampleWeb/GraphQlMiddleware.cs#L20-L48' title='Snippet source file'>snippet source</a> | <a href='#snippet-Invoke' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/src/SampleWeb/GraphQlMiddleware.cs#L12-L40' title='Snippet source file'>snippet source</a> | <a href='#snippet-Invoke' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 
@@ -97,7 +97,7 @@ To expose the attachments to the queries, the attachment context needs to be add
 ```cs
 var result = await executer.ExecuteWithAttachments(options, attachments);
 ```
-<sup><a href='/src/SampleWeb/GraphQlMiddleware.cs#L71-L75' title='Snippet source file'>snippet source</a> | <a href='#snippet-ExecuteWithAttachments' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/src/SampleWeb/GraphQlMiddleware.cs#L63-L67' title='Snippet source file'>snippet source</a> | <a href='#snippet-ExecuteWithAttachments' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 
@@ -110,7 +110,7 @@ As with RequestReader for the incoming data, the outgoing data needs to be writt
 ```cs
 await readerWriter.WriteResult(response, result, cancel);
 ```
-<sup><a href='/src/SampleWeb/GraphQlMiddleware.cs#L77-L81' title='Snippet source file'>snippet source</a> | <a href='#snippet-ResponseWriter' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/src/SampleWeb/GraphQlMiddleware.cs#L69-L73' title='Snippet source file'>snippet source</a> | <a href='#snippet-ResponseWriter' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 
