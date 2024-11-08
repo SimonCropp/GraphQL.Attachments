@@ -4,7 +4,7 @@
     <CentralPackageTransitivePinningEnabled>true</CentralPackageTransitivePinningEnabled>
   </PropertyGroup>
   <ItemGroup>
-    <PackageVersion Include="Argon" Version="0.22.0" />
+    <PackageVersion Include="Argon" Version="0.23.1" />
     <PackageVersion Include="GraphQL" Version="8.2.1" />
     <PackageVersion Include="GraphQL.SystemTextJson" Version="8.2.1" />
     <PackageVersion Include="MarkdownSnippets.MsBuild" Version="27.0.2" />
