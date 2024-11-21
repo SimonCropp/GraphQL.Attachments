@@ -44,8 +44,10 @@ public class QueryResultConverter :
         {
             NewLine = "\n"
         };
-        var textWriter = new JsonTextWriter(stringWriter);
-        textWriter.Formatting = Formatting.Indented;
+        using var textWriter = new JsonTextWriter(stringWriter)
+        {
+            Formatting = Formatting.Indented
+        };
 
         token.WriteTo(textWriter);
 
