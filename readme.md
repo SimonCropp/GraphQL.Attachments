@@ -8,6 +8,11 @@ Provides access to a HTTP stream (via JavaScript on a web page) in [GraphQL](htt
 **See [Milestones](../../milestones?state=closed) for release notes.**
 
 
+### Powered by
+
+[![JetBrains logo.](https://resources.jetbrains.com/storage/products/company/brand/logos/jetbrains.svg)](https://jb.gg/OpenSourceSupport)
+
+
 ## NuGet package
 
 https://nuget.org/packages/GraphQL.Attachments/
