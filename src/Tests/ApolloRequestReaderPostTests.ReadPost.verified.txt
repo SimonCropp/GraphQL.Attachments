@@ -1,0 +1,18 @@
+﻿{
+  attachments: {
+    attachment1.txt: {
+      Name: attachment1.txt,
+      Metadata: {
+        file1Header: [
+          file1HeaderValue
+        ]
+      },
+      Value: Attachment1 Text
+    }
+  },
+  inputs: {
+    key: value
+  },
+  operation: TestOperation,
+  query: The query
+}
