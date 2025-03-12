@@ -8,9 +8,20 @@ builder.Host.ConfigureServices((_, services) =>
     services.AddSingleton<IDocumentExecuter, DocumentExecuter>();
     services.AddSingleton<ISchema, Schema>();
     services.AddSingleton<GraphQlMiddleware>();
+    services.AddCors();
 });
 
 await using var app = builder.Build();
+#if DEBUG
+app.UseCors(cors =>
+{
+    cors.AllowAnyHeader();
+    cors.AllowAnyMethod();
+    cors.SetIsOriginAllowed(_ => true);
+});
+#endif
+app.UseHttpsRedirection();
+app.UseDefaultFiles();
 app.UseWhen(context =>
     {
         var path = context.Request.Path;
@@ -18,11 +29,6 @@ app.UseWhen(context =>
                string.IsNullOrEmpty(remaining);
     },
     b => b.UseMiddleware<GraphQlMiddleware>());
-if (app.Environment.IsDevelopment())
-{
-    app.UseDeveloperExceptionPage();
-}
 
-app.UseHttpsRedirection();
-app.UseDefaultFiles();
+
 await app.RunAsync();

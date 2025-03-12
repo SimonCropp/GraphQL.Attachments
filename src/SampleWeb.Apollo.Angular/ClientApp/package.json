@@ -19,6 +19,7 @@
     "@angular/router": "^19.2.0",
     "@apollo/client": "^3.13.4",
     "apollo-angular": "^10.0.3",
+    "extract-files": "^13.0.0",
     "graphql": "^16.10.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
