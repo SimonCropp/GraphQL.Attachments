@@ -63,6 +63,8 @@ public abstract class BaseRootGraph :
                     fileName = incoming.Name;
                 }
 
+                // This mutation is built for apollo client hence not returning file back
+                // to client
                 return new Result
                 {
                     Argument = fileName
