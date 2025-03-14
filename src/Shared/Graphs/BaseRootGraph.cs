@@ -40,6 +40,13 @@ public abstract class BaseRootGraph :
                     Argument = context.GetArgument<string>("argument"),
                 };
             });
+
+        #endregion
+
+        #region UsageInGraphs_Apollo_File_Upload
+
+        // Processes Apollo Client file uploads. It accepts a single file (Upload type) as part of input,
+        // which Apollo Client automatically transforms into form data when submitted.
         Field<ResultGraph>("withAttachmentAsInput")
             .Arguments(new QueryArguments(
                 new QueryArgument<NonNullGraphType<StringGraphType>>

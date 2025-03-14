@@ -32,3 +32,8 @@ app.UseWhen(context =>
 
 
 await app.RunAsync();
+
+// Add this to allow WebApplicationFactory to reference Program
+// ReSharper disable once ClassNeverInstantiated.Global
+// ReSharper disable once RedundantTypeDeclarationBody
+public partial class Program {}
