@@ -350,6 +350,65 @@
             ],
             Resolver: {},
             IsPrivate: false
+          },
+          {
+            Name: withAttachmentAsInput,
+            Type: ResultGraph,
+            ResolvedType: {
+              IsTypeOf: {
+                Type: Func<object, bool>,
+                Target: ObjectGraphType<Result>.<>c,
+                Method: Boolean .ctor(System.Object)
+              },
+              SkipTypeCheck: false,
+              Interfaces: [],
+              ResolvedInterfaces: [],
+              Fields: [
+                {
+                  Name: argument,
+                  Type: NonNullGraphType<StringGraphType>,
+                  ResolvedType: {
+                    Type: StringGraphType,
+                    ResolvedType: {
+                      Name: String,
+                      IsPrivate: false
+                    },
+                    IsPrivate: false
+                  },
+                  Resolver: {},
+                  IsPrivate: false,
+                  Metadata: {
+                    ORIGINAL_EXPRESSION_PROPERTY_NAME: Argument
+                  }
+                }
+              ],
+              Name: ResultGraph,
+              IsPrivate: false
+            },
+            Arguments: [
+              {
+                Name: argument,
+                ResolvedType: {
+                  Type: StringGraphType,
+                  ResolvedType: {
+                    Name: String,
+                    IsPrivate: false
+                  },
+                  IsPrivate: false
+                },
+                Type: NonNullGraphType<StringGraphType>
+              },
+              {
+                Name: file,
+                ResolvedType: {
+                  Name: Upload,
+                  IsPrivate: false
+                },
+                Type: UploadGraphType
+              }
+            ],
+            Resolver: {},
+            IsPrivate: false
           }
         ],
         Name: Query,
