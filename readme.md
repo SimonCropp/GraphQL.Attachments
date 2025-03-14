@@ -49,8 +49,38 @@ Field<ResultGraph>("withAttachment")
             Argument = context.GetArgument<string>("argument"),
         };
     });
+Field<ResultGraph>("withAttachmentAsInput")
+    .Arguments(new QueryArguments(
+        new QueryArgument<NonNullGraphType<StringGraphType>>
+        {
+            Name = "argument"
+        },
+        new QueryArgument<UploadGraphType>
+        {
+            Name = "file"
+        }))
+    .Resolve(context =>
+    {
+        var incomingAttachments = context.IncomingAttachments();
+        var fileName = "";
+
+        foreach (var incoming in incomingAttachments.Values)
+        {
+            var memoryStream = new MemoryStream();
+            incoming.CopyTo(memoryStream);
+            memoryStream.Position = 0;
+            fileName = incoming.Name;
+        }
+
+        // This mutation is built for apollo client hence not returning file back
+        // to client
+        return new Result
+        {
+            Argument = fileName
+        };
+    });
 ```
-<sup><a href='/src/Shared/Graphs/BaseRootGraph.cs#L19-L44' title='Snippet source file'>snippet source</a> | <a href='#snippet-UsageInGraphs' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/src/Shared/Graphs/BaseRootGraph.cs#L19-L74' title='Snippet source file'>snippet source</a> | <a href='#snippet-UsageInGraphs' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 ~~~~
