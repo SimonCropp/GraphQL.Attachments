@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-
-public class MockHttpRequest :
+﻿public class MockHttpRequest :
     HttpRequest
 {
     public override Task<IFormCollection> ReadFormAsync(Cancel cancel = default) =>

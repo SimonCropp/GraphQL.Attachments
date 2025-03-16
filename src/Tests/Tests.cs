@@ -1,11 +1,7 @@
-﻿using GraphQL;
-using GraphQL.Attachments;
-using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.DependencyInjection;
-
+﻿[TestFixture]
 public class Tests
 {
-    [Fact]
+    [Test]
     public Task Mutation()
     {
         var mutation = """
@@ -20,7 +16,7 @@ public class Tests
         return Verify(RunQuery(mutation));
     }
 
-    [Fact]
+    [Test]
     public Task Query()
     {
         var queryString = """

@@ -7,11 +7,10 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNet.WebApi.Client" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" />
+    <PackageReference Include="NUnit3TestAdapter" />
     <PackageReference Include="Verify.DiffPlex" />
-    <PackageReference Include="Verify.XunitV3" />
+    <PackageReference Include="Verify.NUnit" />
     <PackageReference Include="Verify.Http" />
-    <PackageReference Include="xunit.v3" />
-    <PackageReference Include="xunit.runner.visualstudio" PrivateAssets="all" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" />
     <ProjectReference Include="..\GraphQL.Attachments.Client\GraphQL.Attachments.Client.csproj" />
     <ProjectReference Include="..\SampleWeb\SampleWeb.csproj" />

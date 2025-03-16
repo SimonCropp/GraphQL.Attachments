@@ -1,4 +1,5 @@
-﻿public class GraphQlControllerTests
+﻿[TestFixture]
+public class GraphQlControllerTests
 {
     static QueryExecutor executor;
     static HttpClient client;
@@ -10,15 +11,15 @@
         executor = new(client);
     }
 
-    [Fact]
+    [Test]
     public Task GetIntrospection() =>
         Verify(executor.ExecuteGet(IntrospectionQuery));
 
-    [Fact]
+    [Test]
     public Task PostIntrospection() =>
         Verify(executor.ExecutePost(IntrospectionQuery));
 
-    [Fact]
+    [Test]
     public Task Get()
     {
         var query = """
@@ -32,7 +33,7 @@
         return Verify(executor.ExecuteGet(query));
     }
 
-    [Fact]
+    [Test]
     public Task Get_with_attachment()
     {
         var query = """
@@ -46,7 +47,7 @@
         return Verify(executor.ExecuteGet(query));
     }
 
-    [Fact]
+    [Test]
     public async Task Post()
     {
         var mutation = """
@@ -64,7 +65,7 @@
         await Verify(response.ProcessResponse());
     }
 
-    [Fact]
+    [Test]
     public async Task Post_with_attachment()
     {
         var mutation = """
@@ -84,7 +85,7 @@
         await Verify(response.ProcessResponse());
     }
 
-    [Fact]
+    [Test]
     public async Task Post_with_multiple_attachment()
     {
         var mutation = """
