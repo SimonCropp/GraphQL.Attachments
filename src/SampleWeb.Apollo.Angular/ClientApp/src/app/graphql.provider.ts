@@ -15,11 +15,10 @@ import extractFiles from 'extract-files/extractFiles.mjs'
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import isExtractableFile from 'extract-files/isExtractableFile.mjs'
-import {getOperationDefinition} from '@apollo/client/utilities'
 
 const uri = 'https://localhost:7233/graphql'
 
-
+// begin-snippet: SetupApolloProvider
 export function apolloOptionsFactory(): ApolloClientOptions<NormalizedCacheObject> {
   const httpLink = inject(HttpLink)
   const link = httpLink.create({
@@ -27,6 +26,7 @@ export function apolloOptionsFactory(): ApolloClientOptions<NormalizedCacheObjec
     useGETForQueries: true,
     operationPrinter: (operation) => stripIgnoredCharacters(print(operation)),
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    // apollo client requires extract files to create proper form data for post
     extractFiles: (body: unknown) => {
       return extractFiles(body, isExtractableFile)
     }
@@ -41,3 +41,4 @@ export const graphqlProvider: ApplicationConfig['providers'] = [
   Apollo,
   {provide: APOLLO_OPTIONS, useFactory: apolloOptionsFactory}
 ]
+// end-snippet

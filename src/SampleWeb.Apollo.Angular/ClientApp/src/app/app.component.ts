@@ -17,9 +17,21 @@ export class AppComponent {
   uploadMessage: string = '';
   uploadStatus: 'success' | 'error' = 'success';
 
+  // begin-snippet: UseUploadMutation
+  uploadFileAsInput = gql`
+mutation WithAttachmentAsInput($file: Upload) {
+  withAttachmentAsInput(
+      argument: "test"
+      file:$file
+    ){
+      argument
+    }
+}
+`
+
   uploadFile() {
     this.apollo.mutate({
-      mutation: UploadFile,
+      mutation: this.uploadFileAsInput,
       variables: {file: this.selectedFile},
       context: {
         useMultipart: true  // Important for file uploads with Apollo
@@ -43,6 +55,7 @@ export class AppComponent {
     )
   }
 
+// end-snippet
 
   onFileSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
@@ -55,13 +68,3 @@ export class AppComponent {
   }
 }
 
-const UploadFile = gql`
-mutation WithAttachmentAsInput($file: Upload) {
-  withAttachmentAsInput(
-      argument: "test"
-      file:$file
-    ){
-      argument
-    }
-}
-`

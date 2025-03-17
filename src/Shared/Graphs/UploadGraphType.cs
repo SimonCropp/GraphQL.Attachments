@@ -1,6 +1,7 @@
 using GraphQL.Types;
 using GraphQLParser.AST;
 
+#region UploadGraphType
 public class UploadGraphType : ScalarGraphType
 {
     public UploadGraphType() => Name = "Upload";
@@ -11,3 +12,4 @@ public class UploadGraphType : ScalarGraphType
 
     public override object Serialize(object? value) => "";
 }
+#endregion
