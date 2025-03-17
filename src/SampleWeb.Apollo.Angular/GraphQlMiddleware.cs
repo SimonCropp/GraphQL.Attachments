@@ -9,7 +9,7 @@ public class GraphQlMiddleware(ISchema schema, IDocumentExecuter executer) :
 {
     static HttpReaderWriter readerWriter = new(new GraphQLSerializer(indent: true));
 
-    #region Invoke
+    #region Invoke_Apollo
 
     public async Task InvokeAsync(HttpContext context, RequestDelegate next)
     {
