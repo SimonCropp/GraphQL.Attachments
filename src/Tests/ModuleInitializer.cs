@@ -1,7 +1,4 @@
-﻿using GraphQL;
-using GraphQL.Attachments;
-
-public static class ModuleInitializer
+﻿public static class ModuleInitializer
 {
     [ModuleInitializer]
     public static void Initialize()
