@@ -1,8 +1,8 @@
 ﻿[TestFixture]
 public class GraphQlControllerTests
 {
-    static QueryExecutor executor;
-    static HttpClient client;
+        static QueryExecutor executor;
+        static HttpClient client;
 
     static GraphQlControllerTests()
     {

@@ -19,13 +19,14 @@
       <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" />
       <PackageReference Include="Microsoft.AspNetCore.TestHost" />
       <PackageReference Include="Microsoft.NET.Test.Sdk" />
+      <PackageReference Include="NUnit3TestAdapter" />
       <PackageReference Include="ProjectDefaults">
         <PrivateAssets>all</PrivateAssets>
         <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       </PackageReference>
       <PackageReference Include="Verify.DiffPlex" />
       <PackageReference Include="Verify.Http" />
-      <PackageReference Include="Verify.XunitV3" />
+      <PackageReference Include="Verify.NUnit" />
     </ItemGroup>
 
     <ItemGroup>

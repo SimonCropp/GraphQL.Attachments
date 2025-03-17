@@ -1,10 +1,9 @@
 ﻿using Newtonsoft.Json;
-using GraphQL;
-using Microsoft.AspNetCore.Http;
 
+[TestFixture]
 public class ApolloRequestReaderPostTests
 {
-    [Fact]
+    [Test]
     public async Task ReadPost()
     {
         var attachment1Bytes = "Attachment1 Text"u8.ToArray();

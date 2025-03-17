@@ -1,19 +1,19 @@
 ﻿using Microsoft.AspNetCore.Mvc.Testing;
 
-namespace SampleWeb.Apollo.Angular.Tests;
-
-public class ControllerTests : IClassFixture<WebApplicationFactory<Program>>
+[TestFixture]
+public class ControllerTests
 {
-    readonly QueryExecutor executor;
-    readonly HttpClient client;
+    static QueryExecutor executor;
+    static HttpClient client;
 
-    public ControllerTests(WebApplicationFactory<Program> factory)
+    static ControllerTests()
     {
+        var factory = new WebApplicationFactory<Program>();
         client = factory.CreateClient();
         executor = new(client);
     }
 
-    [Fact]
+    [Test]
     public Task Get_with_attachment()
     {
         var query = """
@@ -27,7 +27,7 @@ public class ControllerTests : IClassFixture<WebApplicationFactory<Program>>
         return Verify(executor.ExecuteGet(query));
     }
 
-    [Fact]
+    [Test]
     public async Task Post_with_attachment_as_input()
     {
         var mutation = """

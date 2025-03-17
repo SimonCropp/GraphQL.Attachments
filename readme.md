@@ -80,35 +80,6 @@ public async Task InvokeAsync(HttpContext context, RequestDelegate next)
 
     if (isPost)
     {
-        var (query, inputs, attachments, operation) = await ApolloPostRequestReader.ReadPost(request, cancel);
-        await Execute(response, query, operation, attachments, inputs, cancel);
-        return;
-    }
-
-    response.Headers.Allow = "GET, POST";
-    response.StatusCode = (int)HttpStatusCode.BadRequest;
-}
-```
-<sup><a href='/src/SampleWeb.Apollo.Angular/GraphQlMiddleware.cs#L12-L40' title='Snippet source file'>snippet source</a> | <a href='#snippet-Invoke' title='Start of snippet'>anchor</a></sup>
-<a id='snippet-Invoke-1'></a>
-```cs
-public async Task InvokeAsync(HttpContext context, RequestDelegate next)
-{
-    var cancel = context.RequestAborted;
-    var response = context.Response;
-    var request = context.Request;
-    var isGet = HttpMethods.IsGet(request.Method);
-    var isPost = HttpMethods.IsPost(request.Method);
-
-    if (isGet)
-    {
-        var (query, inputs, operation) = readerWriter.ReadGet(request);
-        await Execute(response, query, operation, null, inputs, cancel);
-        return;
-    }
-
-    if (isPost)
-    {
         var (query, inputs, attachments, operation) = await readerWriter.ReadPost(request, cancel);
         await Execute(response, query, operation, attachments, inputs, cancel);
         return;
@@ -118,7 +89,7 @@ public async Task InvokeAsync(HttpContext context, RequestDelegate next)
     response.StatusCode = (int) HttpStatusCode.BadRequest;
 }
 ```
-<sup><a href='/src/SampleWeb/GraphQlMiddleware.cs#L12-L40' title='Snippet source file'>snippet source</a> | <a href='#snippet-Invoke-1' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/src/SampleWeb/GraphQlMiddleware.cs#L12-L40' title='Snippet source file'>snippet source</a> | <a href='#snippet-Invoke' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 
