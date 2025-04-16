@@ -15,13 +15,13 @@ public class AttachmentStream :
     /// <param name="inner">The <see cref="Stream"/> to wrap.</param>
     /// <param name="length">The length of <paramref name="inner"/>.</param>
     /// <param name="metadata">The attachment metadata.</param>
-    public AttachmentStream(string name, Stream inner, long length, IHeaderDictionary metadata)
+    public AttachmentStream(string name, Stream inner, long? length = null, IHeaderDictionary? metadata = null)
     {
         Guard.AgainstNullWhiteSpace(name);
         this.inner = inner;
         Name = name;
-        Length = length;
-        Metadata = metadata;
+        Length = length ?? inner.Length;
+        Metadata = metadata ?? new HeaderDictionary();
     }
 
     public async Task<byte[]> ToArray()
