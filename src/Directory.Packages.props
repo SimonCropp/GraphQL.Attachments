@@ -14,7 +14,7 @@
     <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="9.0.4" />
     <PackageVersion Include="Microsoft.Extensions.Primitives" Version="9.0.4" />
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.13.0" />
-    <PackageVersion Include="Microsoft.Sbom.Targets" Version="3.1.0" />
+    <PackageVersion Include="Microsoft.Sbom.Targets" Version="4.0.2" />
     <PackageVersion Include="NUnit3TestAdapter" Version="5.0.0" />
     <PackageVersion Include="ProjectDefaults" Version="1.0.152" />
     <PackageVersion Include="System.Text.Encodings.Web" Version="9.0.4" />
