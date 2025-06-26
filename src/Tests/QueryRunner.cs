@@ -18,16 +18,17 @@
 
         var result = await executer.ExecuteWithAttachments(options, incomingAttachments);
         var executionResult = result.ExecutionResult;
-        if (executionResult.Errors == null || executionResult.Errors.Count == 0)
+        var errors = executionResult.Errors;
+        if (errors == null || errors.Count == 0)
         {
             return result;
         }
 
-        if (executionResult.Errors.Count == 1)
+        if (errors.Count == 1)
         {
-            throw executionResult.Errors.First();
+            throw errors.First();
         }
 
-        throw new AggregateException(executionResult.Errors);
+        throw new AggregateException(errors);
     }
 }
