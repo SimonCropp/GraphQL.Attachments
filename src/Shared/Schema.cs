@@ -3,10 +3,17 @@
 public class Schema :
     GraphQL.Types.Schema
 {
-    public Schema(IServiceProvider provider) :
+    public Schema(IServiceProvider provider)
+        :
         base(provider)
     {
-        Query = (Query) provider.GetRequiredService(typeof(Query));
-        Mutation = (Mutation) provider.GetRequiredService(typeof(Mutation));
+        Query = (Query)provider.GetRequiredService(typeof(Query));
+        Mutation = (Mutation)provider.GetRequiredService(typeof(Mutation));
+
+        #region RegisterUploadType
+
+        RegisterTypeMapping(typeof(Upload), typeof(UploadGraphType));
+
+        #endregion
     }
 }

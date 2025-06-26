@@ -3,22 +3,22 @@
 [![Build status](https://ci.appveyor.com/api/projects/status/wq5ox06crbl9c2py/branch/main?svg=true)](https://ci.appveyor.com/project/SimonCropp/graphql-attachments)
 [![NuGet Status](https://img.shields.io/nuget/v/GraphQL.Attachments.svg)](https://www.nuget.org/packages/GraphQL.Attachments/)
 
-Provides access to a HTTP stream (via JavaScript on a web page) in [GraphQL](https://graphql-dotnet.github.io/) [Mutations](https://graphql-dotnet.github.io/docs/getting-started/mutations/) or [Queries](https://graphql-dotnet.github.io/docs/getting-started/queries). Attachments are transferred via a [multipart form](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Disposition).
+Provides access to a HTTP stream (via JavaScript on a web page)
+in [GraphQL](https://graphql-dotnet.github.io/) [Mutations](https://graphql-dotnet.github.io/docs/getting-started/mutations/)
+or [Queries](https://graphql-dotnet.github.io/docs/getting-started/queries). Attachments are transferred via
+a [multipart form](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Disposition).
 
 **See [Milestones](../../milestones?state=closed) for release notes.**
-
 
 ### Powered by
 
 [![JetBrains logo.](https://resources.jetbrains.com/storage/products/company/brand/logos/jetbrains.svg)](https://jb.gg/OpenSourceSupport)
-
 
 ## NuGet package
 
 https://nuget.org/packages/GraphQL.Attachments/
 
     PM> Install-Package GraphQL.Attachments
-
 
 ## Usage in Graphs
 
@@ -53,12 +53,12 @@ Field<ResultGraph>("withAttachment")
 <sup><a href='/src/Shared/Graphs/BaseRootGraph.cs#L19-L44' title='Snippet source file'>snippet source</a> | <a href='#snippet-UsageInGraphs' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
-
 ## Server-side Middleware
 
 ### RequestReader instead of binding
 
-When using Attachments the incoming request also requires the incoming form data to be parse. To facilitate this [RequestReader](/src/GraphQL.Attachments/RequestReader.cs) is used.:
+When using Attachments the incoming request also requires the incoming form data to be parse. To facilitate
+this [RequestReader](/src/GraphQL.Attachments/RequestReader.cs) is used.:
 
 <!-- snippet: Invoke -->
 <a id='snippet-Invoke'></a>
@@ -92,36 +92,48 @@ public async Task InvokeAsync(HttpContext context, RequestDelegate next)
 <sup><a href='/src/SampleWeb/GraphQlMiddleware.cs#L12-L40' title='Snippet source file'>snippet source</a> | <a href='#snippet-Invoke' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
-
 ### Query Execution
 
-To expose the attachments to the queries, the attachment context needs to be added to the `IDocumentExecuter`. This is done using `AttachmentsExtensions.ExecuteWithAttachments`:
+To expose the attachments to the queries, the attachment context needs to be added to the `IDocumentExecuter`. This is
+done using `AttachmentsExtensions.ExecuteWithAttachments`:
 
 <!-- snippet: ExecuteWithAttachments -->
 <a id='snippet-ExecuteWithAttachments'></a>
 ```cs
 var result = await executer.ExecuteWithAttachments(options, attachments);
 ```
-<sup><a href='/src/SampleWeb/GraphQlMiddleware.cs#L63-L67' title='Snippet source file'>snippet source</a> | <a href='#snippet-ExecuteWithAttachments' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/src/SampleWeb.Apollo.Angular/GraphQlMiddleware.cs#L63-L67' title='Snippet source file'>snippet source</a> | <a href='#snippet-ExecuteWithAttachments' title='Start of snippet'>anchor</a></sup>
+<a id='snippet-ExecuteWithAttachments-1'></a>
+```cs
+var result = await executer.ExecuteWithAttachments(options, attachments);
+```
+<sup><a href='/src/SampleWeb/GraphQlMiddleware.cs#L63-L67' title='Snippet source file'>snippet source</a> | <a href='#snippet-ExecuteWithAttachments-1' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
-
 
 ### Result Writing
 
-As with RequestReader for the incoming data, the outgoing data needs to be written with any resulting attachments. To facilitate this [ResponseWriter](/src/GraphQL.Attachments/ResponseWriter.cs) is used.
+As with RequestReader for the incoming data, the outgoing data needs to be written with any resulting attachments. To
+facilitate this [ResponseWriter](/src/GraphQL.Attachments/ResponseWriter.cs) is used.
 
 <!-- snippet: ResponseWriter -->
 <a id='snippet-ResponseWriter'></a>
 ```cs
 await readerWriter.WriteResult(response, result, cancel);
 ```
-<sup><a href='/src/SampleWeb/GraphQlMiddleware.cs#L69-L73' title='Snippet source file'>snippet source</a> | <a href='#snippet-ResponseWriter' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/src/SampleWeb.Apollo.Angular/GraphQlMiddleware.cs#L69-L73' title='Snippet source file'>snippet source</a> | <a href='#snippet-ResponseWriter' title='Start of snippet'>anchor</a></sup>
+<a id='snippet-ResponseWriter-1'></a>
+```cs
+await readerWriter.WriteResult(response, result, cancel);
+```
+<sup><a href='/src/SampleWeb/GraphQlMiddleware.cs#L69-L73' title='Snippet source file'>snippet source</a> | <a href='#snippet-ResponseWriter-1' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
-
 
 ## Client - JavaScript
 
-The JavaScript that submits the query does so through by building up a [FormData](https://developer.mozilla.org/en-US/docs/Web/API/FormData) object and [POSTing](https://developer.mozilla.org/en-US/docs/Learn/HTML/Forms/Sending_and_retrieving_form_data#The_POST_method) that via the [Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API).
+The JavaScript that submits the query does so through by building up
+a [FormData](https://developer.mozilla.org/en-US/docs/Web/API/FormData) object
+and [POSTing](https://developer.mozilla.org/en-US/docs/Learn/HTML/Forms/Sending_and_retrieving_form_data#The_POST_method)
+that via the [Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API).
 
 #### Helper method for builgin post settings
 
@@ -147,7 +159,6 @@ function BuildPostSettings() {
 ```
 <sup><a href='/src/SampleWeb/test.html#L44-L61' title='Snippet source file'>snippet source</a> | <a href='#snippet-BuildPostSettings' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
-
 
 #### Post mutation and download result
 
@@ -182,7 +193,6 @@ function PostMutationAndDownloadFile() {
 <sup><a href='/src/SampleWeb/test.html#L17-L42' title='Snippet source file'>snippet source</a> | <a href='#snippet-PostMutationAndDownloadFile' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
-
 #### Post mutation and display text result
 
 <!-- snippet: PostMutationWithTextResult -->
@@ -201,10 +211,12 @@ function PostMutationWithTextResult() {
 <sup><a href='/src/SampleWeb/test.html#L5-L15' title='Snippet source file'>snippet source</a> | <a href='#snippet-PostMutationWithTextResult' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
-
 ## Client - .NET
 
-Creating and posting a multipart form can be done using a combination of [MultipartFormDataContent](https://msdn.microsoft.com/en-us/library/system.net.http.multipartformdatacontent.aspx) and [HttpClient.PostAsync](https://msdn.microsoft.com/en-us/library/system.net.http.httpclient.postasync.aspx). To simplify this action the `ClientQueryExecutor` class can be used:
+Creating and posting a multipart form can be done using a combination
+of [MultipartFormDataContent](https://msdn.microsoft.com/en-us/library/system.net.http.multipartformdatacontent.aspx)
+and [HttpClient.PostAsync](https://msdn.microsoft.com/en-us/library/system.net.http.httpclient.postasync.aspx). To
+simplify this action the `ClientQueryExecutor` class can be used:
 
 <!-- snippet: QueryExecutor.cs -->
 <a id='snippet-QueryExecutor.cs'></a>
@@ -269,9 +281,208 @@ public class QueryExecutor
 <sup><a href='/src/GraphQL.Attachments.Client/QueryExecutor.cs#L1-L56' title='Snippet source file'>snippet source</a> | <a href='#snippet-QueryExecutor.cs' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
-This can be useful when performing [Integration testing in ASP.NET Core](https://docs.microsoft.com/en-us/aspnet/core/testing/integration-testing).
+This can be useful when
+performing [Integration testing in ASP.NET Core](https://docs.microsoft.com/en-us/aspnet/core/testing/integration-testing).
 
+## Use in conjunction with Apollo client (Angular)
+
+### Custom upload type required
+
+<!-- snippet: Upload -->
+<a id='snippet-Upload'></a>
+```cs
+public class Upload;
+```
+<sup><a href='/src/Shared/Graphs/Upload.cs#L1-L5' title='Snippet source file'>snippet source</a> | <a href='#snippet-Upload' title='Start of snippet'>anchor</a></sup>
+<!-- endSnippet -->
+<!-- snippet: UploadGraphType -->
+<a id='snippet-UploadGraphType'></a>
+
+```cs
+public class UploadGraphType : ScalarGraphType
+{
+    public UploadGraphType() => Name = "Upload";
+
+    public override object ParseLiteral(GraphQLValue value) => new Upload();
+
+    public override object ParseValue(object? value) => new Upload();
+
+    public override object Serialize(object? value) => "";
+}
+```
+
+<sup><a href='/src/Shared/Graphs/UploadGraphType.cs#L4-L15' title='Snippet source file'>snippet
+source</a> | <a href='#snippet-UploadGraphType' title='Start of snippet'>anchor</a></sup>
+<!-- endSnippet -->
+
+### Register the type in schema
+
+<!-- snippet: RegisterUploadType -->
+<a id='snippet-RegisterUploadType'></a>
+```cs
+RegisterTypeMapping(typeof(Upload), typeof(UploadGraphType));
+```
+<sup><a href='/src/Shared/Schema.cs#L13-L17' title='Snippet source file'>snippet source</a> | <a href='#snippet-RegisterUploadType' title='Start of snippet'>anchor</a></sup>
+<!-- endSnippet -->
+
+### Graph Usage
+
+<!-- snippet: UsageInGraphs_Apollo_File_Upload -->
+<a id='snippet-UsageInGraphs_Apollo_File_Upload'></a>
+```cs
+// Processes Apollo Client file uploads. It accepts a single file (Upload type) as part of input,
+// which Apollo Client automatically transforms into form data when submitted.
+Field<ResultGraph>("withAttachmentAsInput")
+    .Arguments(new QueryArguments(
+        new QueryArgument<NonNullGraphType<StringGraphType>>
+        {
+            Name = "argument"
+        },
+        new QueryArgument<UploadGraphType>
+        {
+            Name = "file"
+        }))
+    .Resolve(context =>
+    {
+        var incomingAttachments = context.IncomingAttachments();
+        var fileName = "";
+
+        foreach (var incoming in incomingAttachments.Values)
+        {
+            var memoryStream = new MemoryStream();
+            incoming.CopyTo(memoryStream);
+            memoryStream.Position = 0;
+            fileName = incoming.Name;
+        }
+
+        // This mutation is built for apollo client hence not returning file back
+        // to client
+        return new Result
+        {
+            Argument = fileName
+        };
+    });
+```
+<sup><a href='/src/Shared/Graphs/BaseRootGraph.cs#L46-L81' title='Snippet source file'>snippet source</a> | <a href='#snippet-UsageInGraphs_Apollo_File_Upload' title='Start of snippet'>anchor</a></sup>
+<!-- endSnippet -->
+
+### Middleware
+<!-- snippet: Invoke_Apollo -->
+<a id='snippet-Invoke_Apollo'></a>
+```cs
+public async Task InvokeAsync(HttpContext context, RequestDelegate next)
+{
+    var cancel = context.RequestAborted;
+    var response = context.Response;
+    var request = context.Request;
+    var isGet = HttpMethods.IsGet(request.Method);
+    var isPost = HttpMethods.IsPost(request.Method);
+
+    if (isGet)
+    {
+        var (query, inputs, operation) = readerWriter.ReadGet(request);
+        await Execute(response, query, operation, null, inputs, cancel);
+        return;
+    }
+
+    if (isPost)
+    {
+        var (query, inputs, attachments, operation) = await ApolloPostRequestReader.ReadPost(request, cancel);
+        await Execute(response, query, operation, attachments, inputs, cancel);
+        return;
+    }
+
+    response.Headers.Allow = "GET, POST";
+    response.StatusCode = (int)HttpStatusCode.BadRequest;
+}
+```
+<sup><a href='/src/SampleWeb.Apollo.Angular/GraphQlMiddleware.cs#L12-L40' title='Snippet source file'>snippet source</a> | <a href='#snippet-Invoke_Apollo' title='Start of snippet'>anchor</a></sup>
+<!-- endSnippet -->
+### Angular client
+
+#### Prerequisite
+
+Run the following script to install required packages to the Angular project
+
+`npm i apollo-angular @apollo/client graphql extract-files`
+
+#### Set up graphql provider
+
+<!-- snippet: SetupApolloProvider -->
+<a id='snippet-SetupApolloProvider'></a>
+```ts
+export function apolloOptionsFactory(): ApolloClientOptions<NormalizedCacheObject> {
+  const httpLink = inject(HttpLink)
+  const link = httpLink.create({
+    uri: uri,
+    useGETForQueries: true,
+    operationPrinter: (operation) => stripIgnoredCharacters(print(operation)),
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    // apollo client requires extract files to create proper form data for post
+    extractFiles: (body: unknown) => {
+      return extractFiles(body, isExtractableFile)
+    }
+  })
+  return {
+    link: ApolloLink.from([link]),
+    cache: new InMemoryCache()
+  }
+}
+
+export const graphqlProvider: ApplicationConfig['providers'] = [
+  Apollo,
+  {provide: APOLLO_OPTIONS, useFactory: apolloOptionsFactory}
+]
+```
+<sup><a href='/src/SampleWeb.Apollo.Angular/ClientApp/src/app/graphql.provider.ts#L21-L44' title='Snippet source file'>snippet source</a> | <a href='#snippet-SetupApolloProvider' title='Start of snippet'>anchor</a></sup>
+<!-- endSnippet -->
+
+#### Use upload mutation
+
+<!-- snippet: UseUploadMutation -->
+<a id='snippet-UseUploadMutation'></a>
+```ts
+uploadFileAsInput = gql`
+mutation WithAttachmentAsInput($file: Upload) {
+withAttachmentAsInput(
+    argument: "test"
+    file:$file
+  ){
+    argument
+  }
+}
+`
+
+uploadFile() {
+  this.apollo.mutate({
+    mutation: this.uploadFileAsInput,
+    variables: {file: this.selectedFile},
+    context: {
+      useMultipart: true  // Important for file uploads with Apollo
+    }
+  }).subscribe(
+    {
+      next: ({data}: any) => {
+        this.uploading = false;
+        if (data) {
+          this.uploadMessage = `File ${data.withAttachmentAsInput.argument} uploaded successfully!`;
+          this.uploadStatus = 'success';
+        }
+      },
+      error: (error) => {
+        this.uploading = false;
+        this.uploadMessage = 'Error uploading file: ' + error;
+        this.uploadStatus = 'error';
+        console.log(error);
+      }
+    }
+  )
+}
+```
+<sup><a href='/src/SampleWeb.Apollo.Angular/ClientApp/src/app/app.component.ts#L20-L58' title='Snippet source file'>snippet source</a> | <a href='#snippet-UseUploadMutation' title='Start of snippet'>anchor</a></sup>
+<!-- endSnippet -->
 
 ## Icon
 
-<a href="https://thenounproject.com/term/database/1631008/" target="_blank">memory</a> designed by H Alberto Gongora from [The Noun Project](https://thenounproject.com)
+<a href="https://thenounproject.com/term/database/1631008/" target="_blank">memory</a> designed by H Alberto Gongora
+from [The Noun Project](https://thenounproject.com)

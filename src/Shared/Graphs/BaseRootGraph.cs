@@ -42,5 +42,42 @@ public abstract class BaseRootGraph :
             });
 
         #endregion
+
+        #region UsageInGraphs_Apollo_File_Upload
+
+        // Processes Apollo Client file uploads. It accepts a single file (Upload type) as part of input,
+        // which Apollo Client automatically transforms into form data when submitted.
+        Field<ResultGraph>("withAttachmentAsInput")
+            .Arguments(new QueryArguments(
+                new QueryArgument<NonNullGraphType<StringGraphType>>
+                {
+                    Name = "argument"
+                },
+                new QueryArgument<UploadGraphType>
+                {
+                    Name = "file"
+                }))
+            .Resolve(context =>
+            {
+                var incomingAttachments = context.IncomingAttachments();
+                var fileName = "";
+
+                foreach (var incoming in incomingAttachments.Values)
+                {
+                    var memoryStream = new MemoryStream();
+                    incoming.CopyTo(memoryStream);
+                    memoryStream.Position = 0;
+                    fileName = incoming.Name;
+                }
+
+                // This mutation is built for apollo client hence not returning file back
+                // to client
+                return new Result
+                {
+                    Argument = fileName
+                };
+            });
+
+        #endregion
     }
 }

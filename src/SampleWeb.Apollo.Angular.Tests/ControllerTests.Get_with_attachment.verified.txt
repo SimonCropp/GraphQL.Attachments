@@ -1,0 +1,19 @@
+﻿{
+  Status: OK 200,
+  ResultStream:
+{
+  "data": {
+    "withAttachment": {
+      "argument": "argumentValue"
+    }
+  }
+},
+  ContentHeaders: {
+    Content-Type: application/json; charset=utf-8
+  },
+  Headers: {
+    Cache-Control: no-cache,
+    X-Content-Type-Options: nosniff
+  },
+  Attachments: {}
+}

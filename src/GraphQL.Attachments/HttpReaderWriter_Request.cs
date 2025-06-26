@@ -28,6 +28,7 @@ public partial class HttpReaderWriter
 
     class PostBody
     {
+        // ReSharper disable InconsistentNaming
         public string operationName { get; set; } = null!;
         public string query { get; set; } = null!;
         public Inputs? variables { get; set; }

@@ -1,0 +1,36 @@
+<div class="file-upload-container">
+  <h2>GraphQL File Upload</h2>
+
+  <div class="upload-section">
+    <input
+      type="file"
+      class="file-input"
+      (change)="onFileSelected($event)"
+      #fileUpload>
+
+    <div class="file-upload-actions">
+      <button
+        [disabled]="!selectedFile || uploading"
+        (click)="uploadFile()"
+        class="upload-btn">
+        {{ uploading ? 'Uploading...' : 'Upload' }}
+      </button>
+      @if (fileName) {
+        <span class="file-name">
+            Selected file: {{ fileName }}
+          </span>
+      }
+    </div>
+  </div>
+  @if (uploading) {
+
+    <div class="progress-container">
+      <div class="loading-indicator"></div>
+    </div>
+  }
+  @if (uploadMessage) {
+    <div [class]="uploadStatus" class="message">
+      {{ uploadMessage }}
+    </div>
+  }
+</div>
