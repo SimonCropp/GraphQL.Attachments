@@ -21,7 +21,7 @@ public class Startup
                 return path.StartsWithSegments("/graphql", out var remaining) &&
                        string.IsNullOrEmpty(remaining);
             },
-            b => b.UseMiddleware<GraphQlMiddleware>());
+            _ => _.UseMiddleware<GraphQlMiddleware>());
         builder.UseStaticFiles();
     }
 }

@@ -1,6 +1,4 @@
-﻿using System.Net.Http.Headers;
-
-namespace GraphQL.Attachments;
+﻿namespace GraphQL.Attachments;
 
 public class GetRequest
 {
