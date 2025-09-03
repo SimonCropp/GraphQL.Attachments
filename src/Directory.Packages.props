@@ -14,13 +14,13 @@
     <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="9.0.8" />
     <PackageVersion Include="Microsoft.Extensions.Primitives" Version="9.0.8" />
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
-    <PackageVersion Include="Microsoft.Sbom.Targets" Version="4.1.1" />
+    <PackageVersion Include="Microsoft.Sbom.Targets" Version="4.1.2" />
     <PackageVersion Include="NUnit3TestAdapter" Version="5.1.0" />
     <PackageVersion Include="ProjectDefaults" Version="1.0.157" />
     <PackageVersion Include="System.Text.Encodings.Web" Version="9.0.8" />
     <PackageVersion Include="System.Text.Json" Version="9.0.8" />
     <PackageVersion Include="Verify.DiffPlex" Version="3.1.2" />
     <PackageVersion Include="Verify.Http" Version="7.0.0" />
-    <PackageVersion Include="Verify.NUnit" Version="30.8.0" />
+    <PackageVersion Include="Verify.NUnit" Version="30.10.0" />
   </ItemGroup>
 </Project>
