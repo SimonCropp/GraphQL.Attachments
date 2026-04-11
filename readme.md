@@ -10,7 +10,7 @@ Provides access to a HTTP stream (via JavaScript on a web page) in [GraphQL](htt
 
 ### Powered by
 
-[![JetBrains logo.](https://resources.jetbrains.com/storage/products/company/brand/logos/jetbrains.svg)](https://jb.gg/OpenSourceSupport)
+[![JetBrains logo.](https://raw.githubusercontent.com/SimonCropp/GraphQL.Attachments/main/docs/jetbrains.png)](https://jb.gg/OpenSourceSupport)
 
 
 ## NuGet package
