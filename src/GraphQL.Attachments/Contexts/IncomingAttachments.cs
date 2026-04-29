@@ -28,6 +28,21 @@ public class IncomingAttachments :
         return Values.Single();
     }
 
+    public AttachmentStream GetValue(string name)
+    {
+        if (TryGetValue(name, out var attachment))
+        {
+            return attachment;
+        }
+
+        if (Count == 0)
+        {
+            throw new($"Attachment '{name}' not found. No attachments are available.");
+        }
+
+        throw new($"Attachment '{name}' not found. Available attachments: {string.Join(", ", Keys)}.");
+    }
+
     public bool TryGetValue([NotNullWhen(true)] out AttachmentStream? stream)
     {
         if (Count == 0)

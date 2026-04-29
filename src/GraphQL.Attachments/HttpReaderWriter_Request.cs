@@ -65,7 +65,7 @@ public partial class HttpReaderWriter
 
         if (queryValues.Count != 1)
         {
-            throw new("Expected 'query' to have a single value.");
+            throw new($"Expected 'query' to have a single value, but found {queryValues.Count} values.");
         }
 
         var operation = ReadOperation(tryGetValue);
@@ -85,7 +85,7 @@ public partial class HttpReaderWriter
             return operationValues.ToString();
         }
 
-        throw new("Expected 'operationName' to have a single value.");
+        throw new($"Expected 'operationName' to have a single value, but found {operationValues.Count} values.");
     }
 
     Inputs? GetInputs(TryGetValue tryGetValue)
@@ -97,7 +97,7 @@ public partial class HttpReaderWriter
 
         if (values.Count != 1)
         {
-            throw new("Expected 'variables' to have a single value.");
+            throw new($"Expected 'variables' to have a single value, but found {values.Count} values.");
         }
 
         var json = values.ToString();

@@ -5,5 +5,6 @@ public interface IIncomingAttachments:
     IAsyncDisposable
 {
     AttachmentStream GetValue();
+    AttachmentStream GetValue(string name);
     bool TryGetValue([NotNullWhen(true)] out AttachmentStream? func);
 }

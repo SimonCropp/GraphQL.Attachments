@@ -120,6 +120,80 @@ public class RequestReaderTests
     }
 
     [Test]
+    public void ReadPost_MissingQuery_Throws()
+    {
+        var mockHttpRequest = new MockHttpRequest
+        {
+            Form = new FormCollection(new(), new FormFileCollection()),
+        };
+        var exception = Assert.ThrowsAsync<Exception>(() => readerWriter.ReadPost(mockHttpRequest))!;
+        Assert.That(exception.Message, Does.Contain("Expected to find a form value named 'query'"));
+    }
+
+    [Test]
+    public void ReadPost_MultipleQueryValues_Throws()
+    {
+        var mockHttpRequest = new MockHttpRequest
+        {
+            Form = new FormCollection(
+                new()
+                {
+                    {
+                        "query", new(["one", "two"])
+                    }
+                },
+                new FormFileCollection()),
+        };
+        var exception = Assert.ThrowsAsync<Exception>(() => readerWriter.ReadPost(mockHttpRequest))!;
+        Assert.That(exception.Message, Does.Contain("Expected 'query' to have a single value"));
+        Assert.That(exception.Message, Does.Contain("found 2 values"));
+    }
+
+    [Test]
+    public void ReadPost_MultipleOperationNameValues_Throws()
+    {
+        var mockHttpRequest = new MockHttpRequest
+        {
+            Form = new FormCollection(
+                new()
+                {
+                    {
+                        "query", new("theQuery")
+                    },
+                    {
+                        "operationName", new(["one", "two"])
+                    }
+                },
+                new FormFileCollection()),
+        };
+        var exception = Assert.ThrowsAsync<Exception>(() => readerWriter.ReadPost(mockHttpRequest))!;
+        Assert.That(exception.Message, Does.Contain("Expected 'operationName' to have a single value"));
+        Assert.That(exception.Message, Does.Contain("found 2 values"));
+    }
+
+    [Test]
+    public void ReadPost_MultipleVariablesValues_Throws()
+    {
+        var mockHttpRequest = new MockHttpRequest
+        {
+            Form = new FormCollection(
+                new()
+                {
+                    {
+                        "query", new("theQuery")
+                    },
+                    {
+                        "variables", new(["one", "two"])
+                    }
+                },
+                new FormFileCollection()),
+        };
+        var exception = Assert.ThrowsAsync<Exception>(() => readerWriter.ReadPost(mockHttpRequest))!;
+        Assert.That(exception.Message, Does.Contain("Expected 'variables' to have a single value"));
+        Assert.That(exception.Message, Does.Contain("found 2 values"));
+    }
+
+    [Test]
     public async Task ReadPost()
     {
         var attachment1Bytes = "Attachment1 Text"u8.ToArray();
