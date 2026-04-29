@@ -6,7 +6,7 @@ public static class ContextualAttachments
         context.GetAttachmentContext().Incoming;
 
     public static AttachmentStream IncomingAttachment<TSource>(this IResolveFieldContext<TSource> context) =>
-        context.IncomingAttachments().Single().Value;
+        context.IncomingAttachments().GetValue();
 
     public static AttachmentStream IncomingAttachment<TSource>(this IResolveFieldContext<TSource> context, string name) =>
         FindSingle(name, context.IncomingAttachments());
@@ -15,7 +15,7 @@ public static class ContextualAttachments
         context.GetAttachmentContext().Incoming;
 
     public static AttachmentStream IncomingAttachment(this IResolveFieldContext context) =>
-        context.IncomingAttachments().Single().Value;
+        context.IncomingAttachments().GetValue();
 
     public static AttachmentStream IncomingAttachment(this IResolveFieldContext context, string name) =>
         FindSingle(name, context.IncomingAttachments());

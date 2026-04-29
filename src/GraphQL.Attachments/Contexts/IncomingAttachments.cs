@@ -15,12 +15,17 @@ public class IncomingAttachments :
 
     public AttachmentStream GetValue()
     {
-        if (TryGetValue(out var stream))
+        if (Count == 0)
         {
-            return stream;
+            throw new("Reading an attachment with no name requires a single attachment to exist, but none were found.");
         }
 
-        throw new("Attachment not found.");
+        if (Count > 1)
+        {
+            throw new($"Reading an attachment with no name is only supported when there is a single attachment. Found {Count} attachments: {string.Join(", ", Keys)}.");
+        }
+
+        return Values.Single();
     }
 
     public bool TryGetValue([NotNullWhen(true)] out AttachmentStream? stream)
@@ -31,19 +36,13 @@ public class IncomingAttachments :
             return false;
         }
 
-        EnsureSingle();
+        if (Count > 1)
+        {
+            throw new($"Reading an attachment with no name is only supported when there is a single attachment. Found {Count} attachments: {string.Join(", ", Keys)}.");
+        }
 
         stream = Values.Single();
-
         return true;
-    }
-
-    void EnsureSingle()
-    {
-        if (Count != 1)
-        {
-            throw new("Reading an attachment with no name is only supported when their is a single attachment.");
-        }
     }
 
     public async ValueTask DisposeAsync()
