@@ -9,7 +9,7 @@ public static class ContextualAttachments
         context.IncomingAttachments().GetValue();
 
     public static AttachmentStream IncomingAttachment<TSource>(this IResolveFieldContext<TSource> context, string name) =>
-        FindSingle(name, context.IncomingAttachments());
+        context.IncomingAttachments().GetValue(name);
 
     public static IIncomingAttachments IncomingAttachments(this IResolveFieldContext context) =>
         context.GetAttachmentContext().Incoming;
@@ -18,17 +18,7 @@ public static class ContextualAttachments
         context.IncomingAttachments().GetValue();
 
     public static AttachmentStream IncomingAttachment(this IResolveFieldContext context, string name) =>
-        FindSingle(name, context.IncomingAttachments());
-
-    static AttachmentStream FindSingle(string name, IIncomingAttachments attachments)
-    {
-        if (attachments.TryGetValue(name, out var attachment))
-        {
-            return attachment;
-        }
-
-        throw new($"Attachment not found: '{name}'");
-    }
+        context.IncomingAttachments().GetValue(name);
 
     public static IOutgoingAttachments OutgoingAttachments<TSource>(this IResolveFieldContext<TSource> context) =>
         context.GetAttachmentContext().Outgoing;

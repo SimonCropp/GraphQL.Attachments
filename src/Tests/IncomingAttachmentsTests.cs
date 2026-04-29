@@ -67,4 +67,39 @@ public class IncomingAttachmentsTests
         var exception = Assert.Throws<Exception>(() => attachments.TryGetValue(out _))!;
         Assert.That(exception.Message, Does.Contain("Found 2 attachments"));
     }
+
+    [Test]
+    public void GetValueByName_Found_Returns()
+    {
+        var attachments = new IncomingAttachments();
+        var stream = new AttachmentStream("key", new MemoryStream(), 0, new HeaderDictionary());
+        attachments.Add("key", stream);
+
+        Assert.That(attachments.GetValue("key"), Is.SameAs(stream));
+    }
+
+    [Test]
+    public void GetValueByName_Empty_Throws()
+    {
+        var attachments = new IncomingAttachments();
+
+        var exception = Assert.Throws<Exception>(() => attachments.GetValue("missing"))!;
+        Assert.That(exception.Message, Does.Contain("'missing'"));
+        Assert.That(exception.Message, Does.Contain("No attachments are available"));
+    }
+
+    [Test]
+    public void GetValueByName_NotFound_ListsAvailable()
+    {
+        var attachments = new IncomingAttachments
+        {
+            {"first", new("first", new MemoryStream(), 0, new HeaderDictionary())},
+            {"second", new("second", new MemoryStream(), 0, new HeaderDictionary())}
+        };
+
+        var exception = Assert.Throws<Exception>(() => attachments.GetValue("missing"))!;
+        Assert.That(exception.Message, Does.Contain("'missing'"));
+        Assert.That(exception.Message, Does.Contain("first"));
+        Assert.That(exception.Message, Does.Contain("second"));
+    }
 }
