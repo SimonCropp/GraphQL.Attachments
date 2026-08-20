@@ -54,7 +54,7 @@ public class GraphQlMiddleware(ISchema schema, IDocumentExecuter executer) :
             OperationName = operation,
             Variables = inputs,
             CancellationToken = cancel,
-#if (DEBUG)
+#if DEBUG
             ThrowOnUnhandledException = true,
             EnableMetrics = true,
 #endif
