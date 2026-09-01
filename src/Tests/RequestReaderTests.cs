@@ -1,6 +1,6 @@
 ﻿using GraphQL.SystemTextJson;
 using Microsoft.Extensions.Primitives;
-using Newtonsoft.Json;
+using Argon;
 
 [TestFixture]
 public class RequestReaderTests

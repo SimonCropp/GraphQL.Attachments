@@ -5,7 +5,7 @@
   <ItemGroup>
     <Compile Include="..\GraphQL.Attachments\Guard.cs" Link="Guard.cs" />
     <PackageReference Include="Argon" />
-    <PackageReference Include="Microsoft.AspNet.WebApi.Client" />
+    <PackageReference Include="HttpMultipart" PrivateAssets="all" />
     <PackageReference Include="ProjectDefaults" PrivateAssets="all" />
   </ItemGroup>
 </Project>
