@@ -13,14 +13,14 @@ public static class AttachmentsExtensions
         ExecutionOptions options,
         IIncomingAttachments? attachments = null)
     {
-        await using var attachmentContext = BuildAttachmentContext(attachments);
-        options.SetAttachmentContext(attachmentContext);
+        await using var context = BuildAttachmentContext(attachments);
+        options.SetAttachmentContext(context);
         var result = await executer.ExecuteAsync(options);
-        return new(result, attachmentContext.Outgoing);
+        return new(result, context.Outgoing);
     }
 
-    public static void AddAttachmentContext(this ExecutionOptions options, AttachmentContext attachmentContext) =>
-        options.SetAttachmentContext(attachmentContext);
+    public static void AddAttachmentContext(this ExecutionOptions options, AttachmentContext context) =>
+        options.SetAttachmentContext(context);
 
     static AttachmentContext BuildAttachmentContext(IIncomingAttachments? incoming)
     {
