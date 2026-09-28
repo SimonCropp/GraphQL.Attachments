@@ -1,6 +1,5 @@
-﻿#pragma warning disable ASPDEPR008
+#pragma warning disable ASPDEPR008
 #pragma warning disable ASPDEPR004
-[TestFixture]
 public class GraphQlControllerTests
 {
     static QueryExecutor executor;

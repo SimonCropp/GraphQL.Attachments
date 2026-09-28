@@ -1,4 +1,5 @@
-﻿[TestFixture]
+namespace GraphQL.Attachments.Tests;
+
 public class Tests
 {
     [Test]

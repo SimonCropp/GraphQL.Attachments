@@ -2,20 +2,18 @@
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
     <OutputType>Exe</OutputType>
-    <NoWarn>$(NoWarn);xUnit1051</NoWarn>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" />
-    <PackageReference Include="NUnit3TestAdapter" />
     <PackageReference Include="Verify.DiffPlex" />
-    <PackageReference Include="Verify.NUnit" />
+    <PackageReference Include="Verify.TUnit" />
+    <PackageReference Include="TUnit" />
     <PackageReference Include="Argon" />
     <PackageReference Include="DiffEngine" />
     <PackageReference Include="EmptyFiles" />
     <PackageReference Include="SimpleInfoName" />
     <PackageReference Include="Verify" />
     <PackageReference Include="Verify.Http" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" />
     <ProjectReference Include="..\GraphQL.Attachments.Client\GraphQL.Attachments.Client.csproj" />
     <ProjectReference Include="..\SampleWeb\SampleWeb.csproj" />
     <ProjectReference Include="..\Shared\Shared.csproj" />

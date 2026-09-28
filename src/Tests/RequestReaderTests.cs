@@ -1,8 +1,7 @@
-﻿using GraphQL.SystemTextJson;
+using GraphQL.SystemTextJson;
 using Microsoft.Extensions.Primitives;
 using Argon;
 
-[TestFixture]
 public class RequestReaderTests
 {
     static HttpReaderWriter readerWriter = new(new GraphQLSerializer(indent: true));
@@ -120,18 +119,18 @@ public class RequestReaderTests
     }
 
     [Test]
-    public void ReadPost_MissingQuery_Throws()
+    public async Task ReadPost_MissingQuery_Throws()
     {
         var mockHttpRequest = new MockHttpRequest
         {
             Form = new FormCollection(new(), new FormFileCollection()),
         };
-        var exception = Assert.ThrowsAsync<Exception>(() => readerWriter.ReadPost(mockHttpRequest))!;
-        Assert.That(exception.Message, Does.Contain("Expected to find a form value named 'query'"));
+        var exception = await Assert.That(() => readerWriter.ReadPost(mockHttpRequest)).ThrowsExactly<Exception>();
+        await Assert.That(exception!.Message).Contains("Expected to find a form value named 'query'");
     }
 
     [Test]
-    public void ReadPost_MultipleQueryValues_Throws()
+    public async Task ReadPost_MultipleQueryValues_Throws()
     {
         var mockHttpRequest = new MockHttpRequest
         {
@@ -144,13 +143,13 @@ public class RequestReaderTests
                 },
                 new FormFileCollection()),
         };
-        var exception = Assert.ThrowsAsync<Exception>(() => readerWriter.ReadPost(mockHttpRequest))!;
-        Assert.That(exception.Message, Does.Contain("Expected 'query' to have a single value"));
-        Assert.That(exception.Message, Does.Contain("found 2 values"));
+        var exception = await Assert.That(() => readerWriter.ReadPost(mockHttpRequest)).ThrowsExactly<Exception>();
+        await Assert.That(exception!.Message).Contains("Expected 'query' to have a single value");
+        await Assert.That(exception!.Message).Contains("found 2 values");
     }
 
     [Test]
-    public void ReadPost_MultipleOperationNameValues_Throws()
+    public async Task ReadPost_MultipleOperationNameValues_Throws()
     {
         var mockHttpRequest = new MockHttpRequest
         {
@@ -166,13 +165,13 @@ public class RequestReaderTests
                 },
                 new FormFileCollection()),
         };
-        var exception = Assert.ThrowsAsync<Exception>(() => readerWriter.ReadPost(mockHttpRequest))!;
-        Assert.That(exception.Message, Does.Contain("Expected 'operationName' to have a single value"));
-        Assert.That(exception.Message, Does.Contain("found 2 values"));
+        var exception = await Assert.That(() => readerWriter.ReadPost(mockHttpRequest)).ThrowsExactly<Exception>();
+        await Assert.That(exception!.Message).Contains("Expected 'operationName' to have a single value");
+        await Assert.That(exception!.Message).Contains("found 2 values");
     }
 
     [Test]
-    public void ReadPost_MultipleVariablesValues_Throws()
+    public async Task ReadPost_MultipleVariablesValues_Throws()
     {
         var mockHttpRequest = new MockHttpRequest
         {
@@ -188,9 +187,9 @@ public class RequestReaderTests
                 },
                 new FormFileCollection()),
         };
-        var exception = Assert.ThrowsAsync<Exception>(() => readerWriter.ReadPost(mockHttpRequest))!;
-        Assert.That(exception.Message, Does.Contain("Expected 'variables' to have a single value"));
-        Assert.That(exception.Message, Does.Contain("found 2 values"));
+        var exception = await Assert.That(() => readerWriter.ReadPost(mockHttpRequest)).ThrowsExactly<Exception>();
+        await Assert.That(exception!.Message).Contains("Expected 'variables' to have a single value");
+        await Assert.That(exception!.Message).Contains("found 2 values");
     }
 
     [Test]
