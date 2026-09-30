@@ -12,7 +12,6 @@
     <PackageReference Include="GraphQL.SystemTextJson" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
     <PackageReference Include="Microsoft.Extensions.Primitives" />
-    <PackageReference Include="Verify.DiffPlex" />
     <PackageReference Include="Verify.TUnit" />
     <PackageReference Include="TUnit" />
     <PackageReference Include="DiffEngine" />
