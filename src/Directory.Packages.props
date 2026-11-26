@@ -11,7 +11,6 @@
     <PackageVersion Include="MarkdownSnippets.MsBuild" Version="30.0.1" />
     <PackageVersion Include="Microsoft.AspNetCore.Mvc.Testing" Version="11.0.0" />
     <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="11.0.0" />
-    <PackageVersion Include="Microsoft.Extensions.Primitives" Version="11.0.0" />
     <PackageVersion Include="ProjectDefaults" Version="1.0.191" />
     <PackageVersion Include="Sbom" Version="1.0.0" />
     <PackageVersion Include="Verify.Http" Version="9.0.0" />
